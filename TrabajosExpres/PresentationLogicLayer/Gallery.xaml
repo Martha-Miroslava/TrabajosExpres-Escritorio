@@ -1,0 +1,63 @@
+﻿<Window x:Class="TrabajosExpres.PresentationLogicLayer.Gallery"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrabajosExpres.PresentationLogicLayer"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Icon="/PresentationLogicLayer/Images/IconSystem.png"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="15"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Galería" Height="700" Width="1000">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75"></RowDefinition>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Mode="PrimaryDark" Padding="16"  materialDesign:ShadowAssist.ShadowDepth="Depth3" ClipToBounds="False">
+            <StackPanel Orientation="Horizontal">
+                <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
+                <Image Margin="30 0 0 0"  VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
+                <TextBlock  VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
+            </StackPanel>
+        </materialDesign:ColorZone>
+        <Rectangle Grid.Row="1" Fill="DarkMagenta"/>
+        <TextBlock Name="TextBlockService" Grid.Row="1" Text="Servicio" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
+                   VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
+        <Grid Grid.Row="2" Background="DarkMagenta">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                Content="Datos"></Button>
+            <Button Grid.Column="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                Content="Galería"></Button>
+        </Grid>
+        <Grid Name="FormGrid" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Height="409" Margin="46,37,56,68" Width="890">
+            <Image Source="/PresentationLogicLayer/Images/Service.png" Grid.Row="0" Margin="16,12,694,276"/>
+            <Image Source="Images/Service.png" Grid.Row="0" Margin="209,12,501,276"/>
+
+        </Grid>
+
+        <Button Height="35" Grid.Row="3" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Margin="41,0,723,17" Width="228">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Height="29" Width="196">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="160"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <materialDesign:PackIcon Kind="BookArrowUpOutline" Height="28" Width="33"></materialDesign:PackIcon>
+                <Label Content="Subir imagen o video" VerticalContentAlignment="Top" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="1,0,-9,1" Width="168" Grid.Column="1" Height="28"/>
+            </Grid>
+        </Button>
+    </Grid>
+</Window>

@@ -23,7 +23,7 @@
 		</Grid.ColumnDefinitions>
         <Image Grid.Column="0" Source="/PresentationLogicLayer/Images/Login.png" HorizontalAlignment="Center" VerticalAlignment="Bottom"></Image>
 
-		<Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+        <Grid Name="FormGrid" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition></ColumnDefinition>
 				<ColumnDefinition></ColumnDefinition>
@@ -40,13 +40,13 @@
 				   VerticalAlignment="Top" HorizontalAlignment="Left" FontWeight="Bold" Margin="0,0,0,40" FontSize="40"/>
 
 			<Label Content="Usuario: " VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-			<TextBox Name="TextBoxUsername" Height="30" Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="145" HorizontalAlignment="Left" />
+            <TextBox Name="TextBoxUsername" Height="30" Grid.Row="1" Grid.Column="1" TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="145" HorizontalAlignment="Left" />
 
 			<Label Content="Contraseña: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-			<PasswordBox Name="PasswordBoxPassword" Height="30"  Grid.Row="2" Grid.Column="1"  FontSize="15" VerticalAlignment="Top" Width="145" HorizontalAlignment="Left"/>
+            <PasswordBox Name="PasswordBoxPassword" Height="30"  Grid.Row="2" Grid.Column="1"  FontSize="15" VerticalAlignment="Top" Width="145" HorizontalAlignment="Left"/>
 
 			<Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Iniciar sesión" Margin="0,30,0,0"></Button>
+				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Iniciar sesión" Margin="0,30,0,0" Click="LoginButton"></Button>
 
 			<Button Grid.Row="4" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedDarkButton}"
 				VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Content="Crear cuenta" Margin="0,40,0,0"></Button>

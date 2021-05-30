@@ -49,8 +49,8 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=4.0.0.2422, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.4.0.0\lib\net452\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
@@ -87,6 +87,7 @@
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\State.cs" />
+    <Compile Include="Models\Token.cs" />
     <Compile Include="PresentationLogicLayer\AccountCreation.xaml.cs">
       <DependentUpon>AccountCreation.xaml</DependentUpon>
     </Compile>
@@ -160,6 +161,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\Segurity.cs" />
     <Compile Include="Validators\AccountValidator.cs" />
     <Compile Include="Validators\ChatValidator.cs" />
     <Compile Include="Validators\CityValidator.cs" />
@@ -170,6 +172,7 @@
     <Compile Include="Validators\RequestValidator.cs" />
     <Compile Include="Validators\ServiceValidator.cs" />
     <Compile Include="Validators\StateValidator.cs" />
+    <Compile Include="Validators\UserFeedback.cs" />
     <Page Include="PresentationLogicLayer\AccountCreation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -292,7 +295,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataAccess\" />
-    <Folder Include="PresentationLogicLayer\Validator\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="PresentationLogicLayer\Images\eyePassword.png" />

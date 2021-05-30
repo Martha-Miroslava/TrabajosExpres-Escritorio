@@ -19,9 +19,16 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class Home : Window
     {
+        public Models.Token tokenAccount { get; set; }
+        public Models.Login loginAccount { get; set; }
         public Home()
         {
             InitializeComponent();
+        }
+
+        public void InitializeHome()
+        {
+            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
         }
     }
 }

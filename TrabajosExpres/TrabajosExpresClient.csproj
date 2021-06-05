@@ -109,6 +109,9 @@
     <Compile Include="PresentationLogicLayer\ChatList.xaml.cs">
       <DependentUpon>ChatList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\ChooseAccount.xaml.cs">
+      <DependentUpon>ChooseAccount.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\Number.cs" />
     <Compile Include="Utils\Segurity.cs" />
     <Compile Include="Validators\AccountValidator.cs" />
     <Compile Include="Validators\ChatValidator.cs" />
@@ -198,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\ChatList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ChooseAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -322,6 +330,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="PresentationLogicLayer\Images\Request.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="PresentationLogicLayer\Images\Client.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets" Condition="Exists('..\packages\MaterialDesignThemes.4.0.0\build\MaterialDesignThemes.targets')" />

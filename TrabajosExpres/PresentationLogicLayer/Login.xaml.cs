@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using RestSharp;
 using System.Windows;
 using TrabajosExpres.Validators;
 using FluentValidation.Results;
 using Newtonsoft.Json;
+using TrabajosExpres.Utils;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -20,7 +20,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             InitializeComponent();
         }
 
-        private void LoginButton(object sender, RoutedEventArgs e)
+        private void LoginButtonClicked(object sender, RoutedEventArgs e)
         {
             CreateLoginFromInputData();
             if (ValidateDataLogin())
@@ -40,16 +40,28 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         Models.Token token = JsonConvert.DeserializeObject<Models.Token>(response.Content);
-                        Home home = new Home();
-                        home.tokenAccount = token;
-                        home.loginAccount = login;
-                        home.InitializeHome();
-                        home.Show();
-                        Close();
+                        if (token.memberATEType == Number.NumberValue(NumberValues.TWO))
+                        {
+                            ChooseAccount chooseAccount = new ChooseAccount();
+                            chooseAccount.tokenAccount = token;
+                            chooseAccount.loginAccount = login;
+                            chooseAccount.InitializeHome();
+                            chooseAccount.Show();
+                            Close();
+                        }
+                        else
+                        {
+                            Home home = new Home();
+                            home.tokenAccount = token;
+                            home.loginAccount = login;
+                            home.InitializeHome();
+                            home.Show();
+                            Close();
+                        }
                     }
                     else
                     {
-                        if (response.Content.Length == 0)
+                        if (response.Content.Length == Number.NumberValue(NumberValues.ZERO))
                         {
                             MessageBox.Show("Los datos son inválidos", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
@@ -88,6 +100,19 @@ namespace TrabajosExpres.PresentationLogicLayer
             userFeedback.ShowFeedback();
             return dataValidationResult.IsValid;
         }
-    }
 
+        private void CreateAccountButtonClicked(object sender, RoutedEventArgs e)
+        {
+            AccountCreation accountCreation = new AccountCreation();
+            accountCreation.Show();
+            Close();
+        }
+
+        private void RecoverAccountButtonClicked(object sender, RoutedEventArgs e)
+        {
+            AccountRecover accountRecover = new AccountRecover();
+            accountRecover.Show();
+            Close();
+        }
+    }
 }

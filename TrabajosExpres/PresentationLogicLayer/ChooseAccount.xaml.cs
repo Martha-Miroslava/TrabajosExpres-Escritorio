@@ -15,13 +15,13 @@ using System.Windows.Shapes;
 namespace TrabajosExpres.PresentationLogicLayer
 {
     /// <summary>
-    /// Lógica de interacción para Home.xaml
+    /// Lógica de interacción para ChooseAccount.xaml
     /// </summary>
-    public partial class Home : Window
+    public partial class ChooseAccount : Window
     {
         public Models.Token tokenAccount { get; set; }
         public Models.Login loginAccount { get; set; }
-        public Home()
+        public ChooseAccount()
         {
             InitializeComponent();
         }
@@ -29,6 +29,27 @@ namespace TrabajosExpres.PresentationLogicLayer
         public void InitializeHome()
         {
             TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
+        }
+
+        private void ChooseClientButtonClicked(object sender, RoutedEventArgs e)
+        {
+            tokenAccount.memberATEType = 1;
+            Home home = new Home();
+            home.tokenAccount = tokenAccount;
+            home.loginAccount = loginAccount;
+            home.InitializeHome();
+            home.Show();
+            Close();
+        }
+
+        private void ChooseEmployeeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Home home = new Home();
+            home.tokenAccount = tokenAccount;
+            home.loginAccount = loginAccount;
+            home.InitializeHome();
+            home.Show();
+            Close();
         }
 
         private void LogOutButtonClicked(object sender, RoutedEventArgs e)

@@ -23,5 +23,12 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             InitializeComponent();
         }
+
+        private void CancelButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            Close();
+        }
     }
 }

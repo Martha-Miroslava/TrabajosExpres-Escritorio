@@ -46,13 +46,13 @@
             <PasswordBox Name="PasswordBoxPassword" Height="30"  Grid.Row="2" Grid.Column="1"  FontSize="15" VerticalAlignment="Top" Width="145" HorizontalAlignment="Left"/>
 
 			<Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Iniciar sesión" Margin="0,30,0,0" Click="LoginButton"></Button>
+				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Iniciar sesión" Margin="0,30,0,0" Click="LoginButtonClicked"></Button>
 
 			<Button Grid.Row="4" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedDarkButton}"
-				VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Content="Crear cuenta" Margin="0,40,0,0"></Button>
+				VerticalAlignment="Center" HorizontalAlignment="Center" Height="35" Content="Crear cuenta" Margin="0,40,0,0" Click="CreateAccountButtonClicked"></Button>
 
 			<Button Grid.Row="4" Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkMagenta"
-				VerticalAlignment="Center" HorizontalAlignment="Center" Margin="50,40,0,0" Height="35">
+				VerticalAlignment="Center" HorizontalAlignment="Center" Margin="50,40,0,0" Height="35" Click="RecoverAccountButtonClicked">
 				<TextBlock Text="¿Has olvidado la contraseña?" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"></TextBlock>
 			</Button>
 

@@ -30,5 +30,12 @@ namespace TrabajosExpres.PresentationLogicLayer
             serviceEdition.Show();
             Close();
         }
+
+        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            Close();
+        }
     }
 }

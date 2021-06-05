@@ -23,5 +23,11 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             InitializeComponent();
         }
+        private void BehindButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            Close();
+        }
     }
 }

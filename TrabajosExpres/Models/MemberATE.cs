@@ -2,7 +2,7 @@
 
 namespace TrabajosExpres.Models
 {
-    public class Account
+    public class MemberATE
     {
         public int idAccount { get; set; }
         public string username { get; set; }

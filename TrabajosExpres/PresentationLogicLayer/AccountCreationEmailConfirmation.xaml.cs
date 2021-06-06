@@ -19,6 +19,9 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class AccountCreationEmailConfirmation : Window
     {
+        public  Models.MemberATE memberATE { get; set; }
+        public Image image { get; set;}
+
         public AccountCreationEmailConfirmation()
         {
             InitializeComponent();

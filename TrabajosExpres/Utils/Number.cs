@@ -39,7 +39,12 @@ namespace TrabajosExpres.Utils
         /// <summary>
         /// Number Ten
         /// </summary>
-        TEN = 10
+        TEN = 10,
+
+        /// <summary>
+        /// Number Eighteen
+        /// </summary>
+        EIGHTEEN = 18
     }
 
     /// <summary>

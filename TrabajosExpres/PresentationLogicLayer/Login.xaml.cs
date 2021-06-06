@@ -77,7 +77,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
             }
             else
             {
@@ -104,8 +103,11 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void CreateAccountButtonClicked(object sender, RoutedEventArgs e)
         {
             AccountCreation accountCreation = new AccountCreation();
-            accountCreation.Show();
-            Close();
+            /*if (accountCreation.InitializeState())
+            {*/
+                accountCreation.Show();
+                Close();
+            //}
         }
 
         private void RecoverAccountButtonClicked(object sender, RoutedEventArgs e)

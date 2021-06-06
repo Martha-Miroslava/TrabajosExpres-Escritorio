@@ -76,7 +76,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\MemberATE.cs" />
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Country.cs" />
@@ -166,7 +166,7 @@
     </Compile>
     <Compile Include="Utils\Number.cs" />
     <Compile Include="Utils\Segurity.cs" />
-    <Compile Include="Validators\AccountValidator.cs" />
+    <Compile Include="Validators\MemberATEValidator.cs" />
     <Compile Include="Validators\ChatValidator.cs" />
     <Compile Include="Validators\CityValidator.cs" />
     <Compile Include="Validators\CountryValidator.cs" />

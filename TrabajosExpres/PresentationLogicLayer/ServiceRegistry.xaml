@@ -16,8 +16,41 @@
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Registrar Servicio" Height="700" Width="800">
-    <ScrollViewer Background="White">
-        <Grid>
+
+    <Window.Resources>
+        <Storyboard x:Key="OpenMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="68"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="210"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00" Storyboard.TargetName="GridMain">
+                <SplineThicknessKeyFrame KeyTime="0" Value="68,0,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="210,0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="CloseMenu">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
+                <EasingDoubleKeyFrame KeyTime="0" Value="200"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="68"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="Margin" BeginTime="00:00:00" Storyboard.TargetName="GridMain">
+                <SplineThicknessKeyFrame KeyTime="0" Value="210,0,0,0" />
+                <SplineThicknessKeyFrame KeyTime="0:0:0.5" Value="68,0,0,0" />
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenMenu">
+            <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseMenu">
+            <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+    <Grid>
+        <Grid Name="GridMain" Margin="68 0 0 0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"></RowDefinition>
                 <RowDefinition Height="40"></RowDefinition>
@@ -25,9 +58,8 @@
             </Grid.RowDefinitions>
             <materialDesign:ColorZone Mode="PrimaryDark" Padding="16"  materialDesign:ShadowAssist.ShadowDepth="Depth3" ClipToBounds="False">
                 <StackPanel Orientation="Horizontal">
-                    <ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
                     <Image Margin="30 0 0 0"  VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
-                    <TextBlock  VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
+                    <TextBlock Name="TextBlockTitle" VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
                 </StackPanel>
             </materialDesign:ColorZone>
             <Grid  VerticalAlignment="Center" HorizontalAlignment="Right">
@@ -37,75 +69,142 @@
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" Source="/PresentationLogicLayer/Images/LogOut.png" Height="35" Margin="0,0,10,0"></Image>
                 <Button Grid.Column="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}" Background="SkyBlue" Foreground="Black" BorderBrush="SkyBlue"
-						VerticalAlignment="Center" HorizontalAlignment="Right" Content="Cerrar Sesión" Margin="0,0,30,0" Click="LogOutButtonClicked"></Button>
+						    VerticalAlignment="Center" HorizontalAlignment="Right" Content="Cerrar Sesión" Margin="0,0,30,0" Click="LogOutButtonClicked"></Button>
             </Grid>
             <Rectangle Grid.Row="1" Fill="DarkMagenta"/>
             <TextBlock Grid.Row="1" Text="Registrar Servicio" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
-                   VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
-            <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0">
-                <Grid.RowDefinitions>
-                    <RowDefinition></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" >
+                       VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
+
+            <ScrollViewer Background="White" Grid.Row="2">
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,30,0,0">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <materialDesign:PackIcon Kind="AccountCircle" Grid.Row="0" Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                    <Button Grid.Row="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}" Background="CornflowerBlue"
-                VerticalAlignment="Center" HorizontalAlignment="Center" Content="Editar" BorderBrush="CornflowerBlue"></Button>
+                    <Grid Grid.Row="0" VerticalAlignment="Top" HorizontalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <materialDesign:PackIcon Kind="AccountCircle" Grid.Row="0" Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                        <Button Grid.Row="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}" Background="CornflowerBlue"
+                    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Editar" BorderBrush="CornflowerBlue"></Button>
+                    </Grid>
+
+                    <Grid x:Name="FormGrid" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0,30,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition Height="90"></RowDefinition>
+                            <RowDefinition Height="90"></RowDefinition>
+                            <RowDefinition Height="60"></RowDefinition>
+                            <RowDefinition Height="150"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Nombre: " VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxName" Grid.ColumnSpan="2" Height="30" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de A-Z."
+                         MaxLength="150" materialDesign:TransitionAssist.DisableTransitions="True"/>
+
+                        <Label Content="Eslogan: " VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxSlogan" Height="30"  Grid.Row="1" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de A-Z."
+                         MaxLength="150" materialDesign:TransitionAssist.DisableTransitions="True"/>
+
+                        <Label Content="Tipo: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxType" Height="30" Grid.Row="2" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9."
+                         MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
+
+                        <Label Content="Costo: " VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxCost" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
+                         MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
+
+                        <Label Content="Ubicación: " VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxUbication" Grid.Row="4" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="250" AcceptsReturn="True" HorizontalAlignment="Center"
+                        VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True" MaxLength="350"  Height="60" materialDesign:HintAssist.HelperText="Caracteres A-Z/0-9." ></TextBox>
+
+                        <Label Content="Descripción: " VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxDescription" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="250" AcceptsReturn="True" HorizontalAlignment="Center"
+                        VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True" MaxLength="350"  Height="60" materialDesign:HintAssist.HelperText="Caracteres A-Z/0-9." ></TextBox>
+
+                        <Label Content="Horario: " VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <TextBox Name="TextBoxSchedule" Height="30" Grid.Row="6" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
+                         MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
+
+                        <Button Grid.Row="7" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                            VerticalAlignment="Center" HorizontalAlignment="Center" Content="Registrar"></Button>
+                        <Button Grid.Row="7" Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                            Content="Cancelar"/>
+                    </Grid>
                 </Grid>
-
-                <Grid x:Name="FormGrid" Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0,30,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60"></RowDefinition>
-                        <RowDefinition Height="60"></RowDefinition>
-                        <RowDefinition Height="60"></RowDefinition>
-                        <RowDefinition Height="60"></RowDefinition>
-                        <RowDefinition Height="90"></RowDefinition>
-                        <RowDefinition Height="90"></RowDefinition>
-                        <RowDefinition Height="60"></RowDefinition>
-                        <RowDefinition Height="150"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Label Content="Nombre: " VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxName" Grid.ColumnSpan="2" Height="30" Grid.Row="0" Grid.Column="1" TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de A-Z."
-                     MaxLength="150" materialDesign:TransitionAssist.DisableTransitions="True"/>
-
-                    <Label Content="Eslogan: " VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxSlogan" Height="30"  Grid.Row="1" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de A-Z."
-                     MaxLength="150" materialDesign:TransitionAssist.DisableTransitions="True"/>
-
-                    <Label Content="Tipo: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxType" Height="30" Grid.Row="2" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9."
-                     MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
-
-                    <Label Content="Costo: " VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxCost" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
-                     MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
-
-                    <Label Content="Ubicación: " VerticalAlignment="Top" Grid.Row="4" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxUbication" Grid.Row="4" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="250" AcceptsReturn="True" HorizontalAlignment="Center"
-                    VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True" MaxLength="350"  Height="60" materialDesign:HintAssist.HelperText="Caracteres A-Z/0-9." ></TextBox>
-
-                    <Label Content="Descripción: " VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxDescription" Grid.Row="5" Grid.Column="1" TextWrapping="Wrap" VerticalAlignment="Top" MinWidth="250" AcceptsReturn="True" HorizontalAlignment="Center"
-                    VerticalScrollBarVisibility="Auto" SpellCheck.IsEnabled="True" MaxLength="350"  Height="60" materialDesign:HintAssist.HelperText="Caracteres A-Z/0-9." ></TextBox>
-
-                    <Label Content="Horario: " VerticalAlignment="Top" Grid.Row="6" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxSchedule" Height="30" Grid.Row="6" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
-                     MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
-
-                    <Button Grid.Row="7" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                        VerticalAlignment="Center" HorizontalAlignment="Center" Content="Registrar"></Button>
-                    <Button Grid.Row="7" Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                        Content="Cancelar"/>
-                </Grid>
-            </Grid>
+            </ScrollViewer>
         </Grid>
-    </ScrollViewer>
+
+        <Grid Width="68" x:Name="GridMenu" HorizontalAlignment="Left" Background="DarkBlue">
+            <Grid.Effect>
+                <DropShadowEffect BlurRadius="2" ShadowDepth="1" Color="#FFAEAEAE"/>
+            </Grid.Effect>
+            <StackPanel>
+                <Grid Height="120" Background="White" RenderTransformOrigin="0.5,0.5">
+                    <Grid.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Grid.RenderTransform>
+                    <Button x:Name="ButtonOpenMenu" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF31577E" Click="ButtonOpenMenuClicked">
+                        <materialDesign:PackIcon Kind="Menu" Width="25" Height="25"/>
+                    </Button>
+                    <Button x:Name="ButtonCloseMenu" Visibility="Collapsed" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF31577E" Click="ButtonCloseMenuClicked">
+                        <materialDesign:PackIcon Kind="ArrowLeft" Width="25" Height="25"/>
+                    </Button>
+
+                    <Image Height="80" VerticalAlignment="Bottom"/>
+                </Grid>
+                <ListView x:Name="ListViewMenu" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenuSelectionChanged">
+                    <ListViewItem x:Name="ListViewItemHome" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ViewDashboard" Height="30" Width="30" Margin="10"/>
+                            <TextBlock Text="Inicio" VerticalAlignment="Center" Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem x:Name="ListViewItemAccountEdit" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AccountEdit" Height="30" Width="30" Margin="10"/>
+                            <TextBlock Text="Editar Cuenta" VerticalAlignment="Center" Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Name="ListViewItemChat" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Message" Height="30" Width="30" Margin="10"/>
+                            <TextBlock Text="Chat" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Name="ListViewItemRequest" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/PresentationLogicLayer/Images/Request.png" Height="25" Width="30" Margin="10"/>
+                            <TextBlock x:Name="TextBlockMenuRequest" Text="Solicitudes Recibidas" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Name="ListViewItemServiceRegistration" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Name="PackIconActiveAccount" Kind="HomePlus" Height="30" Width="30" Margin="10"/>
+                            <TextBlock x:Name="TextBlockMenuAccount" Text="Registrar Servicio" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Name="ListViewItemService" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="/PresentationLogicLayer/Images/Service.png" Height="25" Width="30" Margin="10"/>
+                            <TextBlock Text="Servicios" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+        </Grid>
+    </Grid>
 </Window>

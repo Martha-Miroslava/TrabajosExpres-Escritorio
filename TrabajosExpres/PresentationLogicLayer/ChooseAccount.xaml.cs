@@ -35,9 +35,9 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             tokenAccount.memberATEType = 1;
             Home home = new Home();
-            home.tokenAccount = tokenAccount;
-            home.loginAccount = loginAccount;
-            home.InitializeHome();
+            Home.tokenAccount = tokenAccount;
+            Home.loginAccount = loginAccount;
+            home.InitializeMenu();
             home.Show();
             Close();
         }
@@ -45,9 +45,9 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ChooseEmployeeButtonClicked(object sender, RoutedEventArgs e)
         {
             Home home = new Home();
-            home.tokenAccount = tokenAccount;
-            home.loginAccount = loginAccount;
-            home.InitializeHome();
+            Home.tokenAccount = tokenAccount;
+            Home.loginAccount = loginAccount;
+            home.InitializeMenu();
             home.Show();
             Close();
         }

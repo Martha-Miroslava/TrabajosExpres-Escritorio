@@ -52,9 +52,9 @@ namespace TrabajosExpres.PresentationLogicLayer
                         else
                         {
                             Home home = new Home();
-                            home.tokenAccount = token;
-                            home.loginAccount = login;
-                            home.InitializeHome();
+                            Home.tokenAccount = token;
+                            Home.loginAccount = login;
+                            home.InitializeMenu();
                             home.Show();
                             Close();
                         }

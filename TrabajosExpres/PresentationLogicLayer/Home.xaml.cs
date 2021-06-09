@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using TrabajosExpres.Utils;
 using System.Windows.Data;
 using System.Windows.Documents;
+using RestSharp;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -22,6 +23,8 @@ namespace TrabajosExpres.PresentationLogicLayer
     {
         public static Models.Token tokenAccount { get; set; }
         public static Models.Login loginAccount { get; set; }
+        public static IList<RestResponseCookie> cookies { get; set; }
+
         public Home()
         {
             InitializeComponent();
@@ -71,16 +74,12 @@ namespace TrabajosExpres.PresentationLogicLayer
             {
                 case "ListViewItemAccountEdit":
                     AccountEdition accountEdition = new AccountEdition();
-                    AccountEdition.tokenAccount = tokenAccount;
-                    AccountEdition.loginAccount = loginAccount;
                     accountEdition.InitializeMenu();
                     accountEdition.Show();
                     Close();
                     break;
                 case "ListViewItemChat":
                     ChatList chatList = new ChatList();
-                    ChatList.tokenAccount = tokenAccount;
-                    ChatList.loginAccount = loginAccount;
                     chatList.InitializeMenu();
                     chatList.Show();
                     Close();
@@ -89,8 +88,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
                     {
                         RequestsMadeList requestsMadeList = new RequestsMadeList();
-                        RequestsMadeList.tokenAccount = tokenAccount;
-                        RequestsMadeList.loginAccount = loginAccount;
                         requestsMadeList.InitializeMenu();
                         requestsMadeList.Show();
                         Close();
@@ -98,8 +95,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     else
                     {
                         RequestsReceivedList requestReceivedList = new RequestsReceivedList();
-                        RequestsReceivedList.tokenAccount = tokenAccount;
-                        RequestsReceivedList.loginAccount = loginAccount;
                         requestReceivedList.InitializeMenu();
                         requestReceivedList.Show();
                         Close();
@@ -113,17 +108,16 @@ namespace TrabajosExpres.PresentationLogicLayer
                     else
                     {
                         ServiceRegistry serviceRegistry = new ServiceRegistry();
-                        ServiceRegistry.tokenAccount = tokenAccount;
-                        ServiceRegistry.loginAccount = loginAccount;
                         serviceRegistry.InitializeMenu();
-                        serviceRegistry.Show();
-                        Close();
+                        if (serviceRegistry.InitializeState())
+                        {
+                            serviceRegistry.Show();
+                            Close();
+                        }
                     }
                     break;
                 case "ListViewItemService":
                     ServicesOfferedList servicesOfferedList = new ServicesOfferedList();
-                    ServicesOfferedList.tokenAccount = tokenAccount;
-                    ServicesOfferedList.loginAccount = loginAccount;
                     servicesOfferedList.InitializeMenu();
                     servicesOfferedList.Show();
                     Close();

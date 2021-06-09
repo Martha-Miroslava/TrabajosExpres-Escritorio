@@ -11,5 +11,6 @@ namespace TrabajosExpres.Models
         public string token { get; set; }
         public int memberATEType { get; set; }
         public int idMemberATE { get; set; }
+        public int idCity { get; set; }
     }
 }

@@ -9,10 +9,10 @@ namespace TrabajosExpres.Models
         public string slogan { get; set; }
         public string typeService { get; set; }
         public string workingHours { get; set; }
-        public int serviceStatus { get; set; }
-        public double minimalCost { get; set; }
-        public double maximumCost { get; set; }
+        public float minimalCost { get; set; }
+        public float maximumCost { get; set; }
         public int idCity { get; set; }
         public int idMemberATE { get; set; }
+        public int serviceStatus { get; set; }
     }
 }

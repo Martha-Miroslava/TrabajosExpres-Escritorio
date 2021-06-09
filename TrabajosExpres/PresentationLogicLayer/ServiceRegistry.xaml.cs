@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RestSharp;
 using System.Windows;
+using TrabajosExpres.Utils;
+using Newtonsoft.Json;
+using Microsoft.Win32;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.Globalization;
+using TrabajosExpres.Validators;
+using FluentValidation.Results;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -19,8 +18,19 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class ServiceRegistry : Window
     {
-        public static Models.Token tokenAccount { get; set; }
-        public static Models.Login loginAccount { get; set; }
+
+        private string urlBase = "http://127.0.0.1:5000/";
+        private Models.Service service;
+        private Models.Service serviceGenerate;
+        private Models.Resource resource = new Models.Resource();
+        private List<Models.State> states;
+        private List<Models.City> cities;
+        private bool handle = true;
+        private string routeImage;
+        private Models.State stateSelection;
+        private Models.City citySelection;
+        private bool isImage;
+        private bool isRegisterImage;
 
         public ServiceRegistry()
         {
@@ -29,7 +39,160 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeMenu()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Home.loginAccount.username + "!";
+        }
+
+        public bool InitializeState()
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlState = "states/country/" + 1;
+            var request = new RestRequest(urlState, Method.GET);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    states = JsonConvert.DeserializeObject<List<Models.State>>(response.Content);
+                    if (states.Count > Number.NumberValue(NumberValues.ZERO))
+                    {
+                        AddStatesInComboBox();
+                        return true;
+                    }
+                    else
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                return false;
+            }
+        }
+
+        private void FilterComboBoxDropDownClosed(object sender, EventArgs eventArgs)
+        {
+            if (handle)
+            {
+                DisableSearch();
+            }
+            handle = true;
+        }
+
+        private void FilterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
+        {
+            ComboBox FilterSelectComboBox = sender as ComboBox;
+            handle = !FilterSelectComboBox.IsDropDownOpen;
+            DisableSearch();
+        }
+
+        private void DisableSearch()
+        {
+            if (ComboBoxState.SelectedItem != null)
+            {
+                string optionState = ((ComboBoxItem)ComboBoxState.SelectedItem).Content.ToString();
+                stateSelection = new Models.State();
+                stateSelection = states.Find(State => State.name.Equals(optionState));
+                if (stateSelection != null)
+                {
+                    InitializeCity();
+                }
+            }
+        }
+
+        private void InitializeCity()
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlCity = "cities/state/" + stateSelection.idState;
+            var request = new RestRequest(urlCity, Method.GET);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    cities = JsonConvert.DeserializeObject<List<Models.City>>(response.Content);
+                    if (cities.Count > Number.NumberValue(NumberValues.ZERO))
+                    {
+                        AddCitiesInComboBox();
+                    }
+                    else
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void AddCitiesInComboBox()
+        {
+            ComboBoxCity.Items.Clear();
+            foreach (Models.City city in cities)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem();
+                comboBoxItem.Content = city.name;
+                ComboBoxCity.Items.Add(comboBoxItem);
+            }
+        }
+
+        private void CancelButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Home home = new Home();
+            home.InitializeMenu();
+            home.Show();
+            Close();
+        }
+
+        private void UploadPhotoButtonClicked(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog search = new OpenFileDialog()
+            {
+                Filter = "Image (*.jpg)|*.jpg|Image (*.png)|*.png"
+            };
+            if (search.ShowDialog() == true)
+            {
+                ImageService.Source = new BitmapImage(new Uri(search.FileName, UriKind.RelativeOrAbsolute));
+                ImageService.Visibility = Visibility.Visible;
+                PackIconImage.Visibility = Visibility.Hidden;
+                isImage = true;
+                String[] resultReplaceName = search.SafeFileName.Split('.');
+                resource.name = resultReplaceName[0];
+                routeImage = search.FileName;
+            }
+        }
+
+        private void AddStatesInComboBox()
+        {
+            foreach (Models.State state in states)
+            {
+                ComboBoxItem comboBoxItem = new ComboBoxItem();
+                comboBoxItem.Content = state.name;
+                ComboBoxState.Items.Add(comboBoxItem);
+            }
         }
 
         private void LogOutButtonClicked(object sender, RoutedEventArgs e)
@@ -64,32 +227,24 @@ namespace TrabajosExpres.PresentationLogicLayer
                     break;
                 case "ListViewItemAccountEdit":
                     AccountEdition accountEdition = new AccountEdition();
-                    AccountEdition.tokenAccount = tokenAccount;
-                    AccountEdition.loginAccount = loginAccount;
                     accountEdition.InitializeMenu();
                     accountEdition.Show();
                     Close();
                     break;
                 case "ListViewItemChat":
                     ChatList chatList = new ChatList();
-                    ChatList.tokenAccount = tokenAccount;
-                    ChatList.loginAccount = loginAccount;
                     chatList.InitializeMenu();
                     chatList.Show();
                     Close();
                     break;
                 case "ListViewItemRequest":
                     RequestsReceivedList requestReceivedList = new RequestsReceivedList();
-                    RequestsReceivedList.tokenAccount = tokenAccount;
-                    RequestsReceivedList.loginAccount = loginAccount;
                     requestReceivedList.InitializeMenu();
                     requestReceivedList.Show();
                     Close();
                     break;
                 case "ListViewItemService":
                     ServicesOfferedList servicesOfferedList = new ServicesOfferedList();
-                    ServicesOfferedList.tokenAccount = tokenAccount;
-                    ServicesOfferedList.loginAccount = loginAccount;
                     servicesOfferedList.InitializeMenu();
                     servicesOfferedList.Show();
                     Close();
@@ -97,6 +252,226 @@ namespace TrabajosExpres.PresentationLogicLayer
                 default:
                     break;
             }
+        }
+
+        private void RegisterButtonClicked(object sender, RoutedEventArgs e)
+        {
+            CreateServiceFromInputData();
+            if (ValidateDataService())
+            {
+                if (isImage)
+                {
+                    RegisterService();
+                    if (serviceGenerate.idService > Number.NumberValue(NumberValues.ZERO))
+                    {
+                        CreateResourceFromInputData();
+                        RegisterResource();
+                        if (isRegisterImage)
+                        {
+                            MessageBox.Show("El servicio se registró exitosamente", "Registro exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                            Home home = new Home();
+                            home.InitializeMenu();
+                            home.Show();
+                            Close();
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Por favor ingresa una foto de principal del servicio", "Ingresa foto", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Los datos son inválidos", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void CreateResourceFromInputData()
+        {
+            resource.isMainResource = "1";
+            resource.idMemberATE = "0";
+            resource.idService = serviceGenerate.idService.ToString();
+        }
+
+        private void CreateServiceFromInputData()
+        {
+            service = new Models.Service();
+            service.name = TextBoxName.Text;
+            service.description = TextBoxDescription.Text;
+            service.slogan = TextBoxSlogan.Text;
+            service.typeService = TextBoxTypeService.Text;
+            service.workingHours = TextBoxWorkingHours.Text;
+            service.serviceStatus = 1;
+            string maximunCost = TextBoxMaximumCost.Text;
+            try
+            {
+                if (!String.IsNullOrEmpty(maximunCost))
+                {
+                    service.maximumCost = float.Parse(maximunCost, CultureInfo.InvariantCulture.NumberFormat);
+                }
+                string minimalCost = TextBoxMinimalCost.Text;
+                if (!String.IsNullOrEmpty(minimalCost))
+                {
+                    service.minimalCost = float.Parse(minimalCost, CultureInfo.InvariantCulture.NumberFormat);
+                }
+            }
+            catch(FormatException formatException)
+            {
+                TelegramBot.SendToTelegram(formatException);
+                LogException.Log(this, formatException);
+            }
+            service.idMemberATE = Home.tokenAccount.idMemberATE;
+            if (ComboBoxCity.SelectedItem != null)
+            {
+                string optionCity = ((ComboBoxItem)ComboBoxCity.SelectedItem).Content.ToString();
+                citySelection = cities.Find(City => City.name.Equals(optionCity));
+                service.idCity = citySelection.idCity;
+            }
+        }
+
+        private bool ValidateCity()
+        {
+            string optionCity = ((ComboBoxItem)ComboBoxCity.SelectedItem).Content.ToString();
+            if (optionCity != null)
+            {
+                ComboBoxCity.BorderBrush = System.Windows.Media.Brushes.Green;
+                return true;
+            }
+            ComboBoxCity.BorderBrush = System.Windows.Media.Brushes.Red;
+            return false;
+        }
+
+        private bool ValidateState()
+        {
+            string optionState = ((ComboBoxItem)ComboBoxState.SelectedItem).Content.ToString();
+            if (optionState != null)
+            {
+                ComboBoxState.BorderBrush = System.Windows.Media.Brushes.Green;
+                return true;
+            }
+            ComboBoxState.BorderBrush = System.Windows.Media.Brushes.Red;
+            return false;
+        }
+
+        private bool ValidateDataService()
+        {
+            ServiceValidator serviceValidator = new ServiceValidator();
+            FluentValidation.Results.ValidationResult dataValidationResult = serviceValidator.Validate(service);
+            IList<ValidationFailure> validationFailures = dataValidationResult.Errors;
+            UserFeedback userFeedback = new UserFeedback(FormGrid, validationFailures);
+            userFeedback.ShowFeedback();
+            return dataValidationResult.IsValid && ValidateCity() && ValidateState();
+        }
+
+        private void RegisterService()
+        {
+            serviceGenerate = new Models.Service();
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            var request = new RestRequest("services", Method.POST);
+            foreach (RestResponseCookie cookie in Home.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            var json = JsonConvert.SerializeObject(service);
+            request.AddHeader("Token", Home.tokenAccount.token);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    serviceGenerate = JsonConvert.DeserializeObject<Models.Service>(response.Content);
+                }
+                else
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        BehindLogin();
+                    }
+                    else
+                    {
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Home home = new Home();
+                        home.InitializeMenu();
+                        home.Show();
+                        Close();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                MessageBox.Show("No se pudo registrar el servicio. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Home home = new Home();
+                home.InitializeMenu();
+                home.Show();
+                Close();
+            }
+        }
+
+        private void RegisterResource()
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            var request = new RestRequest("resources", Method.POST);
+            request.AddParameter("isMainResource", resource.isMainResource);
+            request.AddParameter("name", resource.name);
+            request.AddParameter("idService", resource.idService);
+            request.AddParameter("idMemberATE", resource.idMemberATE);
+            request.AddFile("resourceFile", routeImage);
+            request.AddHeader("Token", Home.tokenAccount.token);
+            request.AddHeader("Content-Type", "multipart/form-data");
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var responseOk = JsonConvert.DeserializeObject<dynamic>(response.Content);
+                    isRegisterImage = true;
+                }
+                else
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        BehindLogin();
+                    }
+                    else
+                    {
+                        MessageBox.Show("El servicio se registro. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Home home = new Home();
+                        home.InitializeMenu();
+                        home.Show();
+                        Close();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                MessageBox.Show("El servicio se registro. Pero  no se pudo registrar el recurso.Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Home home = new Home();
+                home.InitializeMenu();
+                home.Show();
+                Close();
+            }
+        }
+
+       private void BehindLogin()
+       {
+            MessageBox.Show("Por favor de volver a ingresar al sistema", "Nuevo ingreso", MessageBoxButton.OK, MessageBoxImage.Warning);
+            Login login = new Login();
+            login.Show();
+            Close();
         }
     }
 }

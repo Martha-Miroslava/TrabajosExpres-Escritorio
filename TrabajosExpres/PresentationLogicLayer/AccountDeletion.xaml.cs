@@ -113,8 +113,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                     else
                     {
                         ServiceRegistry serviceRegistry = new ServiceRegistry();
-                        ServiceRegistry.tokenAccount = tokenAccount;
-                        ServiceRegistry.loginAccount = loginAccount;
+                        /*ServiceRegistry.tokenAccount = tokenAccount;
+                        ServiceRegistry.loginAccount = loginAccount;*/
                         serviceRegistry.InitializeMenu();
                         serviceRegistry.Show();
                         Close();

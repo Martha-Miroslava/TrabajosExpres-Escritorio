@@ -88,8 +88,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                     break;
                 case "ListViewItemServiceRegistration":
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
-                    ServiceRegistry.tokenAccount = tokenAccount;
-                    ServiceRegistry.loginAccount = loginAccount;
+                    /*ServiceRegistry.tokenAccount = tokenAccount;
+                    ServiceRegistry.loginAccount = loginAccount;*/
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
                     Close();

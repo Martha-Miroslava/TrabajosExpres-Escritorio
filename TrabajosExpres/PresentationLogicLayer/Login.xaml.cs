@@ -40,11 +40,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         Models.Token token = JsonConvert.DeserializeObject<Models.Token>(response.Content);
+                        Home.cookies = response.Cookies;
+                        Home.tokenAccount = token;
+                        Home.loginAccount = login;
                         if (token.memberATEType == Number.NumberValue(NumberValues.TWO))
                         {
                             ChooseAccount chooseAccount = new ChooseAccount();
-                            chooseAccount.tokenAccount = token;
-                            chooseAccount.loginAccount = login;
                             chooseAccount.InitializeHome();
                             chooseAccount.Show();
                             Close();
@@ -52,8 +53,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                         else
                         {
                             Home home = new Home();
-                            Home.tokenAccount = token;
-                            Home.loginAccount = login;
                             home.InitializeMenu();
                             home.Show();
                             Close();
@@ -67,14 +66,15 @@ namespace TrabajosExpres.PresentationLogicLayer
                         }
                         else
                         {
-                            
-                            MessageBox.Show(response.ResponseStatus + " '" + response.StatusCode.ToString() +
-                                "' Sucedió algo mal, intente más tarde");
+                            Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                            MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                     }
                 }
                 catch (Exception exception)
                 {
+                    TelegramBot.SendToTelegram(exception);
+                    LogException.Log(this, exception);
                     MessageBox.Show(exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
@@ -103,11 +103,11 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void CreateAccountButtonClicked(object sender, RoutedEventArgs e)
         {
             AccountCreation accountCreation = new AccountCreation();
-            /*if (accountCreation.InitializeState())
-            {*/
+            if (accountCreation.InitializeState())
+            {
                 accountCreation.Show();
                 Close();
-            //}
+            }
         }
 
         private void RecoverAccountButtonClicked(object sender, RoutedEventArgs e)

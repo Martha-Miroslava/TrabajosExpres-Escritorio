@@ -19,8 +19,6 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class ChooseAccount : Window
     {
-        public Models.Token tokenAccount { get; set; }
-        public Models.Login loginAccount { get; set; }
         public ChooseAccount()
         {
             InitializeComponent();
@@ -28,15 +26,13 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeHome()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Home.loginAccount.username + "!";
         }
 
         private void ChooseClientButtonClicked(object sender, RoutedEventArgs e)
         {
-            tokenAccount.memberATEType = 1;
+            Home.tokenAccount.memberATEType = 1;
             Home home = new Home();
-            Home.tokenAccount = tokenAccount;
-            Home.loginAccount = loginAccount;
             home.InitializeMenu();
             home.Show();
             Close();
@@ -45,8 +41,6 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ChooseEmployeeButtonClicked(object sender, RoutedEventArgs e)
         {
             Home home = new Home();
-            Home.tokenAccount = tokenAccount;
-            Home.loginAccount = loginAccount;
             home.InitializeMenu();
             home.Show();
             Close();

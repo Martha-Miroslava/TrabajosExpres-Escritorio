@@ -69,7 +69,7 @@
 
                 <Label Content="Fecha de Nacimiento: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
                 <StackPanel Grid.Row="2" Grid.Column="1">
-                    <DatePicker Name="DatePickerDateBirth"  Margin="0,0,80,0"/>
+                    <DatePicker Name="DatePickerDateBirth" Margin="0,0,80,0"/>
                 </StackPanel>
                 
                 <Label Content="Correo:" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
@@ -78,8 +78,8 @@
 
                 <Label Content="Estado: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Margin="0,12,135,0"/>
                 <Label Content="Ciudad: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Grid.Column="1" Margin="40,11,162,0"/>
-                <ComboBox Name="ComboBoxState" ItemsSource="{Binding _statesList}" DisplayMemberPath="NameState" SelectedIndex="0" Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="62,8,250,0" SelectionChanged="FilterComboBoxSelectionChanged" DropDownClosed="FilterComboBoxDropDownClosed"/>
-                <ComboBox Name="ComboBoxCity" ItemsSource="{Binding _citesList}" DisplayMemberPath="NameCity" SelectedIndex="0" Grid.Row="4" VerticalAlignment="Top" Margin="112,11,0,0" Grid.Column="1"/>
+                <ComboBox Name="ComboBoxState"  Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="62,8,250,0" SelectionChanged="FilterComboBoxSelectionChanged" DropDownClosed="FilterComboBoxDropDownClosed"/>
+                <ComboBox Name="ComboBoxCity" Grid.Row="4" VerticalAlignment="Top" Margin="112,11,0,0" Grid.Column="1"/>
 
                 <Label Content="Usuario:" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
                 <TextBox Name="TextBoxUserName" Height="30" Grid.Row="5" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
@@ -103,7 +103,7 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                VerticalAlignment="Center" HorizontalAlignment="Center" Content="Registrar" Margin="15,0,19,0"/>
+                VerticalAlignment="Center" HorizontalAlignment="Center" Content="Registrar" Margin="15,0,19,0" Click="RegisterButtonClicked"/>
                 <Button Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
                 Content="Cancelar" Margin="23,-1,6,1" Width="102" Click="CancelButtonClicked"/>
             </Grid>

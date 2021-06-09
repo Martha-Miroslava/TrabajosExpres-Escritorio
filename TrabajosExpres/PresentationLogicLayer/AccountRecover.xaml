@@ -68,9 +68,9 @@
 				 VerticalAlignment="Center" HorizontalAlignment="Left" Source="/PresentationLogicLayer/Images/eyePassword.png"/>
 
 			<Button Grid.Row="4" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Registrar"></Button>
+				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Enviar Código"></Button>
 			<Button Grid.Row="4" Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
-			Content="Cancelar"/>
+			Content="Aceptar"/>
 		</Grid>
 	</Grid>
 </Window>

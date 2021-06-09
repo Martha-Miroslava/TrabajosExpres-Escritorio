@@ -283,7 +283,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
             else
             {
-                MessageBox.Show("Los datos son inválidos", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor, Ingrese datos correctos en los campos marcados en rojo", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -391,15 +391,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
                         || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
                     {
-                        BehindLogin();
+                        BehindLogin(responseError.error);
                     }
                     else
                     {
                         MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        Home home = new Home();
-                        home.InitializeMenu();
-                        home.Show();
-                        Close();
+                        if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
+                        {
+                            Home home = new Home();
+                            home.InitializeMenu();
+                            home.Show();
+                            Close();
+                        }
                     }
                 }
             }
@@ -442,15 +445,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
                         || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
                     {
-                        BehindLogin();
+                        BehindLogin(responseError.error);
                     }
                     else
                     {
                         MessageBox.Show("El servicio se registro. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        Home home = new Home();
-                        home.InitializeMenu();
-                        home.Show();
-                        Close();
+                        if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
+                        {
+                            Home home = new Home();
+                            home.InitializeMenu();
+                            home.Show();
+                            Close();
+                        }
                     }
                 }
             }
@@ -466,9 +472,9 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-       private void BehindLogin()
+       private void BehindLogin(string mensaje)
        {
-            MessageBox.Show("Por favor de volver a ingresar al sistema", "Nuevo ingreso", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensaje, "Nuevo ingreso", MessageBoxButton.OK, MessageBoxImage.Warning);
             Login login = new Login();
             login.Show();
             Close();

@@ -38,9 +38,9 @@
                      MaxLength="6" materialDesign:TransitionAssist.DisableTransitions="True" Margin="150,5,0,0" Height="37"/>
 
             <Button Grid.Row="3" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                VerticalAlignment="Center" HorizontalAlignment="Center" Content="Aceptar" Margin="324,20,134,36"></Button>
+                VerticalAlignment="Center" HorizontalAlignment="Center" Content="Aceptar" Margin="324,20,134,36" Click="AcceptButtonClicked"></Button>
             <Button Grid.Row="3" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                Content="Reenviar código" Margin="62,21,334,35" RenderTransformOrigin="0.037,0.688"/>
+                Content="Reenviar código" Margin="62,21,334,35" RenderTransformOrigin="0.037,0.688" Click="SendEmailButtonClicked"/>
 
         </Grid>
     </Grid>

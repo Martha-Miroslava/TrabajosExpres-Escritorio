@@ -15,19 +15,34 @@ using System.Windows.Shapes;
 namespace TrabajosExpres.PresentationLogicLayer
 {
     /// <summary>
-    /// Lógica de interacción para ServiceOffered.xaml
+    /// Lógica de interacción para ChooseAccount.xaml
     /// </summary>
-    public partial class ServiceOffered : Window
+    public partial class ChooseAccount : Window
     {
-        public ServiceOffered()
+        public ChooseAccount()
         {
             InitializeComponent();
         }
 
-        private void ButtonEditionClicked(object sender, RoutedEventArgs e)
+        public void InitializeHome()
         {
-            ServiceEdition serviceEdition = new ServiceEdition();
-            serviceEdition.Show();
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Home.loginAccount.username + "!";
+        }
+
+        private void ChooseClientButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Home.tokenAccount.memberATEType = 1;
+            Home home = new Home();
+            home.InitializeMenu();
+            home.Show();
+            Close();
+        }
+
+        private void ChooseEmployeeButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Home home = new Home();
+            home.InitializeMenu();
+            home.Show();
             Close();
         }
 

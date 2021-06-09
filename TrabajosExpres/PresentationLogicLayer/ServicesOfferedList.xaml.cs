@@ -19,9 +19,84 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class ServicesOfferedList : Window
     {
+        public static Models.Token tokenAccount { get; set; }
+        public static Models.Login loginAccount { get; set; }
+
         public ServicesOfferedList()
         {
             InitializeComponent();
+        }
+
+        public void InitializeMenu()
+        {
+            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
+        }
+
+        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
+        {
+            Login login = new Login();
+            login.Show();
+            Close();
+        }
+
+        private void ButtonOpenMenuClicked(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Visible;
+            ButtonOpenMenu.Visibility = Visibility.Collapsed;
+        }
+
+        private void ButtonCloseMenuClicked(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Collapsed;
+            ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+        private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+            {
+                case "ListViewItemHome":
+                    Home home = new Home();
+                    home.InitializeMenu();
+                    home.Show();
+                    Close();
+                    break;
+                case "ListViewItemAccountEdit":
+                    AccountEdition accountEdition = new AccountEdition();
+                    AccountEdition.tokenAccount = tokenAccount;
+                    AccountEdition.loginAccount = loginAccount;
+                    accountEdition.InitializeMenu();
+                    accountEdition.Show();
+                    Close();
+                    break;
+                case "ListViewItemChat":
+                    ChatList chatList = new ChatList();
+                    ChatList.tokenAccount = tokenAccount;
+                    ChatList.loginAccount = loginAccount;
+                    chatList.InitializeMenu();
+                    chatList.Show();
+                    Close();
+                    break;
+                case "ListViewItemRequest":
+                    RequestsReceivedList requestReceivedList = new RequestsReceivedList();
+                    RequestsReceivedList.tokenAccount = tokenAccount;
+                    RequestsReceivedList.loginAccount = loginAccount;
+                    requestReceivedList.InitializeMenu();
+                    requestReceivedList.Show();
+                    Close();
+                    break;
+                case "ListViewItemServiceRegistration":
+                    ServiceRegistry serviceRegistry = new ServiceRegistry();
+                    /*ServiceRegistry.tokenAccount = tokenAccount;
+                    ServiceRegistry.loginAccount = loginAccount;*/
+                    serviceRegistry.InitializeMenu();
+                    serviceRegistry.Show();
+                    Close();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

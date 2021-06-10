@@ -58,7 +58,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                         {
                             HomeClient home = new HomeClient();
                             home.InitializeMenu();
-                            home.InitializeService();
                             home.Show();
                             Close();
                         }

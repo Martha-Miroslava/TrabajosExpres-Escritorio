@@ -186,12 +186,6 @@
                             <TextBlock x:Name="TextBlockMenuAccount" Text="Registrar Servicio" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
-                    <ListViewItem Name="ListViewItemService" Height="60">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/PresentationLogicLayer/Images/Service.png" Height="25" Width="30" Margin="10"/>
-                            <TextBlock Text="Servicios" VerticalAlignment="Center"  Margin="2 10"/>
-                        </StackPanel>
-                    </ListViewItem>
                 </ListView>
             </StackPanel>
         </Grid>

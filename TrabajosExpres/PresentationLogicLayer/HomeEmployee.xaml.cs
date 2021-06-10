@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using RestSharp;
 using TrabajosExpres.Utils;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.IO;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -24,7 +18,8 @@ namespace TrabajosExpres.PresentationLogicLayer
     {
         private List<Models.Service> services;
         private string urlBase = "http://127.0.0.1:5000/";
-
+        private BitmapImage image = null;
+        private bool isImageFound;
         public HomeEmployee()
         {
             InitializeComponent();
@@ -33,14 +28,15 @@ namespace TrabajosExpres.PresentationLogicLayer
         public void InitializeMenu()
         {
             TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
+            InitializeService();
         }
 
-        public void InitializeService()
+        private void InitializeService()
         {
             services = new List<Models.Service>();
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlService = "services/city/" + Login.tokenAccount.idCity;
+            string urlService = "services/employee/" + Login.tokenAccount.idMemberATE;
             var request = new RestRequest(urlService, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -56,7 +52,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                     services = JsonConvert.DeserializeObject<List<Models.Service>>(response.Content);
                     if (services.Count > Number.NumberValue(NumberValues.ZERO))
                     {
-                        //AddServiceInListView();
+                        AddServiceInListView();
                     }
                     else
                     {
@@ -67,11 +63,132 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                     MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        Close();
+                    }
                 }
             }
             catch (Exception exception)
             {
                 MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+            }
+        }
+
+        private void AddServiceInListView()
+        {
+            foreach (Models.Service service in services)
+            {
+                Models.Resource resourceMain = new Models.Resource();
+                resourceMain = GetResource(service.idService);
+                GetImage(resourceMain.routeSave);
+                if (!isImageFound)
+                {
+                    image = null;
+                }
+                ListViewService.Items.Add(
+                     new
+                     {
+                         ImageService = image,
+                         Service = service.name,
+                         Slogan = service.slogan
+                     }
+                 );
+            }
+        }
+
+        private Models.Resource GetResource(int idService)
+        {
+            Models.Resource resourceMain = new Models.Resource();
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlResource = "resources/serviceMain/" + idService;
+            var request = new RestRequest(urlResource, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    isImageFound = true;
+                    resourceMain = JsonConvert.DeserializeObject<Models.Resource>(response.Content);
+                }
+                else
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
+                    else
+                    {
+                        isImageFound = false;
+                    }
+                }
+                return resourceMain;
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                return resourceMain;
+            }
+        }
+
+
+        private void GetImage(string routeResource)
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlImage = "/images/" + routeResource;
+            var request = new RestRequest(urlImage, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    isImageFound = true;
+                    byte[] fileResource = response.RawBytes;
+                    using (var memoryStream = new MemoryStream(fileResource))
+                    {
+                        image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = memoryStream;
+                        image.EndInit();
+                    }
+                }
+                else
+                {
+                   if(response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                   {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
+                    else
+                    {
+                        isImageFound = false;
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
             }
@@ -84,16 +201,30 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void ButtonOpenMenuClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void ButtonCloseMenuClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+        private void ServiceItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            int itemSelect = ((ListView)listViewService).SelectedIndex;
+            Models.Service serviceSelect = services[itemSelect];
+            if (!object.ReferenceEquals(null, serviceSelect))
+            {
+                ServiceOffered serviceOffered = new ServiceOffered();
+                ServiceOffered.service = serviceSelect;
+                serviceOffered.InitializeMenu();
+                serviceOffered.Show();
+                Close();
+            }
         }
 
         private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -101,12 +232,6 @@ namespace TrabajosExpres.PresentationLogicLayer
 
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
-                case "ListViewItemHome":
-                    HomeClient home = new HomeClient();
-                    home.InitializeMenu();
-                    home.Show();
-                    Close();
-                    break;
                 case "ListViewItemAccountEdit":
                     AccountEdition accountEdition = new AccountEdition();
                     accountEdition.InitializeMenu();

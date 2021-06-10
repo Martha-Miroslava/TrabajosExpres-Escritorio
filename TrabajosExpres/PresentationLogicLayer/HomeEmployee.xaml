@@ -75,21 +75,22 @@
             <TextBlock Grid.Row="1" Text="Servicios" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
                        VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
 
-           
-
-            <ListView HorizontalAlignment="Center" Grid.Row="3" x:Name="ListViewActivity" ItemsSource="{Binding Items2}" Grid.IsSharedSizeScope="True" Margin="50">
+            <ListView Grid.Column="1"  Grid.Row="3" x:Name="ListViewService" Margin="40" ItemsSource="{Binding Items2}" MouseDoubleClick="ServiceItemsControlMouseDoubleClicked">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border x:Name="Border" Padding="8" BorderThickness="0 0 0 8" BorderBrush="{DynamicResource MaterialDesignDivider}">
-                            <Grid>
+                        <Border x:Name="Border" Padding="8" BorderThickness="0 0 0 8" Width="Auto" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                            <Grid HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
-                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <Image x:Name="ImageService" Grid.Column="0"></Image>
-                                <TextBlock Text="{Binding Name}" Grid.Column="1"/>
-                                <TextBlock Text="{Binding Slogan}" Grid.Column="2"/>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Image Margin="10 0 30 0" HorizontalAlignment="Left" Source="{Binding ImageService}" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Height="70" Width="70"/>
+                                <TextBlock Text="{Binding Service}" Width="Auto" Grid.Column="1" Grid.Row="0" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding Slogan}" Width="Auto" Grid.Column="1" Grid.Row="1" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -111,10 +112,10 @@
                             <TranslateTransform/>
                         </TransformGroup>
                     </Grid.RenderTransform>
-                    <Button x:Name="ButtonOpenMenu" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF31577E" Click="ButtonOpenMenuClicked">
+                    <Button x:Name="ButtonOpenMenu" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF31577E" Click="OpenMenuButtonClicked">
                         <materialDesign:PackIcon Kind="Menu" Width="25" Height="25"/>
                     </Button>
-                    <Button x:Name="ButtonCloseMenu" Visibility="Collapsed" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF31577E" Click="ButtonCloseMenuClicked">
+                    <Button x:Name="ButtonCloseMenu" Visibility="Collapsed" Height="60" Width="60" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF31577E" Click="CloseMenuButtonClicked">
                         <materialDesign:PackIcon Kind="ArrowLeft" Width="25" Height="25"/>
                     </Button>
 

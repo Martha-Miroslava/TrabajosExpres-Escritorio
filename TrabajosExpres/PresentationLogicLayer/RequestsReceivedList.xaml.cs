@@ -78,12 +78,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     serviceRegistry.Show();
                     Close();
                     break;
-                case "ListViewItemService":
-                    HomeEmployee servicesOfferedList = new HomeEmployee();
-                    servicesOfferedList.InitializeMenu();
-                    servicesOfferedList.Show();
-                    Close();
-                    break;
                 default:
                     break;
             }

@@ -40,9 +40,10 @@ namespace TrabajosExpres.PresentationLogicLayer
         public void InitializeMenu()
         {
             TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
+            InitializeState();
         }
 
-        public bool InitializeState()
+        private void InitializeState()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
@@ -58,19 +59,16 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (states.Count > Number.NumberValue(NumberValues.ZERO))
                     {
                         AddStatesInComboBox();
-                        return true;
                     }
                     else
                     {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return false;
+                        MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
@@ -78,7 +76,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                return false;
             }
         }
 
@@ -131,13 +128,13 @@ namespace TrabajosExpres.PresentationLogicLayer
                     }
                     else
                     {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
@@ -202,13 +199,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void ButtonOpenMenuClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void ButtonCloseMenuClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;

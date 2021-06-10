@@ -57,7 +57,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 case "ListViewItemHome":
                     HomeClient home = new HomeClient();
                     home.InitializeMenu();
-                    home.InitializeService();
                     home.Show();
                     Close();
                     break;

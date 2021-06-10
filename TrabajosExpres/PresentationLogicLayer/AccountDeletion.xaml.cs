@@ -32,7 +32,6 @@ namespace TrabajosExpres.PresentationLogicLayer
             if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
             {
                 TextBlockMenuRequest.Text = "Solicitudes Enviadas";
-                ListViewItemService.Visibility = Visibility.Hidden;
                 TextBlockMenuAccount.Text = "Registrase como Empleado";
                 PackIconActiveAccount.Kind = MaterialDesignThemes.Wpf.PackIconKind.AccountHardHat;
             }
@@ -66,7 +65,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         HomeClient home = new HomeClient();
                         home.InitializeMenu();
-                        home.InitializeService();
                         home.Show();
                         Close();
                     }
@@ -118,12 +116,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                         serviceRegistry.Show();
                         Close();
                     }
-                    break;
-                case "ListViewItemService":
-                    HomeEmployee servicesOfferedList = new HomeEmployee();
-                    servicesOfferedList.InitializeMenu();
-                    servicesOfferedList.Show();
-                    Close();
                     break;
                 default:
                     break;

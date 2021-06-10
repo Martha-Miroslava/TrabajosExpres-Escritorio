@@ -23,7 +23,6 @@ namespace TrabajosExpres.PresentationLogicLayer
             Login.tokenAccount.memberATEType = 1;
             HomeClient home = new HomeClient();
             home.InitializeMenu();
-            home.InitializeService();
             home.Show();
             Close();
         }
@@ -32,7 +31,6 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             HomeEmployee home = new HomeEmployee();
             home.InitializeMenu();
-            home.InitializeService();
             home.Show();
             Close();
         }

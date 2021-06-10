@@ -19,6 +19,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private BitmapImage image = null;
         private bool handle = true;
         private string optionFilter;
+        private bool isImageFound;
 
         public HomeClient()
         {
@@ -27,10 +28,11 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeMenu()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!"; 
+            InitializeService();
         }
 
-        public void InitializeService()
+        private void InitializeService()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
@@ -61,6 +63,13 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                     MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        Close();
+                    }
                 }
             }
             catch (Exception exception)
@@ -126,6 +135,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                 Models.Resource resourceMain = new Models.Resource();
                 resourceMain = GetResource(service.idService);
                 GetImage(resourceMain.routeSave);
+                if (!isImageFound)
+                {
+                    image = null;
+                }
                 ListViewService.Items.Add(
                      new
                      {
@@ -213,12 +226,20 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    isImageFound = true;
                     resourceMain = JsonConvert.DeserializeObject<Models.Resource>(response.Content);
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
+                    else
+                    {
+                        isImageFound = false;
+                    }
                 }
                 return resourceMain;
             }
@@ -231,7 +252,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         }
 
 
-        public void GetImage(string routeResource)
+        private void GetImage(string routeResource)
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
@@ -248,20 +269,28 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    isImageFound = true;
                     byte[] fileResource = response.RawBytes;
-                    using (var ms = new MemoryStream(fileResource))
+                    using (var memoryStream = new MemoryStream(fileResource))
                     {
                         image = new BitmapImage();
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
-                        image.StreamSource = ms;
+                        image.StreamSource = memoryStream;
                         image.EndInit();
                     }
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
+                    else
+                    {
+                        isImageFound = false;
+                    }
                 }
             }
             catch (Exception exception)
@@ -278,13 +307,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void ButtonOpenMenuClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void ButtonCloseMenuClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
@@ -350,11 +379,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         ServiceRegistry serviceRegistry = new ServiceRegistry();
                         serviceRegistry.InitializeMenu();
-                        if (serviceRegistry.InitializeState())
-                        {
-                            serviceRegistry.Show();
-                            Close();
-                        }
+                        serviceRegistry.Show();
+                        Close();
                     }
                     break;
                 case "ListViewItemService":

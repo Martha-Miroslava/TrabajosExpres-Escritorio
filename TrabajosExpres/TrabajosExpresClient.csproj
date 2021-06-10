@@ -96,6 +96,7 @@
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\ServiceStatus.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="PresentationLogicLayer\AccountCreation.xaml.cs">

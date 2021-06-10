@@ -67,6 +67,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         HomeClient home = new HomeClient();
                         home.InitializeMenu();
+                        home.InitializeService();
                         home.Show();
                         Close();
                     }
@@ -89,7 +90,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         RequestsMadeList requestsMadeList = new RequestsMadeList();
                         requestsMadeList.InitializeMenu();
-                        home.InitializeService();
                         requestsMadeList.Show();
                         Close();
                     }

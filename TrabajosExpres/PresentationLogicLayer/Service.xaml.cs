@@ -19,9 +19,16 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class Service : Window
     {
+        public Models.Service service { get; set;}
+
         public Service()
         {
             InitializeComponent();
+        }
+
+        public void InitializaComponent()
+        {
+            LabelName.Content = service.name;
         }
 
         private void LogOutButtonClicked(object sender, RoutedEventArgs e)
@@ -30,5 +37,6 @@ namespace TrabajosExpres.PresentationLogicLayer
             login.Show();
             Close();
         }
+
     }
 }

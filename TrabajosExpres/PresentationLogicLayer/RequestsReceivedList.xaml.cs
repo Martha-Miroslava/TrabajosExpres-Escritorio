@@ -19,8 +19,6 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class RequestsReceivedList : Window
     {
-        public static Models.Token tokenAccount { get; set; }
-        public static Models.Login loginAccount { get; set; }
 
         public RequestsReceivedList()
         {
@@ -29,7 +27,7 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeMenu()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
         }
 
         private void LogOutButtonClicked(object sender, RoutedEventArgs e)
@@ -57,39 +55,31 @@ namespace TrabajosExpres.PresentationLogicLayer
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
                 case "ListViewItemHome":
-                    Home home = new Home();
+                    HomeEmployee home = new HomeEmployee();
                     home.InitializeMenu();
                     home.Show();
                     Close();
                     break;
                 case "ListViewItemAccountEdit":
                     AccountEdition accountEdition = new AccountEdition();
-                    AccountEdition.tokenAccount = tokenAccount;
-                    AccountEdition.loginAccount = loginAccount;
                     accountEdition.InitializeMenu();
                     accountEdition.Show();
                     Close();
                     break;
                 case "ListViewItemChat":
                     ChatList chatList = new ChatList();
-                    ChatList.tokenAccount = tokenAccount;
-                    ChatList.loginAccount = loginAccount;
                     chatList.InitializeMenu();
                     chatList.Show();
                     Close();
                     break;
                 case "ListViewItemServiceRegistration":
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
-                    /*ServiceRegistry.tokenAccount = tokenAccount;
-                    ServiceRegistry.loginAccount = loginAccount;*/
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
                     Close();
                     break;
                 case "ListViewItemService":
-                    ServicesOfferedList servicesOfferedList = new ServicesOfferedList();
-                    ServicesOfferedList.tokenAccount = tokenAccount;
-                    ServicesOfferedList.loginAccount = loginAccount;
+                    HomeEmployee servicesOfferedList = new HomeEmployee();
                     servicesOfferedList.InitializeMenu();
                     servicesOfferedList.Show();
                     Close();

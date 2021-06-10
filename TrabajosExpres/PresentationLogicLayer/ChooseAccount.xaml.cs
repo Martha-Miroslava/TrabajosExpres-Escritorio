@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -26,22 +15,24 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeHome()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + Home.loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
         }
 
         private void ChooseClientButtonClicked(object sender, RoutedEventArgs e)
         {
-            Home.tokenAccount.memberATEType = 1;
-            Home home = new Home();
+            Login.tokenAccount.memberATEType = 1;
+            HomeClient home = new HomeClient();
             home.InitializeMenu();
+            home.InitializeService();
             home.Show();
             Close();
         }
 
         private void ChooseEmployeeButtonClicked(object sender, RoutedEventArgs e)
         {
-            Home home = new Home();
+            HomeEmployee home = new HomeEmployee();
             home.InitializeMenu();
+            home.InitializeService();
             home.Show();
             Close();
         }

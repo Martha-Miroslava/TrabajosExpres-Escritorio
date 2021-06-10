@@ -125,8 +125,8 @@
     <Compile Include="PresentationLogicLayer\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationLogicLayer\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
+    <Compile Include="PresentationLogicLayer\HomeClient.xaml.cs">
+      <DependentUpon>HomeClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -167,8 +167,8 @@
     <Compile Include="PresentationLogicLayer\ServiceRegistry.xaml.cs">
       <DependentUpon>ServiceRegistry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationLogicLayer\ServicesOfferedList.xaml.cs">
-      <DependentUpon>ServicesOfferedList.xaml</DependentUpon>
+    <Compile Include="PresentationLogicLayer\HomeEmployee.xaml.cs">
+      <DependentUpon>HomeEmployee.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -225,7 +225,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PresentationLogicLayer\Home.xaml">
+    <Page Include="PresentationLogicLayer\HomeClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -281,7 +281,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PresentationLogicLayer\ServicesOfferedList.xaml">
+    <Page Include="PresentationLogicLayer\HomeEmployee.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

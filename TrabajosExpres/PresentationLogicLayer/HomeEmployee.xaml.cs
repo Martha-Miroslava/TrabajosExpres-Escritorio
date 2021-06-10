@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Newtonsoft.Json;
+using RestSharp;
+using TrabajosExpres.Utils;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -17,19 +20,61 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// <summary>
     /// Lógica de interacción para ServicesOfferedList.xaml
     /// </summary>
-    public partial class ServicesOfferedList : Window
+    public partial class HomeEmployee : Window
     {
-        public static Models.Token tokenAccount { get; set; }
-        public static Models.Login loginAccount { get; set; }
+        private List<Models.Service> services;
+        private string urlBase = "http://127.0.0.1:5000/";
 
-        public ServicesOfferedList()
+        public HomeEmployee()
         {
             InitializeComponent();
         }
 
         public void InitializeMenu()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
+        }
+
+        public void InitializeService()
+        {
+            services = new List<Models.Service>();
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlService = "services/city/" + Login.tokenAccount.idCity;
+            var request = new RestRequest(urlService, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    services = JsonConvert.DeserializeObject<List<Models.Service>>(response.Content);
+                    if (services.Count > Number.NumberValue(NumberValues.ZERO))
+                    {
+                        //AddServiceInListView();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+            }
         }
 
         private void LogOutButtonClicked(object sender, RoutedEventArgs e)
@@ -57,39 +102,31 @@ namespace TrabajosExpres.PresentationLogicLayer
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
                 case "ListViewItemHome":
-                    Home home = new Home();
+                    HomeClient home = new HomeClient();
                     home.InitializeMenu();
                     home.Show();
                     Close();
                     break;
                 case "ListViewItemAccountEdit":
                     AccountEdition accountEdition = new AccountEdition();
-                    AccountEdition.tokenAccount = tokenAccount;
-                    AccountEdition.loginAccount = loginAccount;
                     accountEdition.InitializeMenu();
                     accountEdition.Show();
                     Close();
                     break;
                 case "ListViewItemChat":
                     ChatList chatList = new ChatList();
-                    ChatList.tokenAccount = tokenAccount;
-                    ChatList.loginAccount = loginAccount;
                     chatList.InitializeMenu();
                     chatList.Show();
                     Close();
                     break;
                 case "ListViewItemRequest":
                     RequestsReceivedList requestReceivedList = new RequestsReceivedList();
-                    RequestsReceivedList.tokenAccount = tokenAccount;
-                    RequestsReceivedList.loginAccount = loginAccount;
                     requestReceivedList.InitializeMenu();
                     requestReceivedList.Show();
                     Close();
                     break;
                 case "ListViewItemServiceRegistration":
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
-                    /*ServiceRegistry.tokenAccount = tokenAccount;
-                    ServiceRegistry.loginAccount = loginAccount;*/
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
                     Close();

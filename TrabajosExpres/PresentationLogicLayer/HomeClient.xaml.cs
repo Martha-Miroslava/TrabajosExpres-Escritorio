@@ -330,8 +330,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                     serviceSelect.idCity = Login.tokenAccount.idCity;
                 }
                 Service service = new Service();
-                service.service = serviceSelect;
-                service.InitializaComponent();
+                Service.ServiceChoose = serviceSelect;
+                service.InitializeMenu();
                 service.Show();
                 Close();
             }

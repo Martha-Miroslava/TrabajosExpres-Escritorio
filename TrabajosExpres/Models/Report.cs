@@ -3,9 +3,9 @@ namespace TrabajosExpres.Models
 {
     public class Report
     {
-        int idReport { get; set; }
-        string reason { get; set; }
-        int idService { get; set; }
-        int idMemberATE { get; set; }
+        public int idReport { get; set; }
+        public string reason { get; set; }
+        public int idService { get; set; }
+        public int idMemberATE { get; set; }
     }
 }

@@ -58,7 +58,7 @@
             </Grid.RowDefinitions>
             <materialDesign:ColorZone Mode="PrimaryDark" Padding="16"  materialDesign:ShadowAssist.ShadowDepth="Depth3" ClipToBounds="False">
                 <StackPanel Orientation="Horizontal">
-                    <Image Margin="30 0 0 0"  VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
+                    <Image  VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
                     <TextBlock Name="TextBlockTitle" VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
                 </StackPanel>
             </materialDesign:ColorZone>

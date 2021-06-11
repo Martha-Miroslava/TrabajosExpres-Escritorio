@@ -249,6 +249,16 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
+        private void ReportButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            ReportService reportService = new ReportService();
+            reportService.service = ServiceChoose;
+            reportService.image = image;
+            reportService.InitializeMenu();
+            reportService.Show();
+            Close();
+        }
+
         private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
 

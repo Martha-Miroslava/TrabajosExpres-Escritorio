@@ -73,8 +73,8 @@
                 </StackPanel>
                 
                 <Label Content="Correo:" VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                <TextBox Name="TextBoxEmail" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
-                     MaxLength="150" materialDesign:TransitionAssist.DisableTransitions="True"/>
+                <TextBox Name="TextBoxEmail" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z#@_."
+                     MaxLength="254" materialDesign:TransitionAssist.DisableTransitions="True"/>
 
                 <Label Content="Estado: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Margin="0,12,135,0"/>
                 <Label Content="Ciudad: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Grid.Column="1" Margin="40,11,162,0"/>

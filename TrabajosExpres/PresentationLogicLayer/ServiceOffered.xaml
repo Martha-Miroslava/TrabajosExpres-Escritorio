@@ -142,7 +142,7 @@
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
-                        <Button Name="ButtonEditService" Height="35" Grid.Row="0" IsEnabled="False" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="EditionButtonClicked">
+                        <Button Name="ButtonEditService" Height="35" Grid.Row="0" IsEnabled="False" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="EditServiceButtonClicked">
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>

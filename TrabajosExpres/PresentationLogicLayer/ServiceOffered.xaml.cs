@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Newtonsoft.Json;
 using RestSharp;
 using TrabajosExpres.Utils;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.IO;
 
 namespace TrabajosExpres.PresentationLogicLayer
@@ -21,9 +14,10 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class ServiceOffered : Window
     {
-        public static Models.Service service { get; set; }
+        public static Models.Service Service { get; set; }
         private string urlBase = "http://127.0.0.1:5000/";
         private BitmapImage image = null;
+        private Models.Resource resource;
         private Models.City city;
         private Models.State state;
 
@@ -42,8 +36,8 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlService = "services/" + service.idService;
-            service = new Models.Service();
+            string urlService = "services/" + Service.idService;
+            Service = new Models.Service();
             var request = new RestRequest(urlService, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -56,8 +50,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    service = JsonConvert.DeserializeObject<Models.Service>(response.Content);
-                    if (service!=null)
+                    Service = JsonConvert.DeserializeObject<Models.Service>(response.Content);
+                    if (Service!=null)
                     {
                         InitializeService();
                     }
@@ -95,19 +89,19 @@ namespace TrabajosExpres.PresentationLogicLayer
                 GetState();
                 if(state != null)
                 {
-                    Models.Resource resource = GetResource(service.idService);
-                    GetImage(resource.routeSave);
-                    LabelName.Content = service.name;
-                    LabelSlogan.Content = service.slogan;
-                    LabelType.Content = service.typeService;
-                    LabelCost.Content = "De: "+service.minimalCost.ToString()+" Hasta: "+service.maximumCost.ToString();
+                    resource = GetResource(Service.idService);
+                    GetImage();
+                    LabelName.Content = Service.name;
+                    LabelSlogan.Content = Service.slogan;
+                    LabelType.Content = Service.typeService;
+                    LabelCost.Content = "De: "+Service.minimalCost.ToString()+" Hasta: "+Service.maximumCost.ToString();
                     TextBlockState.Text = state.name;
                     TextBlockCity.Text = city.name;
-                    TextBlockDescription.Text = service.description;
-                    TextBlockWorkingHours.Text = service.workingHours;
+                    TextBlockDescription.Text = Service.description;
+                    TextBlockWorkingHours.Text = Service.workingHours;
                     ButtonEditService.IsEnabled = true;
                     ImageService.Source = image;
-                    if(service.serviceStatus == Number.NumberValue(NumberValues.ONE))
+                    if(Service.serviceStatus == Number.NumberValue(NumberValues.ONE))
                     {
                         ButtonDeleteService.IsEnabled = true;
                     }
@@ -115,23 +109,36 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+        private void EditServiceButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            ServiceEdition serviceEdition = new ServiceEdition();
+            serviceEdition.Service = Service;
+            serviceEdition.City = city;
+            serviceEdition.State = state;
+            serviceEdition.Image = image;
+            serviceEdition.Resource = resource;
+            serviceEdition.InitializeMenu();
+            serviceEdition.Show();
+            Close();
         }
 
         private void GetCity()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlService = "cities/" + service.idCity;
+            string urlService = "cities/" + Service.idCity;
             city = new Models.City();
             var request = new RestRequest(urlService, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
@@ -252,11 +259,11 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void GetImage(string routeResource)
+        private void GetImage()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlImage = "/images/" + routeResource;
+            string urlImage = "/images/" + resource.routeSave;
             var request = new RestRequest(urlImage, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -295,13 +302,6 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void EditionButtonClicked(object sender, RoutedEventArgs routedEventArgs)
-        {
-            ServiceEdition serviceEdition = new ServiceEdition();
-            serviceEdition.Show();
-            Close();
-        }
-
         private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             Login login = new Login();
@@ -317,8 +317,8 @@ namespace TrabajosExpres.PresentationLogicLayer
             {
                 RestClient client = new RestClient(urlBase);
                 client.Timeout = -1;
-                string urlService = "services/" + service.idService;
-                service = new Models.Service();
+                string urlService = "services/" + Service.idService;
+                Service = new Models.Service();
                 var request = new RestRequest(urlService, Method.PATCH);
                 request.AddHeader("Content-type", "application/json");
                 foreach (RestResponseCookie cookie in Login.cookies)
@@ -338,7 +338,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         status = JsonConvert.DeserializeObject<Models.ServiceStatus>(response.Content);
                         MessageBox.Show("El servicio se eliminó exitosamente", "Eliminación Exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
-                        service.serviceStatus = 2;
+                        Service.serviceStatus = 2;
                         ButtonDeleteService.IsEnabled = false;
                     }
                     else

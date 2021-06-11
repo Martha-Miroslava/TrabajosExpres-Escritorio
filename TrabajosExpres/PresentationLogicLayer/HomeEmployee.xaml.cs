@@ -220,7 +220,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             if (!object.ReferenceEquals(null, serviceSelect))
             {
                 ServiceOffered serviceOffered = new ServiceOffered();
-                ServiceOffered.service = serviceSelect;
+                ServiceOffered.Service = serviceSelect;
                 serviceOffered.InitializeMenu();
                 serviceOffered.Show();
                 Close();

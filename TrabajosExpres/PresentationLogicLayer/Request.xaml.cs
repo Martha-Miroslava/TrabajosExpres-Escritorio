@@ -8,6 +8,7 @@ using TrabajosExpres.Utils;
 using System.Windows.Media.Imaging;
 using TrabajosExpres.Validators;
 using FluentValidation.Results;
+using System.Windows.Media;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -68,6 +69,23 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
+        private bool ValidateDate()
+        {
+            DatePickerDate.BorderBrush = Brushes.Red;
+            if (DatePickerDate.SelectedDate != null)
+            {
+                DateTime dateTimeBirth = Convert.ToDateTime(DatePickerDate);
+                var dateNow = DateTime.Now;
+                if (dateTimeBirth > dateNow)
+                {
+                    DatePickerDate.BorderBrush = Brushes.Green;
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
         private void GetAccount()
         {
             RestClient client = new RestClient(urlBase);
@@ -114,7 +132,14 @@ namespace TrabajosExpres.PresentationLogicLayer
             CreateRequestFromInputData();
             if (ValidateDataRequest())
             {
-                RegisterRequest();
+                if (ValidateDate())
+                {
+                    RegisterRequest();
+                }
+                else
+                {
+                    MessageBox.Show("La fecha debe ser mayor a la actual", "Fecha Invalida", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
             else
             {

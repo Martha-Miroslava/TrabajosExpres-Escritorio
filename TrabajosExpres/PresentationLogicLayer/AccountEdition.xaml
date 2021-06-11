@@ -48,7 +48,7 @@
             <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
         </EventTrigger>
     </Window.Triggers>
-    
+
     <Grid>
         <Grid x:Name="GridMain" Margin="68 0 0 0">
             <Grid.RowDefinitions>
@@ -80,14 +80,15 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="150,58,96,0">
+                <Grid Grid.Column="1" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="150,20,96,0">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <materialDesign:PackIcon Kind="AccountCircle" Grid.Row="0" Height="100" Width="100" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <materialDesign:PackIcon Name="PackIconImage" Kind="AccountCircle" Grid.Row="0" Height="150" Margin="0 0 0 10" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                    <Image x:Name="ImageMember" Grid.Row="0" Height="150" Width="150" Visibility="Hidden" Margin="0 0 0 10"/>
                     <Button Grid.Row="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}" Background="CornflowerBlue"
-				    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Editar" BorderBrush="CornflowerBlue"></Button>
+				    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Editar" BorderBrush="CornflowerBlue" Click="UploadPhotoButtonClicked"></Button>
                 </Grid>
 
                 <Grid x:Name="FormGrid" HorizontalAlignment="Center" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="80,72,248,113" Height="369" Width="464">
@@ -112,17 +113,26 @@
 					     MaxLength="150" materialDesign:TransitionAssist.DisableTransitions="True"/>
 
                     <Label Content="Fecha de Nacimiento: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxDateBirth" Height="30" Grid.Row="2" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9."
-					     MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
+                    <StackPanel Grid.Row="2" Grid.Column="1">
+                        <DatePicker Name="DatePickerDateBirth" Margin="0,0,80,0"/>
+                    </StackPanel>
 
                     <Label Content="Correo: " VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-                    <TextBox Name="TextBoxEmail" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
-					     MaxLength="50" materialDesign:TransitionAssist.DisableTransitions="True"/>
+                    <TextBox Name="TextBoxEmail" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z@_#"
+					     MaxLength="254" materialDesign:TransitionAssist.DisableTransitions="True"/>
 
-                    <Label Content="Estado: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Margin="10,17,156,0"/>
-                    <Label Content="Ciudad: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Grid.Column="1" Margin="11,19,158,0"/>
-                    <ComboBox Name="ComboBoxState" ItemsSource="{Binding _statesList}" DisplayMemberPath="NameState" SelectedIndex="0" Grid.Row="4" VerticalAlignment="Top" Margin="80,15,6,0"/>
-                    <ComboBox Name="ComboBoxCity" ItemsSource="{Binding _citiesList}" DisplayMemberPath="NameCity" SelectedIndex="0" Grid.Row="4" VerticalAlignment="Top" Margin="77,17,8,0" Grid.Column="1"/>
+                    <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="70"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Estado: " VerticalAlignment="Top" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <Label Content="Ciudad: " VerticalAlignment="Top" Grid.Column="2" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                        <ComboBox Name="ComboBoxState" Grid.Column="1" VerticalAlignment="Top" SelectionChanged="StateComboBoxSelectionChanged" DropDownClosed="StateComboBoxDropDownClosed"/>
+                        <ComboBox Name="ComboBoxCity"  Grid.Column="3" VerticalAlignment="Top"/>
+                    </Grid>
 
                     <Label Content="Usuario: " VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
                     <TextBox Name="TextBoxUserName" Height="30" Grid.Row="5" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."
@@ -133,18 +143,18 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Row="4" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-				    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Guardar"></Button>
+                    <Button x:Name="ButtonSave" Grid.Column="0" IsEnabled="False" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+				    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Guardar" Click="SaveButtonClicked"/>
                     <Button Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
-				    Content="Cancelar" Margin="49,0,42,0" Width="99"/>
+				    Content="Cancelar" Margin="49,0,42,0" Width="99" Click="CancelButtonClicked"/>
                 </Grid>
 
-                <Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="152,192,0,184" Height="178" Width="203">
+                <Grid Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="152,205,0,150" Height="178" Width="203">
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Button Height="35" Width="140" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="CornflowerBlue" BorderBrush="CornflowerBlue">
+                    <Button x:Name="ButtonDelete" IsEnabled="False" Height="35" Width="140" Grid.Row="0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="CornflowerBlue" BorderBrush="CornflowerBlue">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
@@ -154,7 +164,7 @@
                             <Label Content="Eliminar" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
                         </Grid>
                     </Button>
-                    <Button Height="38" Width="140" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="CornflowerBlue" Margin="0,40,0,0" BorderBrush="CornflowerBlue">
+                    <Button Name="ButtonChangePassword" IsEnabled="False" Height="38" Width="140" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="CornflowerBlue" Margin="0,40,0,0" BorderBrush="CornflowerBlue">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>

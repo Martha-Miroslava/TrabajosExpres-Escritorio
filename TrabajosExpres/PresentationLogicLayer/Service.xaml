@@ -57,7 +57,7 @@
             </Grid.RowDefinitions>
             <materialDesign:ColorZone Mode="PrimaryDark" Padding="16"  materialDesign:ShadowAssist.ShadowDepth="Depth3" ClipToBounds="False">
                 <StackPanel Orientation="Horizontal">
-                    <Image Margin="30 0 0 0"  VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
+                    <Image VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
                     <TextBlock Name="TextBlockTitle" VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
                 </StackPanel>
             </materialDesign:ColorZone>
@@ -154,7 +154,7 @@
                                 <Label Content="Solicitar" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,0,3,1" Grid.RowSpan="2"></Label>
                             </Grid>
                         </Button>
-                        <Button x:Name="ButtonReport" IsEnabled="false" Height="35" Margin="0,40,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet">
+                        <Button x:Name="ButtonReport" IsEnabled="false" Height="35" Margin="0,40,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="ReportButtonClicked">
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>

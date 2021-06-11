@@ -186,6 +186,7 @@
     <Compile Include="Validators\LoginValidator.cs" />
     <Compile Include="Validators\MessageValidator.cs" />
     <Compile Include="Validators\RatingValidator.cs" />
+    <Compile Include="Validators\ReportValidator.cs" />
     <Compile Include="Validators\RequestValidator.cs" />
     <Compile Include="Validators\ServiceValidator.cs" />
     <Compile Include="Validators\StateValidator.cs" />

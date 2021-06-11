@@ -39,5 +39,19 @@ namespace TrabajosExpres.Utils
                 LogException.Log(telegramBot, ioException);
             }
         }
+
+        public static void SendToTelegram(string exception)
+        {
+            try
+            {
+                string menssage = "Error message: " + exception;
+                telegramBotClient.SendTextMessageAsync(idGroup, menssage);
+            }
+            catch (IOException ioException)
+            {
+                TelegramBot telegramBot = new TelegramBot();
+                LogException.Log(telegramBot, ioException);
+            }
+        }
     }
 }

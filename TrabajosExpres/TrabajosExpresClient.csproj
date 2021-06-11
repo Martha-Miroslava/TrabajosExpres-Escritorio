@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\MemberATE.cs" />
     <Compile Include="Models\Chat.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\ServiceStatus.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Token.cs" />
     <Compile Include="PresentationLogicLayer\AccountCreation.xaml.cs">
@@ -124,8 +126,8 @@
     <Compile Include="PresentationLogicLayer\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationLogicLayer\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
+    <Compile Include="PresentationLogicLayer\HomeClient.xaml.cs">
+      <DependentUpon>HomeClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -166,8 +168,8 @@
     <Compile Include="PresentationLogicLayer\ServiceRegistry.xaml.cs">
       <DependentUpon>ServiceRegistry.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PresentationLogicLayer\ServicesOfferedList.xaml.cs">
-      <DependentUpon>ServicesOfferedList.xaml</DependentUpon>
+    <Compile Include="PresentationLogicLayer\HomeEmployee.xaml.cs">
+      <DependentUpon>HomeEmployee.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -184,6 +186,7 @@
     <Compile Include="Validators\LoginValidator.cs" />
     <Compile Include="Validators\MessageValidator.cs" />
     <Compile Include="Validators\RatingValidator.cs" />
+    <Compile Include="Validators\ReportValidator.cs" />
     <Compile Include="Validators\RequestValidator.cs" />
     <Compile Include="Validators\ServiceValidator.cs" />
     <Compile Include="Validators\StateValidator.cs" />
@@ -224,7 +227,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PresentationLogicLayer\Home.xaml">
+    <Page Include="PresentationLogicLayer\HomeClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,7 +283,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PresentationLogicLayer\ServicesOfferedList.xaml">
+    <Page Include="PresentationLogicLayer\HomeEmployee.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

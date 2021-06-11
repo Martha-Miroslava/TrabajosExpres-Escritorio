@@ -39,10 +39,11 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeMenu()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + Home.loginAccount.username + "!";
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
+            InitializeState();
         }
 
-        public bool InitializeState()
+        private void InitializeState()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
@@ -58,19 +59,16 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (states.Count > Number.NumberValue(NumberValues.ZERO))
                     {
                         AddStatesInComboBox();
-                        return true;
                     }
                     else
                     {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return false;
+                        MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
@@ -78,11 +76,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                 MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                return false;
             }
         }
 
-        private void FilterComboBoxDropDownClosed(object sender, EventArgs eventArgs)
+        private void StateComboBoxDropDownClosed(object sender, EventArgs eventArgs)
         {
             if (handle)
             {
@@ -91,10 +88,10 @@ namespace TrabajosExpres.PresentationLogicLayer
             handle = true;
         }
 
-        private void FilterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
+        private void StateComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
         {
-            ComboBox FilterSelectComboBox = sender as ComboBox;
-            handle = !FilterSelectComboBox.IsDropDownOpen;
+            ComboBox StateSelectComboBox = sender as ComboBox;
+            handle = !StateSelectComboBox.IsDropDownOpen;
             DisableSearch();
         }
 
@@ -131,13 +128,13 @@ namespace TrabajosExpres.PresentationLogicLayer
                     }
                     else
                     {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
@@ -161,7 +158,7 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void CancelButtonClicked(object sender, RoutedEventArgs e)
         {
-            Home home = new Home();
+            HomeClient home = new HomeClient();
             home.InitializeMenu();
             home.Show();
             Close();
@@ -202,13 +199,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void ButtonOpenMenuClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void ButtonCloseMenuClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
@@ -220,7 +217,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
                 case "ListViewItemHome":
-                    Home home = new Home();
+                    HomeEmployee home = new HomeEmployee();
                     home.InitializeMenu();
                     home.Show();
                     Close();
@@ -243,12 +240,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     requestReceivedList.Show();
                     Close();
                     break;
-                case "ListViewItemService":
-                    ServicesOfferedList servicesOfferedList = new ServicesOfferedList();
-                    servicesOfferedList.InitializeMenu();
-                    servicesOfferedList.Show();
-                    Close();
-                    break;
                 default:
                     break;
             }
@@ -269,7 +260,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                         if (isRegisterImage)
                         {
                             MessageBox.Show("El servicio se registró exitosamente", "Registro exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            Home home = new Home();
+                            HomeClient home = new HomeClient();
                             home.InitializeMenu();
                             home.Show();
                             Close();
@@ -283,7 +274,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
             else
             {
-                MessageBox.Show("Los datos son inválidos", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Por favor, Ingrese datos correctos en los campos marcados en rojo", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -321,7 +312,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(formatException);
                 LogException.Log(this, formatException);
             }
-            service.idMemberATE = Home.tokenAccount.idMemberATE;
+            service.idMemberATE = Login.tokenAccount.idMemberATE;
             if (ComboBoxCity.SelectedItem != null)
             {
                 string optionCity = ((ComboBoxItem)ComboBoxCity.SelectedItem).Content.ToString();
@@ -370,12 +361,12 @@ namespace TrabajosExpres.PresentationLogicLayer
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
             var request = new RestRequest("services", Method.POST);
-            foreach (RestResponseCookie cookie in Home.cookies)
+            foreach (RestResponseCookie cookie in Login.cookies)
             {
                 request.AddCookie(cookie.Name, cookie.Value);
             }
             var json = JsonConvert.SerializeObject(service);
-            request.AddHeader("Token", Home.tokenAccount.token);
+            request.AddHeader("Token", Login.tokenAccount.token);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
@@ -391,15 +382,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
                         || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
                     {
-                        BehindLogin();
+                        BehindLogin(responseError.error);
                     }
                     else
                     {
                         MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        Home home = new Home();
-                        home.InitializeMenu();
-                        home.Show();
-                        Close();
+                        if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
+                        {
+                            HomeClient home = new HomeClient();
+                            home.InitializeMenu();
+                            home.Show();
+                            Close();
+                        }
                     }
                 }
             }
@@ -408,7 +402,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("No se pudo registrar el servicio. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Home home = new Home();
+                HomeClient home = new HomeClient();
                 home.InitializeMenu();
                 home.Show();
                 Close();
@@ -425,7 +419,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             request.AddParameter("idService", resource.idService);
             request.AddParameter("idMemberATE", resource.idMemberATE);
             request.AddFile("resourceFile", routeImage);
-            request.AddHeader("Token", Home.tokenAccount.token);
+            request.AddHeader("Token", Login.tokenAccount.token);
             request.AddHeader("Content-Type", "multipart/form-data");
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
@@ -442,15 +436,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
                         || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
                     {
-                        BehindLogin();
+                        BehindLogin(responseError.error);
                     }
                     else
                     {
                         MessageBox.Show("El servicio se registro. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        Home home = new Home();
-                        home.InitializeMenu();
-                        home.Show();
-                        Close();
+                        if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
+                        {
+                            HomeClient home = new HomeClient();
+                            home.InitializeMenu();
+                            home.Show();
+                            Close();
+                        }
                     }
                 }
             }
@@ -459,19 +456,19 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("El servicio se registro. Pero  no se pudo registrar el recurso.Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Home home = new Home();
+                HomeClient home = new HomeClient();
                 home.InitializeMenu();
                 home.Show();
                 Close();
             }
         }
 
-       private void BehindLogin()
+       private void BehindLogin(string mensaje)
        {
-            MessageBox.Show("Por favor de volver a ingresar al sistema", "Nuevo ingreso", MessageBoxButton.OK, MessageBoxImage.Warning);
+            MessageBox.Show(mensaje, "Nuevo ingreso", MessageBoxButton.OK, MessageBoxImage.Warning);
             Login login = new Login();
             login.Show();
             Close();
-        }
+       }
     }
 }

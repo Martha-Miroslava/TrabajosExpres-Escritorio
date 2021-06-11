@@ -13,5 +13,6 @@ namespace TrabajosExpres.Models
         public string name { get; set; }
         public string idService { get; set; }
         public string idMemberATE { get; set; }
+        public string routeSave { get; set; }
     }
 }

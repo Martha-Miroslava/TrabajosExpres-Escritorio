@@ -20,8 +20,6 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class AccountEdition : Window
     {
-        public static Models.Token tokenAccount { get; set; }
-        public static Models.Login loginAccount { get; set; }
         public AccountEdition()
         {
             InitializeComponent();
@@ -29,11 +27,10 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeMenu()
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + loginAccount.username + "!";
-            if (tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
+            if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
             {
                 TextBlockMenuRequest.Text = "Solicitudes Enviadas";
-                ListViewItemService.Visibility = Visibility.Hidden;
                 TextBlockMenuAccount.Text = "Registrarse como Empleado";
                 TextBlockMenuAccount.FontSize = 11;
                 PackIconActiveAccount.Kind = MaterialDesignThemes.Wpf.PackIconKind.AccountHardHat;
@@ -65,40 +62,45 @@ namespace TrabajosExpres.PresentationLogicLayer
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
                 case "ListViewItemHome":
-                    Home home = new Home();
-                    home.InitializeMenu();
-                    home.Show();
-                    Close();
+                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
+                    {
+                        HomeClient home = new HomeClient();
+                        home.InitializeMenu();
+                        home.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        HomeEmployee home = new HomeEmployee();
+                        home.InitializeMenu();
+                        home.Show();
+                        Close();
+                    }
                     break;
                 case "ListViewItemChat":
                     ChatList chatList = new ChatList();
-                    ChatList.tokenAccount = tokenAccount;
-                    ChatList.loginAccount = loginAccount;
                     chatList.InitializeMenu();
                     chatList.Show();
                     Close();
                     break;
                 case "ListViewItemRequest":
-                    if (tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
+                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
                     {
                         RequestsMadeList requestsMadeList = new RequestsMadeList();
-                        RequestsMadeList.tokenAccount = tokenAccount;
-                        RequestsMadeList.loginAccount = loginAccount;
                         requestsMadeList.InitializeMenu();
                         requestsMadeList.Show();
                         Close();
                     }
                     else
                     {
-                        RequestsReceivedList requestReceivedList = new RequestsReceivedList();                        RequestsReceivedList.tokenAccount = tokenAccount;
-                        RequestsReceivedList.loginAccount = loginAccount;
+                        RequestsReceivedList requestReceivedList = new RequestsReceivedList();     
                         requestReceivedList.InitializeMenu();
                         requestReceivedList.Show();
                         Close();
                     }
                     break;
                 case "ListViewItemServiceRegistration":
-                    if (tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
+                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
                     {
                         /*Ventana para activar un empleado*/
                     }
@@ -111,14 +113,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                         serviceRegistry.Show();
                         Close();
                     }
-                    break;
-                case "ListViewItemService":
-                    ServicesOfferedList servicesOfferedList = new ServicesOfferedList();
-                    ServicesOfferedList.tokenAccount = tokenAccount;
-                    ServicesOfferedList.loginAccount = loginAccount;
-                    servicesOfferedList.InitializeMenu();
-                    servicesOfferedList.Show();
-                    Close();
                     break;
                 default:
                     break;

@@ -14,6 +14,10 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class Login : Window
     {
+        public static Models.Token tokenAccount { get; set; }
+        public static Models.Login loginAccount { get; set; }
+        public static IList<RestResponseCookie> cookies { get; set; }
+
         private Models.Login login;
         public Login()
         {
@@ -40,9 +44,9 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         Models.Token token = JsonConvert.DeserializeObject<Models.Token>(response.Content);
-                        Home.cookies = response.Cookies;
-                        Home.tokenAccount = token;
-                        Home.loginAccount = login;
+                        cookies = response.Cookies;
+                        tokenAccount = token;
+                        loginAccount = login;
                         if (token.memberATEType == Number.NumberValue(NumberValues.TWO))
                         {
                             ChooseAccount chooseAccount = new ChooseAccount();
@@ -52,7 +56,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                         }
                         else
                         {
-                            Home home = new Home();
+                            HomeClient home = new HomeClient();
                             home.InitializeMenu();
                             home.Show();
                             Close();

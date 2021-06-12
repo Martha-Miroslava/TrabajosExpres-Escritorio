@@ -93,6 +93,7 @@
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\MemberStatus.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Request.cs" />

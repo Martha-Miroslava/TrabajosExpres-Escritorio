@@ -54,13 +54,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void PasswordMouseEnter(Object sender, MouseEventArgs mouseEventArgs)
+        private void PasswordImageMouseEnter(Object sender, MouseEventArgs mouseEventArgs)
         {
             TextBoxPassword.Visibility = Visibility.Visible;
             PasswordBoxPassword.Visibility = Visibility.Hidden;
             TextBoxPassword.Text = PasswordBoxPassword.Password;
         }
-        private void PasswrodMouseLeave(Object sender, MouseEventArgs mouseEventArgs)
+        private void PasswordImageMouseLeave(Object sender, MouseEventArgs mouseEventArgs)
         {
             TextBoxPassword.Visibility = Visibility.Hidden;
             PasswordBoxPassword.Visibility = Visibility.Visible;

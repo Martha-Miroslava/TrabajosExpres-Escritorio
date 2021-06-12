@@ -164,7 +164,7 @@
                             <Label Content="Eliminar" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
                         </Grid>
                     </Button>
-                    <Button Name="ButtonChangePassword" IsEnabled="False" Height="38" Width="140" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="CornflowerBlue" Margin="0,40,0,0" BorderBrush="CornflowerBlue">
+                    <Button Name="ButtonChangePassword" IsEnabled="False" Height="38" Width="140" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="CornflowerBlue" Margin="0,40,0,0" BorderBrush="CornflowerBlue" Click="ChangePasswordButtonClicked">
                         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>

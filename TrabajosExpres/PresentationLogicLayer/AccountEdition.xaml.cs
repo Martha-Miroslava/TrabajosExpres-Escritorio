@@ -91,6 +91,14 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
+        private void ChangePasswordButtonClicked(object sender, RoutedEventArgs e)
+        {
+            PasswordChange passwordChange = new PasswordChange();
+            passwordChange.InitializeMenu();
+            passwordChange.Show();
+            Close();
+        }
+
         private bool ValidateDataMemberATE()
         {
             MemberATEValidator memberATEValidator = new MemberATEValidator();

@@ -60,10 +60,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                 if (city != null)
                 {
                     InitializeState();
-                    //resource = GetResource();
-                    //GetImage();
-                    if (image != null)
+                    resource = GetResource();
+                    if (resource.routeSave != null)
                     {
+                        GetImage();
                         ImageMember.Source = image;
                         ImageMember.Visibility = Visibility.Visible;
                         PackIconImage.Visibility = Visibility.Hidden;
@@ -74,6 +74,9 @@ namespace TrabajosExpres.PresentationLogicLayer
                     TextBoxUserName.Text = memberATE.username;
                     DateTime dateBirth = DateTime.ParseExact(memberATE.dateBirth, "yyyy/MM/dd", null);
                     DatePickerDateBirth.SelectedDate = dateBirth;
+                    ButtonSave.IsEnabled = true;
+                    ButtonDelete.IsEnabled = true;
+                    ButtonChangePassword.IsEnabled = true;
                 }
             }
         }
@@ -123,7 +126,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             Models.Resource resourceMain = new Models.Resource();
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlResource = "resources/serviceMain/" + memberATE.idAccount;
+            string urlResource = "resources/memberATEMain/" + memberATE.idAccount;
             var request = new RestRequest(urlResource, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -140,8 +143,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound){
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
                 }
                 return resourceMain;
             }
@@ -165,11 +170,24 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         if (isEditImage)
                         {
-                            if (resource != null)
+                            if (resource.routeSave!= null)
                             {
                                 DeleteResource();
+                                if (isDeleteImage)
+                                {
+                                    CreateResourceFromInputData();
+                                    RegisterResource();
+                                    if (isRegisterImage)
+                                    {
+                                        MessageBox.Show("La cuenta se modificó exitosamente", "Modificación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
+                                        HomeClient homeClient = new HomeClient();
+                                        homeClient.InitializeMenu();
+                                        homeClient.Show();
+                                        Close();
+                                    }
+                                }
                             }
-                            if (isDeleteImage)
+                            else
                             {
                                 CreateResourceFromInputData();
                                 RegisterResource();
@@ -275,6 +293,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     memberATE = JsonConvert.DeserializeObject<Models.MemberATE>(response.Content);
+                    Login.loginAccount.username = memberATE.username;
                     isUpdateMember = true;
                 }
                 else
@@ -320,7 +339,6 @@ namespace TrabajosExpres.PresentationLogicLayer
             request.AddParameter("idService", editResource.idService);
             request.AddParameter("idMemberATE", editResource.idMemberATE);
             request.AddFile("resourceFile", routeImage);
-            request.AddHeader("Token", Login.tokenAccount.token);
             request.AddHeader("Content-Type", "multipart/form-data");
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
@@ -378,7 +396,7 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private bool ValidateDateBirth()
         {
-            DatePickerDateBirth.BorderBrush = Brushes.Red;
+            DatePickerDateBirth.BorderBrush = Brushes.Green;
             if (DatePickerDateBirth.SelectedDate != null)
             {
                 string dateBirth = DatePickerDateBirth.SelectedDate.Value.ToString("yyyy/MM/dd");
@@ -389,8 +407,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     return true;
                 }
+                DatePickerDateBirth.BorderBrush = Brushes.Red;
                 return false;
             }
+            DatePickerDateBirth.BorderBrush = Brushes.Red;
             return false;
         }
 
@@ -696,12 +716,9 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void CreateMemberATEFromInputData()
         {
-            memberATE = new Models.MemberATE();
             memberATE.username = TextBoxUserName.Text;
             memberATE.lastName = TextBoxLastName.Text;
             memberATE.name = TextBoxName.Text;
-            memberATE.memberATEStatus = 1;
-            memberATE.memberATEType = 1;
             memberATE.email = TextBoxEmail.Text;
             if (DatePickerDateBirth.SelectedDate != null)
             {

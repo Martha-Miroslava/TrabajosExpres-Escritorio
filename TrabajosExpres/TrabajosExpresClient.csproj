@@ -91,6 +91,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\MemberStatus.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Report.cs" />

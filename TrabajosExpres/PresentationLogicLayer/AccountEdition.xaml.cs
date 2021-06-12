@@ -81,6 +81,16 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
+        private void DeleteButtonClicked(object sender, RoutedEventArgs e)
+        {
+            AccountDeletion accountDeletion = new AccountDeletion();
+            accountDeletion.memberATE = memberATE;
+            accountDeletion.image = image;
+            accountDeletion.InitializeMenu();
+            accountDeletion.Show();
+            Close();
+        }
+
         private bool ValidateDataMemberATE()
         {
             MemberATEValidator memberATEValidator = new MemberATEValidator();
@@ -643,13 +653,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void ButtonOpenMenuClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void ButtonCloseMenuClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;

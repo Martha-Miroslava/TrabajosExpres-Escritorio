@@ -31,7 +31,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Grid Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,10,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition></RowDefinition>
                     <RowDefinition></RowDefinition>
@@ -76,10 +76,18 @@
                 <TextBox Name="TextBoxEmail" Height="30" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z#@_."
                      MaxLength="254" materialDesign:TransitionAssist.DisableTransitions="True"/>
 
-                <Label Content="Estado: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Margin="0,12,135,0"/>
-                <Label Content="Ciudad: " VerticalAlignment="Top" Grid.Row="4" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial" Grid.Column="1" Margin="40,11,162,0"/>
-                <ComboBox Name="ComboBoxState"  Grid.Row="4" VerticalAlignment="Top" Grid.ColumnSpan="2" Margin="62,8,250,0" SelectionChanged="FilterComboBoxSelectionChanged" DropDownClosed="FilterComboBoxDropDownClosed"/>
-                <ComboBox Name="ComboBoxCity" Grid.Row="4" VerticalAlignment="Top" Margin="112,11,0,0" Grid.Column="1"/>
+                <Grid Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0 10 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="70"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Estado: " VerticalAlignment="Top" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                    <Label Content="Ciudad: " VerticalAlignment="Top" Grid.Column="2" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
+                    <ComboBox Name="ComboBoxState" Grid.Column="1" VerticalAlignment="Top" SelectionChanged="StateComboBoxSelectionChanged" DropDownClosed="StateComboBoxDropDownClosed"/>
+                    <ComboBox Name="ComboBoxCity"  Grid.Column="3" VerticalAlignment="Top"/>
+                </Grid>
 
                 <Label Content="Usuario:" VerticalAlignment="Top" Grid.Row="5" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
                 <TextBox Name="TextBoxUserName" Height="30" Grid.Row="5" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9/A-Z."

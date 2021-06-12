@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CodeConfirmation.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\MemberATE.cs" />

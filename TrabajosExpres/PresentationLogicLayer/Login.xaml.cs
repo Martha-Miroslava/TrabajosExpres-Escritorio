@@ -107,11 +107,9 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void CreateAccountButtonClicked(object sender, RoutedEventArgs e)
         {
             AccountCreation accountCreation = new AccountCreation();
-            if (accountCreation.InitializeState())
-            {
-                accountCreation.Show();
-                Close();
-            }
+            accountCreation.InitializeState();
+            accountCreation.Show();
+            Close();
         }
 
         private void RecoverAccountButtonClicked(object sender, RoutedEventArgs e)

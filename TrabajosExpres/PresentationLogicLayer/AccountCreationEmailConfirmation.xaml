@@ -35,7 +35,7 @@
             <TextBlock FontFamily="Arial" TextWrapping="Wrap" HorizontalAlignment="Center" Text="Por favor revise su correo electrónico  para confirmar su correo y seguir con el proceso de crear cuenta." Margin="91,31,67,16" Width="388"/>
             <Label FontWeight="Bold" FontFamily="Arial" FontSize="17" Grid.Row="1" Content="Código de confirmación:" Margin="150,1,173,17"></Label>
             <TextBox Name="TextBoxCode" Grid.Row="2" TextWrapping="NoWrap" FontSize="20" VerticalAlignment="Top" Width="205" HorizontalAlignment="Left"
-                     MaxLength="6" materialDesign:TransitionAssist.DisableTransitions="True" Margin="150,5,0,0" Height="37"/>
+                     MaxLength="7" materialDesign:TransitionAssist.DisableTransitions="True" Margin="150,5,0,0" Height="37"/>
 
             <Button Grid.Row="3" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
                 VerticalAlignment="Center" HorizontalAlignment="Center" Content="Aceptar" Margin="324,20,134,36" Click="AcceptButtonClicked"></Button>

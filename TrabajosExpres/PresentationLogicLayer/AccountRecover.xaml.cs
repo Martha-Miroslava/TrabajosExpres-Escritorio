@@ -58,7 +58,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         }
         private void SendEmail()
         {
-            Models.Email email = new Models.Email();
+            /*Models.Email email = new Models.Email();
             email.email = TextBoxEmail.Text;
             ConfirmationCode = GenrationCodeConfirmation();
             email.messageSend = "El código de confirmación de la cuenta es: " + ConfirmationCode.ToString();
@@ -95,7 +95,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 Login login = new Login();
                 login.Show();
                 Close();
-            }
+            }*/
         }
     }
 }

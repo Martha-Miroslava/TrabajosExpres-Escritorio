@@ -14,10 +14,11 @@ namespace TrabajosExpres.PresentationLogicLayer
         public  Models.MemberATE MemberATE { get; set; }
         public int ConfirmationCode { get; set; }
         public string RouteImage { get; set; }
-        public Models.Resource Resource { get; set; }
+        private Models.Resource resource;
+        private Models.CodeConfirmation codeConfirmation;
         private string urlBase = "http://127.0.0.1:5000/";
-        private bool isRegisterImage;
-        private Models.MemberATE memberATEGeneration;
+        private bool isConfirmation;
+
 
 
         public AccountCreationEmailConfirmation()
@@ -27,44 +28,53 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void CreateResourceFromInputData()
         {
-            Resource.isMainResource = "1";
-            Resource.idMemberATE = memberATEGeneration.idAccount.ToString(); 
-            Resource.idService = "0";
+            resource = new Models.Resource();
+            resource.isMainResource = "1";
+            resource.idMemberATE = MemberATE.idAccount.ToString(); 
+            resource.idService = "0";
         }
 
         private void AcceptButtonClicked(object sender, RoutedEventArgs e)
         {
-            if (TextBoxCode.Text.Equals(ConfirmationCode.ToString()))
+            if (!String.IsNullOrWhiteSpace(TextBoxCode.Text))
             {
-                RegisterMembarATE();
-                if(memberATEGeneration.idAccount > Number.NumberValue(NumberValues.ZERO))
+                try
                 {
-                    CreateResourceFromInputData();
-                    RegisterResource();
-                    if(isRegisterImage){
+                    codeConfirmation = new Models.CodeConfirmation();
+                    codeConfirmation.username = MemberATE.username;
+                    codeConfirmation.password = MemberATE.password;
+                    codeConfirmation.code = int.Parse(TextBoxCode.Text);
+                    CofirmationCode();
+                    if (isConfirmation)
+                    {
+                        if (!String.IsNullOrWhiteSpace(RouteImage))
+                        {
+                            CreateResourceFromInputData();
+                            RegisterResource();
+                        }
                         MessageBox.Show("La cuenta se registró exitosamente", "Registro exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        Login login = new Login();
+                        login.Show();
+                        Close();
                     }
+                }
+                catch (FormatException formatException)
+                {
+                    TelegramBot.SendToTelegram(formatException);
+                    LogException.Log(this, formatException);
+                    MessageBox.Show("Ingresa un código válido", "Código inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Ingrese el codigo de confirmación correcto", "Codigo incorrecto", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Ingrese un código valido", "Código inválido", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }
-
-        private int GenrationCodeConfirmation()
-        {
-            Random random = new Random();
-            int code = random.Next(100000, 999999);
-            return code;
         }
 
         private void SendEmailButtonClicked(object sender, RoutedEventArgs e)
         {
             Models.Email email = new Models.Email();
             email.email = MemberATE.email;
-            ConfirmationCode = GenrationCodeConfirmation();
-            email.messageSend = "El código de confirmación de la cuenta es: " + ConfirmationCode.ToString();
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
             var request = new RestRequest("emails", Method.POST);
@@ -82,7 +92,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                     MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
+                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest
+                        && response.StatusCode != System.Net.HttpStatusCode.NotFound)
                     {
                         Login login = new Login();
                         login.Show();
@@ -101,58 +112,16 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void RegisterMembarATE()
-        {
-            memberATEGeneration = new Models.MemberATE();
-            string passwordEncry = Security.Encrypt(MemberATE.password);
-            MemberATE.password = passwordEncry;
-            RestClient client = new RestClient(urlBase);
-            client.Timeout = -1;
-            var request = new RestRequest("accounts", Method.POST);
-            var json = JsonConvert.SerializeObject(MemberATE);
-            request.AddParameter("application/json", json, ParameterType.RequestBody);
-            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-            try
-            {
-                IRestResponse response = client.Execute(request);
-                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    memberATEGeneration = JsonConvert.DeserializeObject<Models.MemberATE>(response.Content);
-                }
-                else
-                {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
-                    {
-                        Login login = new Login();
-                        login.Show();
-                        Close();
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                TelegramBot.SendToTelegram(exception);
-                LogException.Log(this, exception);
-                MessageBox.Show("No se pudo registrar la cuenta. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Login login = new Login();
-                login.Show();
-                Close();
-            }
-        }
-
         private void RegisterResource()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
             var request = new RestRequest("resources", Method.POST);
-            request.AddParameter("isMainResource", Resource.isMainResource);
-            request.AddParameter("name", Resource.name);
-            request.AddParameter("idService", Resource.idService);
-            request.AddParameter("idMemberATE", Resource.idMemberATE);
+            request.AddParameter("isMainResource", resource.isMainResource);
+            request.AddParameter("name", resource.name);
+            request.AddParameter("idService", resource.idService);
+            request.AddParameter("idMemberATE", resource.idMemberATE);
             request.AddFile("resourceFile", RouteImage);
-            request.AddHeader("Token", Login.tokenAccount.token);
             request.AddHeader("Content-Type", "multipart/form-data");
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
@@ -161,13 +130,41 @@ namespace TrabajosExpres.PresentationLogicLayer
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var responseOk = JsonConvert.DeserializeObject<dynamic>(response.Content);
-                    isRegisterImage = true;
                 }
                 else
                 {
                     Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    MessageBox.Show("La cuenta se registro. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
+                    TelegramBot.SendToTelegram(responseError.error);
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+            }
+        }
+
+        private void CofirmationCode()
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            var request = new RestRequest("/logins/validator", Method.PATCH);
+            var json = JsonConvert.SerializeObject(codeConfirmation);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    isConfirmation = true;
+                }
+                else
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest
+                        && response.StatusCode != System.Net.HttpStatusCode.NotFound)
                     {
                         Login login = new Login();
                         login.Show();
@@ -179,7 +176,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             {
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                MessageBox.Show("La cuenta se registro. Pero  no se pudo registrar el recurso.Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No se pudo confirmar la cuenta. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Login login = new Login();
                 login.Show();
                 Close();

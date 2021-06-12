@@ -122,10 +122,10 @@
 					
                     <TextBox Height="35" Grid.Column="1" Grid.Row="5" x:Name="TextBoxPassword"  VerticalAlignment="Top"  IsReadOnly="True" FontSize="15" FontFamily="Arial" Visibility="Hidden">
                     </TextBox>
-                    <PasswordBox Grid.Column="1" Grid.Row="5" x:Name="PasswordBoxPassword" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Visibility="Visible" Height="35"/>
+                    <PasswordBox Grid.Column="1" IsEnabled="False" Grid.Row="5" x:Name="PasswordBoxPassword" VerticalAlignment="Top" FontSize="15" FontFamily="Arial" Visibility="Visible" Height="35"/>
 
-                    <Image Grid.Column="3" Grid.Row="5" Name="imgEyePassword" Stretch="Fill" Margin="10,0,0,0" MouseEnter="PasswordMouseEnter"
-                        MouseLeave="PasswrodMouseLeave"  Width="23" Height="23" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/PresentationLogicLayer/Images/eyePassword.png"/>
+                    <Image Grid.Column="3" Grid.Row="5" Name="imgEyePassword" Stretch="Fill" Margin="10,0,0,0" MouseEnter="PasswordImageMouseEnter"
+                        MouseLeave="PasswordImageMouseLeave"  Width="23" Height="23" VerticalAlignment="Center" HorizontalAlignment="Left" Source="/PresentationLogicLayer/Images/eyePassword.png"/>
 				</Grid>
 
 				<Grid Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,60">

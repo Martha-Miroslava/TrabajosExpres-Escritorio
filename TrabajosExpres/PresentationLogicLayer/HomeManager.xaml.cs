@@ -35,8 +35,8 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void ReportsButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            Login login = new Login();
-            login.Show();
+            ReportConsultation reportConsultation = new ReportConsultation();
+            reportConsultation.Show();
             Close();
         }
     }

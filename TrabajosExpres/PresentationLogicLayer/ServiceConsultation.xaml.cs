@@ -2,53 +2,150 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using TrabajosExpres.Utils;
 using Newtonsoft.Json;
 using RestSharp;
+using TrabajosExpres.Utils;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.IO;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
     /// <summary>
-    /// Lógica de interacción para RequestsMadeList.xaml
+    /// Lógica de interacción para ServiceConsultation.xaml
     /// </summary>
-    public partial class RequestsMadeList : Window
+    public partial class ServiceConsultation : Window
     {
-        private List<Models.RequestSent> requestsSent;
         private string urlBase = "http://127.0.0.1:5000/";
+        private List<Models.Service> services;
         private BitmapImage image = null;
+        private bool handleStatus = true;
         private bool handle = true;
-        private bool isFirstEntry = true;
-        private string optionFilter = "1";
-        private string option;
+        private string optionFilterService;
+        private string optionFilterStatus;
+        private string optionTextSearch;
         private bool isImageFound;
 
-        public RequestsMadeList()
+        public ServiceConsultation()
         {
             InitializeComponent();
         }
 
-        public void InitializeMenu()
-        {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
-            InitializeRequestSent();
-            isFirstEntry = false;
-        }
-
-        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
+        private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             Login login = new Login();
             login.Show();
             Close();
         }
 
-        private void InitializeRequestSent()
+        private void BehindButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
+            HomeManager home = new HomeManager();
+            home.Show();
+            Close();
+        }
+
+        private void FilterComboBoxDropDownClosed(object sender, EventArgs eventArgs)
+        {
+            if (handle)
+            {
+                DisableSearch();
+            }
+            handle = true;
+        }
+
+        private void FilterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
+        {
+            ComboBox FilterSelectComboBox = sender as ComboBox;
+            handle = !FilterSelectComboBox.IsDropDownOpen;
+            DisableSearch();
+        }
+
+        private void FilterStatusComboBoxDropDownClosed(object sender, EventArgs eventArgs)
+        {
+            if (handleStatus)
+            {
+                DisableSearchStatus();
+            }
+            handleStatus = true;
+        }
+
+        private void FilterStatusComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
+        {
+            ComboBox FilterSelectComboBox = sender as ComboBox;
+            handleStatus = !FilterSelectComboBox.IsDropDownOpen;
+            DisableSearchStatus();
+        }
+
+        private void DisableSearch()
+        {
+            if (ComboBoxFilter.SelectedItem != null)
+            {
+                if (ComboBoxFilterStatus.SelectedItem != null)
+                {
+                    ButtonSearch.IsEnabled = true;
+                }
+                TextBoxSearch.IsEnabled = true;
+                string option = ((ComboBoxItem)ComboBoxFilter.SelectedItem).Content.ToString();
+                if (option.Equals("Nombre"))
+                {
+                    optionFilterService = "name";
+                }
+                else
+                {
+                    if (option.Equals("Tipo"))
+                    {
+                        optionFilterService = "typeService";
+                    }
+                    else
+                    {
+                        if (option.Equals("Costo Máximo"))
+                        {
+                            optionFilterService = "maximumCost";
+                        }
+                        else
+                        {
+                            optionFilterService = "minimalCost";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void DisableSearchStatus()
+        {
+            if (ComboBoxFilterStatus.SelectedItem != null)
+            {
+                if (ComboBoxFilter.SelectedItem != null)
+                {
+                    ButtonSearch.IsEnabled = true;
+                }
+                string option = ((ComboBoxItem)ComboBoxFilterStatus.SelectedItem).Content.ToString();
+                if (option.Equals("Activos"))
+                {
+                    optionFilterStatus = "1";
+                }
+                else
+                {
+                    if (option.Equals("Inactivos"))
+                    {
+                        optionFilterStatus = "2";
+                    }
+                    else
+                    {
+                        optionFilterStatus = "3";
+                    }
+                }
+            }
+        }
+
+        private void GetServices()
+        {
+            services = new List<Models.Service>();
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlRequest = "requests/"+ optionFilter+"/" + Login.tokenAccount.idMemberATE+ "/memberATE";
-            var request = new RestRequest(urlRequest, Method.GET);
+            string urlService = "/services/"+optionFilterStatus+"/" + optionTextSearch + "/" + optionFilterService;
+            var request = new RestRequest(urlService, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
                 request.AddCookie(cookie.Name, cookie.Value);
@@ -60,21 +157,17 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    requestsSent = JsonConvert.DeserializeObject<List<Models.RequestSent>>(response.Content);
-                    if (requestsSent.Count > Number.NumberValue(NumberValues.ZERO))
+                    services = JsonConvert.DeserializeObject<List<Models.Service>>(response.Content);
+                    if (services.Count > Number.NumberValue(NumberValues.ZERO))
                     {
-                        AddRequestSentInListView();
+                        AddServiceInListView();
                     }
                 }
                 else
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        if (!isFirstEntry)
-                        {
-                            MessageBox.Show("No se encontro solicitudes enviadas " + option + ". Intente con otro filtro.", "No hay registros", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-
-                        }
+                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     else
                     {
@@ -98,101 +191,26 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        private void AddServiceInListView()
         {
-            ButtonCloseMenu.Visibility = Visibility.Visible;
-            ButtonOpenMenu.Visibility = Visibility.Collapsed;
-        }
-
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
-        {
-            ButtonCloseMenu.Visibility = Visibility.Collapsed;
-            ButtonOpenMenu.Visibility = Visibility.Visible;
-        }
-
-        private void FilterComboBoxDropDownClosed(object sender, EventArgs eventArgs)
-        {
-            if (handle)
-            {
-                DisableSearch();
-            }
-            handle = true;
-        }
-
-        private void FilterComboBoxSelectionChanged(object sender,SelectionChangedEventArgs selectionChanged)
-        {
-            ComboBox FilterSelectComboBox = sender as ComboBox;
-            handle = !FilterSelectComboBox.IsDropDownOpen;
-            DisableSearch();
-        }
-
-        private void DisableSearch()
-        {
-            if (ComboBoxFilter.SelectedItem != null)
-            {
-                ButtonSearch.IsEnabled = true;
-                option = ((ComboBoxItem)ComboBoxFilter.SelectedItem).Content.ToString();
-                if (option.Equals("Solicitadas"))
-                {
-                    optionFilter = "1";
-                }
-                else
-                {
-                    if (option.Equals("Aceptadas"))
-                    {
-                        optionFilter = "2";
-                    }
-                    else
-                    {
-                        if (option.Equals("Rechazadas"))
-                        {
-                            optionFilter = "3";
-                        }
-                        else
-                        {
-                            if (option.Equals("Canceladas"))
-                            {
-                                optionFilter = "4";
-                            }
-                            else
-                            {
-                                optionFilter = "5";
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private void AddRequestSentInListView()
-        {
-            foreach (Models.RequestSent requestSent in requestsSent)
+            foreach (Models.Service service in services)
             {
                 Models.Resource resourceMain = new Models.Resource();
-                resourceMain = GetResource(requestSent.idMemberATE);
+                resourceMain = GetResource(service.idService);
                 GetImage(resourceMain.routeSave);
                 if (!isImageFound)
                 {
                     image = null;
                 }
-                ListViewRequestsSent.Items.Add(
+                ListViewService.Items.Add(
                      new
                      {
                          ImageService = image,
-                         Name = requestSent.idService,
-                         Date = "Fecha: " + requestSent.time,
-                         Time = "Hora: "+ requestSent.time
+                         Name = service.name
                      }
                  );
             }
         }
-
-        private void SearchButtonClicked(object sender, RoutedEventArgs e)
-        {
-            ListViewRequestsSent.Items.Clear();
-            InitializeRequestSent();
-        }
-
 
         private Models.Resource GetResource(int idService)
         {
@@ -236,7 +254,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 return resourceMain;
             }
         }
-
 
         private void GetImage(string routeResource)
         {
@@ -286,57 +303,34 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void RequestSentItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
+        private void SearchButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            try { 
-                Models.RequestSent requestSelect = requestsSent[itemSelect];
-                if (!object.ReferenceEquals(null, requestSelect))
+            if (!String.IsNullOrWhiteSpace(TextBoxSearch.Text))
+            {
+                ListViewService.Items.Clear();
+                optionTextSearch = TextBoxSearch.Text;
+                GetServices();
+            }
+        }
+
+        private void ServiceItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
+        {
+            int itemSelect = ((ListView)listViewService).SelectedIndex;
+            try
+            {
+                Models.Service serviceSelect = services[itemSelect];
+                if (!object.ReferenceEquals(null, serviceSelect))
                 {
-                    RequestMadeConsultation requestMadeConsultation = new RequestMadeConsultation();
-                    requestMadeConsultation.RequestSent = requestSelect;
-                    requestMadeConsultation.InitializeMenu();
-                    requestMadeConsultation.Show();
+                    ServiceBlock serviceBlock = new ServiceBlock();
+                    serviceBlock.Service = serviceSelect;
+                    serviceBlock.InitializeService();
+                    serviceBlock.Show();
                     Close();
                 }
             }
             catch (ArgumentOutOfRangeException exception)
             {
                 LogException.Log(this, exception);
-            }
-        }
-
-        private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
-            {
-                case "ListViewItemHome":
-                    HomeClient home = new HomeClient();
-                    home.InitializeMenu();
-                    home.Show();
-                    Close();
-                    break;
-                case "ListViewItemAccountEdit":
-                    AccountEdition accountEdition = new AccountEdition();
-                    accountEdition.InitializeMenu();
-                    accountEdition.Show();
-                    Close();
-                    break;
-                case "ListViewItemChat":
-                    ChatList chatList = new ChatList();
-                    chatList.InitializeMenu();
-                    chatList.Show();
-                    Close();
-                    break;
-                case "ListViewItemServiceRegistration":
-                    AccountActivate accountActivate = new AccountActivate();
-                    accountActivate.InitializeMenu();
-                    accountActivate.Show();
-                    Close();
-                    break;
-                default:
-                    break;
             }
         }
     }

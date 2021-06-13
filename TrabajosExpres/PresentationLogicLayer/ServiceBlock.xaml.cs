@@ -15,18 +15,17 @@ using System.Windows.Shapes;
 namespace TrabajosExpres.PresentationLogicLayer
 {
     /// <summary>
-    /// Lógica de interacción para AccountBlock.xaml
+    /// Lógica de interacción para ServiceBlock.xaml
     /// </summary>
-    public partial class AccountBlock : Window
+    public partial class ServiceBlock : Window
     {
-        public Models.MemberATE MemberATE { get; set; }
-
-        public AccountBlock()
+        public Models.Service Service { get; set; }
+        public ServiceBlock()
         {
             InitializeComponent();
         }
 
-        public void InitializeMember()
+        public void InitializeService()
         {
 
         }

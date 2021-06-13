@@ -248,24 +248,30 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void RequestReceivedItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            Models.RequestReceived requestSelect = requestsReceived[itemSelect];
-            if (!object.ReferenceEquals(null, requestSelect))
+            try {
+                Models.RequestReceived requestSelect = requestsReceived[itemSelect];
+                if (!object.ReferenceEquals(null, requestSelect))
+                {
+                    if(requestSelect.requestStatus == Number.NumberValue(NumberValues.ONE))
+                    {
+                        RequestReceived requestReceived = new RequestReceived();
+                        requestReceived.Request = requestSelect;
+                        requestReceived.InitializeMenu();
+                        requestReceived.Show();
+                    }
+                    else
+                    {
+                        RequestSubmitted requestSubmitted = new RequestSubmitted();
+                        requestSubmitted.Request = requestSelect;
+                        requestSubmitted.InitializeMenu();
+                        requestSubmitted.Show();
+                    }
+                    Close();
+                }
+            }
+            catch (ArgumentOutOfRangeException exception)
             {
-                if(requestSelect.requestStatus == Number.NumberValue(NumberValues.ONE))
-                {
-                    RequestReceived requestReceived = new RequestReceived();
-                    requestReceived.Request = requestSelect;
-                    requestReceived.InitializeMenu();
-                    requestReceived.Show();
-                }
-                else
-                {
-                    RequestSubmitted requestSubmitted = new RequestSubmitted();
-                    requestSubmitted.Request = requestSelect;
-                    requestSubmitted.InitializeMenu();
-                    requestSubmitted.Show();
-                }
-                Close();
+                LogException.Log(this, exception);
             }
         }
 

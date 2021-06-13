@@ -219,14 +219,20 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ServiceItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            Models.Service serviceSelect = services[itemSelect];
-            if (!object.ReferenceEquals(null, serviceSelect))
+            try { 
+                Models.Service serviceSelect = services[itemSelect];
+                if (!object.ReferenceEquals(null, serviceSelect))
+                {
+                    ServiceOffered serviceOffered = new ServiceOffered();
+                    ServiceOffered.Service = serviceSelect;
+                    serviceOffered.InitializeMenu();
+                    serviceOffered.Show();
+                    Close();
+                }
+            }
+            catch (ArgumentOutOfRangeException exception)
             {
-                ServiceOffered serviceOffered = new ServiceOffered();
-                ServiceOffered.Service = serviceSelect;
-                serviceOffered.InitializeMenu();
-                serviceOffered.Show();
-                Close();
+                LogException.Log(this, exception);
             }
         }
 

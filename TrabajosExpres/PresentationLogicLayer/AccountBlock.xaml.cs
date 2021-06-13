@@ -76,9 +76,59 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void UnlockButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            AccountConsultation accountConsultation = new AccountConsultation();
-            accountConsultation.Show();
-            Close();
+            MessageBoxResult messageBoxResult = MessageBox.Show("¿Seguro que desea desbloquear la cuenta?",
+                 "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                RestClient client = new RestClient(urlBase);
+                client.Timeout = -1;
+                string urlAccount = "accounts/" + MemberATE.idAccount;
+                var request = new RestRequest(urlAccount, Method.PATCH);
+                request.AddHeader("Content-type", "application/json");
+                foreach (RestResponseCookie cookie in Login.cookies)
+                {
+                    request.AddCookie(cookie.Name, cookie.Value);
+                }
+                Models.MemberStatus status = new Models.MemberStatus();
+                status.memberATEStatus = 1;
+                var json = JsonConvert.SerializeObject(status);
+                request.AddHeader("Token", Login.tokenAccount.token);
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                try
+                {
+                    IRestResponse response = client.Execute(request);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        status = JsonConvert.DeserializeObject<Models.MemberStatus>(response.Content);
+                        MessageBox.Show("La cuenta se desbloqueo exitosamente", "Desbloqueo Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        AccountConsultation accountConsultation = new AccountConsultation();
+                        accountConsultation.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                        {
+                            Login login = new Login();
+                            login.Show();
+                            Close();
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    TelegramBot.SendToTelegram(exception);
+                    LogException.Log(this, exception);
+                    AccountConsultation accountConsultation = new AccountConsultation();
+                    accountConsultation.Show();
+                    Close();
+                }
+            }
         }
 
         private void BlockButtonClicked(object sender, RoutedEventArgs routedEventArgs)

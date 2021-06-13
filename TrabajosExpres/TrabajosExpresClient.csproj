@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CodeConfirmation.cs" />
     <Compile Include="Models\Email.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\MemberATE.cs" />
@@ -90,10 +91,14 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\MemberStatus.cs" />
     <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\RequestReceived.cs" />
+    <Compile Include="Models\RequestSent.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceStatus.cs" />

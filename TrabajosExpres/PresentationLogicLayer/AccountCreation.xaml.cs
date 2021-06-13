@@ -28,15 +28,14 @@ namespace TrabajosExpres.PresentationLogicLayer
         private string routeImage;
         private bool isImage;
         private Models.Resource resource = new Models.Resource();
-        private bool isSendEmail;
-        private int ConfirmationCode;
+        private bool isRegisterMemberATE;
 
         public AccountCreation()
         {
             InitializeComponent();
         }
 
-        public bool InitializeState()
+        public void InitializeState()
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
@@ -52,19 +51,16 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (states.Count > Number.NumberValue(NumberValues.ZERO))
                     {
                         AddStatesInComboBox();
-                        return true;
                     }
                     else
                     {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return false;
+                        MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
@@ -72,7 +68,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                return false;
             }
         }
 
@@ -86,7 +81,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void FilterComboBoxDropDownClosed(object sender, EventArgs eventArgs)
+        private void StateComboBoxDropDownClosed(object sender, EventArgs eventArgs)
         {
             if (handle)
             {
@@ -95,10 +90,10 @@ namespace TrabajosExpres.PresentationLogicLayer
             handle = true;
         }
 
-        private void FilterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
+        private void StateComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
         {
-            ComboBox FilterSelectComboBox = sender as ComboBox;
-            handle = !FilterSelectComboBox.IsDropDownOpen;
+            ComboBox StateSelectComboBox = sender as ComboBox;
+            handle = !StateSelectComboBox.IsDropDownOpen;
             DisableSearch();
         }
 
@@ -135,13 +130,13 @@ namespace TrabajosExpres.PresentationLogicLayer
                     }
                     else
                     {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception exception)
@@ -198,24 +193,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (ValidateDateBirth())
                     {
                         if (ValidateCheckbox()) 
-                        { 
-                            if (isImage)
+                        {
+                            RegisterMembarATE();
+                            if (isRegisterMemberATE)
                             {
-                                SendEmail();
-                                if (isSendEmail)
+                                AccountCreationEmailConfirmation creationEmailConfirmation = new AccountCreationEmailConfirmation();
+                                creationEmailConfirmation.MemberATE = memberATE;
+                                if (isImage)
                                 {
-                                    AccountCreationEmailConfirmation creationEmailConfirmation = new AccountCreationEmailConfirmation();
-                                    creationEmailConfirmation.MemberATE = memberATE;
-                                    creationEmailConfirmation.Resource = resource;
                                     creationEmailConfirmation.RouteImage = routeImage;
-                                    creationEmailConfirmation.ConfirmationCode = ConfirmationCode;
-                                    creationEmailConfirmation.Show();
-                                    Close();
                                 }
-                            }
-                            else
-                            {
-                                MessageBox.Show("Por favor ingresa una foto de principal del usuario", "Ingresa foto", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                creationEmailConfirmation.Show();
+                                Close();
                             }
                         }
                         else
@@ -238,6 +227,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                 MessageBox.Show("Por favor, Ingrese datos correctos en los campos marcados en rojo", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+        
 
         private void CreateAccountFromInputData()
         {
@@ -264,14 +255,24 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private bool ValidateCity()
         {
-            string optionCity = ((ComboBoxItem)ComboBoxCity.SelectedItem).Content.ToString();
-            if (optionCity != null)
+            ComboBoxCity.BorderBrush = Brushes.Green;
+            if (ComboBoxCity.SelectedItem == null)
             {
-                ComboBoxCity.BorderBrush = Brushes.Green;
-                return true;
+                ComboBoxCity.BorderBrush = Brushes.Red;
+                return false;
             }
-            ComboBoxCity.BorderBrush = Brushes.Red;
-            return false;
+            return true;
+        }
+
+        private bool ValidateState()
+        {
+            ComboBoxState.BorderBrush = Brushes.Green;
+            if (ComboBoxState.SelectedItem == null)
+            {
+                ComboBoxState.BorderBrush = Brushes.Red;
+                return false;
+            }
+            return true;
         }
 
         private bool ValidateConfirmationPassword()
@@ -287,32 +288,23 @@ namespace TrabajosExpres.PresentationLogicLayer
             return false;
         }
 
-        private bool ValidateState()
-        {
-            string optionState = ((ComboBoxItem)ComboBoxState.SelectedItem).Content.ToString();
-            if (optionState != null)
-            {
-                ComboBoxState.BorderBrush = Brushes.Green;
-                return true;
-            }
-            ComboBoxState.BorderBrush = Brushes.Red;
-            return false;
-        }
-
         private bool ValidateDateBirth()
         {
-            string dateBirth = DatePickerDateBirth.SelectedDate.Value.ToString("yyyy/MM/dd");
-            if (dateBirth != null)
+            DatePickerDateBirth.BorderBrush = Brushes.Green;
+            if (DatePickerDateBirth.SelectedDate != null)
             {
+                string dateBirth = DatePickerDateBirth.SelectedDate.Value.ToString("yyyy/MM/dd");
                 DateTime dateTimeBirth = Convert.ToDateTime(dateBirth);
                 var dateNow = DateTime.Now;
                 int yearsDifference = dateNow.Year - dateTimeBirth.Year;
-                if (yearsDifference> Number.NumberValue(NumberValues.EIGHTEEN))
+                if (yearsDifference>= Number.NumberValue(NumberValues.EIGHTEEN))
                 {
                     return true;
                 }
+                DatePickerDateBirth.BorderBrush = Brushes.Red;
                 return false;
             }
+            DatePickerDateBirth.BorderBrush = Brushes.Red;
             return false;
         }
 
@@ -337,23 +329,14 @@ namespace TrabajosExpres.PresentationLogicLayer
             return dataValidationResult.IsValid && ValidateCity() && ValidateState();
         }
 
-        private int GenrationCodeConfirmation()
+        private void RegisterMembarATE()
         {
-            Random random = new Random();
-            int code = random.Next(100000, 999999);
-            return code;
-        }
-
-        private void SendEmail()
-        {
-            Models.Email email = new Models.Email();
-            email.email = memberATE.email;
-            ConfirmationCode = GenrationCodeConfirmation();
-            email.messageSend = "El código de confirmación de la cuenta es: " + ConfirmationCode.ToString();
+            string passwordEncry = Security.Encrypt(memberATE.password);
+            memberATE.password = passwordEncry;
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            var request = new RestRequest("emails", Method.POST);
-            var json = JsonConvert.SerializeObject(email);
+            var request = new RestRequest("accounts", Method.POST);
+            var json = JsonConvert.SerializeObject(memberATE);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
             try
@@ -361,7 +344,9 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    isSendEmail = true;
+                    Models.MemberATE memberATEReceived = JsonConvert.DeserializeObject<Models.MemberATE>(response.Content);
+                    memberATE.idAccount = memberATEReceived.idAccount;
+                    isRegisterMemberATE = true;
                 }
                 else
                 {
@@ -379,7 +364,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             {
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                MessageBox.Show("No se pudo enviar el codigo de confirmación. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("No se pudo registrar la cuenta. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Login login = new Login();
                 login.Show();
                 Close();

@@ -19,9 +19,16 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class RequestReceived : Window
     {
+        public Models.RequestReceived Request { get; set; }
         public RequestReceived()
         {
             InitializeComponent();
+
+        }
+
+        public void InitializeMenu()
+        {
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
         }
 
         private void LogOutButtonClicked(object sender, RoutedEventArgs e)

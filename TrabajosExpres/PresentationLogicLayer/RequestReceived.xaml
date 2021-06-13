@@ -27,7 +27,7 @@
 			<StackPanel Orientation="Horizontal">
 				<ToggleButton Style="{DynamicResource MaterialDesignHamburgerToggleButton}" />
                 <Image Margin="30 0 0 0"  VerticalAlignment="Center" Source="/PresentationLogicLayer/Images/IconMenu.png"></Image>
-				<TextBlock  VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
+                <TextBlock x:Name="TextBlockTitle"  VerticalAlignment="Center" Margin="16 0 0 0" Text="!Bienvenido Usuario X!" FontSize="20" FontWeight="Bold"/>
 			</StackPanel>
 		</materialDesign:ColorZone>
         <Grid  VerticalAlignment="Center" HorizontalAlignment="Right">

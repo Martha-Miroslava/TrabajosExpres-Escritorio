@@ -328,18 +328,24 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ServiceItemsControlMouseDoubleClicked(object listViewService, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((System.Windows.Controls.ListView)listViewService).SelectedIndex;
-            Models.Service serviceSelect = services[itemSelect];
-            if (!object.ReferenceEquals(null, serviceSelect))
-            {
-                if (serviceSelect.idCity == Number.NumberValue(NumberValues.ZERO))
+            try { 
+                Models.Service serviceSelect = services[itemSelect];
+                if (!object.ReferenceEquals(null, serviceSelect))
                 {
-                    serviceSelect.idCity = Login.tokenAccount.idCity;
+                    if (serviceSelect.idCity == Number.NumberValue(NumberValues.ZERO))
+                    {
+                        serviceSelect.idCity = Login.tokenAccount.idCity;
+                    }
+                    Service service = new Service();
+                    Service.ServiceChoose = serviceSelect;
+                    service.InitializeMenu();
+                    service.Show();
+                    Close();
                 }
-                Service service = new Service();
-                Service.ServiceChoose = serviceSelect;
-                service.InitializeMenu();
-                service.Show();
-                Close();
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                LogException.Log(this, exception);
             }
         }
 

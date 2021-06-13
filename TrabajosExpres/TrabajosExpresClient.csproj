@@ -177,6 +177,12 @@
     <Compile Include="PresentationLogicLayer\Service.xaml.cs">
       <DependentUpon>Service.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\ServiceBlock.xaml.cs">
+      <DependentUpon>ServiceBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\ServiceConsultation.xaml.cs">
+      <DependentUpon>ServiceConsultation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\ServiceEdition.xaml.cs">
       <DependentUpon>ServiceEdition.xaml</DependentUpon>
     </Compile>
@@ -305,6 +311,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\Service.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ServiceBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ServiceConsultation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

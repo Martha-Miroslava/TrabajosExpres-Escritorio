@@ -290,14 +290,21 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void AccountItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            Models.MemberATE memberATESelect = memberATEs[itemSelect];
-            if (!object.ReferenceEquals(null, memberATESelect))
+            try
             {
-                AccountBlock accountBlock = new AccountBlock();
-                accountBlock.memberATE = memberATESelect;
-                accountBlock.InitializeMember();
-                accountBlock.Show();
-                Close();
+                Models.MemberATE memberATESelect = memberATEs[itemSelect];
+                if (!object.ReferenceEquals(null, memberATESelect))
+                {
+                    AccountBlock accountBlock = new AccountBlock();
+                    accountBlock.MemberATE = memberATESelect;
+                    accountBlock.InitializeMember();
+                    accountBlock.Show();
+                    Close();
+                }
+            }
+            catch(ArgumentOutOfRangeException exception)
+            {
+                LogException.Log(this, exception);
             }
         }
     }

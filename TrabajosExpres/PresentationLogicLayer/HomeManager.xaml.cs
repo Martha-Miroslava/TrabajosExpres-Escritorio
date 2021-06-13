@@ -28,8 +28,8 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void ServicesButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            Login login = new Login();
-            login.Show();
+            ServiceConsultation serviceConsultation = new ServiceConsultation();
+            serviceConsultation.Show();
             Close();
         }
 

@@ -96,6 +96,7 @@
     <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportReceived.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\RequestReceived.cs" />
     <Compile Include="Models\RequestSent.cs" />
@@ -152,6 +153,12 @@
     </Compile>
     <Compile Include="PresentationLogicLayer\PasswordChange.xaml.cs">
       <DependentUpon>PasswordChange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\Report.xaml.cs">
+      <DependentUpon>Report.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\ReportConsultation.xaml.cs">
+      <DependentUpon>ReportConsultation.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\ReportService.xaml.cs">
       <DependentUpon>ReportService.xaml</DependentUpon>
@@ -279,6 +286,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\PasswordChange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\Report.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ReportConsultation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

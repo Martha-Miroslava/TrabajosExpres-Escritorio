@@ -19,9 +19,16 @@ namespace TrabajosExpres.PresentationLogicLayer
     /// </summary>
     public partial class RequestMadeConsultation : Window
     {
+
+        public Models.RequestSent RequestSent { get; set; }
         public RequestMadeConsultation()
         {
             InitializeComponent();
+        }
+
+        public void InitializeMenu()
+        {
+            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
         }
 
         private void CancelButtonClicked(object sender, RoutedEventArgs routedEventArgs)

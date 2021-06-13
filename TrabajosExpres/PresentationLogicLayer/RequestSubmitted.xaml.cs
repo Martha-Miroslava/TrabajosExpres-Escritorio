@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using Newtonsoft.Json;
 using RestSharp;
 using TrabajosExpres.Utils;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.IO;
 using System.Windows.Controls;
 
@@ -48,7 +43,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
             if (Request.requestStatus == Number.NumberValue(NumberValues.THREE) || Request.requestStatus == Number.NumberValue(NumberValues.FOUR))
             {
-                ButtonQualifyclient.Visibility = Visibility.Hidden;
+                ButtonQualifyClient.Visibility = Visibility.Hidden;
                 ButtonCancelRequest.Visibility = Visibility.Hidden;
             }
             else

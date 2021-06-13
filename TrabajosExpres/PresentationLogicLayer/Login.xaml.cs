@@ -56,10 +56,20 @@ namespace TrabajosExpres.PresentationLogicLayer
                         }
                         else
                         {
-                            HomeClient home = new HomeClient();
-                            home.InitializeMenu();
-                            home.Show();
-                            Close();
+                            if (token.memberATEType == Number.NumberValue(NumberValues.THREE))
+                            {
+                                HomeManager home = new HomeManager();
+                                home.Show();
+                                Close();
+                            }
+                            else
+                            {
+                                HomeClient home = new HomeClient();
+                                home.InitializeMenu();
+                                home.Show();
+                                Close();
+                            }
+                                
                         }
                     }
                     else

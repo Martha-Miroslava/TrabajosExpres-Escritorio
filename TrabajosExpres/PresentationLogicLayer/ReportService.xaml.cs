@@ -181,7 +181,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                     Close();
                     break;
                 case "ListViewItemServiceRegistration":
-                    /*Ventana para activar la ventana*/
+                    AccountActivate accountActivate = new AccountActivate();
+                    accountActivate.InitializeMenu();
+                    accountActivate.Show();
+                    Close();
                     break;
                 default:
                     break;

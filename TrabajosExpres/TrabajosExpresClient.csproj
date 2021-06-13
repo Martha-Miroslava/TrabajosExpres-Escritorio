@@ -105,6 +105,9 @@
     <Compile Include="Models\ServiceStatus.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Token.cs" />
+    <Compile Include="PresentationLogicLayer\AccountActivate.xaml.cs">
+      <DependentUpon>AccountActivate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\AccountCreation.xaml.cs">
       <DependentUpon>AccountCreation.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
     <Compile Include="Validators\ServiceValidator.cs" />
     <Compile Include="Validators\StateValidator.cs" />
     <Compile Include="Validators\UserFeedback.cs" />
+    <Page Include="PresentationLogicLayer\AccountActivate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLogicLayer\AccountCreation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

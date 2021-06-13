@@ -367,6 +367,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                     Close();
                     break;
                 case "ListViewItemServiceRegistration":
+                    AccountActivate accountActivate = new AccountActivate();
+                    accountActivate.InitializeMenu();
+                    accountActivate.Show();
+                    Close();
                     break;
                 case "ListViewItemService":
                     HomeEmployee servicesOfferedList = new HomeEmployee();

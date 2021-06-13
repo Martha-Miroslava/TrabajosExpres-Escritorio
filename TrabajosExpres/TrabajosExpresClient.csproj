@@ -181,6 +181,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="PresentationLogicLayer\Qualify.xaml.cs">
+      <DependentUpon>Qualify.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\LogException.cs" />
     <Compile Include="Utils\Number.cs" />
     <Compile Include="Utils\Segurity.cs" />
@@ -290,6 +293,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\HomeEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\Qualify.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

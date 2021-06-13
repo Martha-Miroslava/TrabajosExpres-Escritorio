@@ -361,33 +361,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     Close();
                     break;
                 case "ListViewItemRequest":
-                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
-                    {
-                        RequestsMadeList requestsMadeList = new RequestsMadeList();
-                        requestsMadeList.InitializeMenu();
-                        requestsMadeList.Show();
-                        Close();
-                    }
-                    else
-                    {
-                        RequestsReceivedList requestReceivedList = new RequestsReceivedList();
-                        requestReceivedList.InitializeMenu();
-                        requestReceivedList.Show();
-                        Close();
-                    }
+                    RequestsMadeList requestsMadeList = new RequestsMadeList();
+                    requestsMadeList.InitializeMenu();
+                    requestsMadeList.Show();
+                    Close();
                     break;
                 case "ListViewItemServiceRegistration":
-                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
-                    {
-                        /*Ventana para activar un empleado*/
-                }
-                else
-                    {
-                        ServiceRegistry serviceRegistry = new ServiceRegistry();
-                        serviceRegistry.InitializeMenu();
-                        serviceRegistry.Show();
-                        Close();
-                    }
                     break;
                 case "ListViewItemService":
                     HomeEmployee servicesOfferedList = new HomeEmployee();

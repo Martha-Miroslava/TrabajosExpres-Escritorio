@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
+using Newtonsoft.Json;
+using RestSharp;
+using TrabajosExpres.Utils;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using System.IO;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -20,6 +14,8 @@ namespace TrabajosExpres.PresentationLogicLayer
     public partial class AccountBlock : Window
     {
         public Models.MemberATE MemberATE { get; set; }
+        private string urlBase = "http://127.0.0.1:5000/";
+        private BitmapImage image = null;
 
         public AccountBlock()
         {
@@ -28,7 +24,199 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeMember()
         {
+            if(MemberATE.memberATEStatus == Number.NumberValue(NumberValues.ONE))
+            {
+                ButtonBlock.Visibility = Visibility.Visible;
+                ButtonUnlock.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                if (MemberATE.memberATEStatus == Number.NumberValue(NumberValues.TWO))
+                {
+                    ButtonBlock.Visibility = Visibility.Hidden;
+                    ButtonUnlock.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    ButtonBlock.Visibility = Visibility.Hidden;
+                    ButtonUnlock.Visibility = Visibility.Visible;
+                }
+            }
 
+            TextBoxName.Text = MemberATE.name;
+            TextBoxLastName.Text = MemberATE.lastName;
+            DateTime date = DateTime.ParseExact(MemberATE.dateBirth, "yyyy/MM/dd", null);
+            string dateConverted = date.ToString("dd/MM/yyyy");
+            TextBoxDateBirth.Text = dateConverted;
+            TextBoxEmail.Text = MemberATE.email;
+            TextBoxUserName.Text = MemberATE.username;
+            Models.Resource resource = GetResource();
+            if (resource.routeSave != null)
+            {
+                GetImage(resource.routeSave);
+                ImageMember.Source = image;
+                PackIconImage.Visibility = Visibility.Hidden;
+                ImageMember.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            Login login = new Login();
+            login.Show();
+            Close();
+        }
+
+        private void BehindButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            AccountConsultation accountConsultation = new AccountConsultation();
+            accountConsultation.Show();
+            Close();
+        }
+
+        private void UnlockButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            AccountConsultation accountConsultation = new AccountConsultation();
+            accountConsultation.Show();
+            Close();
+        }
+
+        private void BlockButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            MessageBoxResult messageBoxResult = MessageBox.Show("¿Seguro que desea bloquear la cuenta?",
+                 "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                RestClient client = new RestClient(urlBase);
+                client.Timeout = -1;
+                string urlAccount = "accounts/" + MemberATE.idAccount;
+                var request = new RestRequest(urlAccount, Method.PATCH);
+                request.AddHeader("Content-type", "application/json");
+                foreach (RestResponseCookie cookie in Login.cookies)
+                {
+                    request.AddCookie(cookie.Name, cookie.Value);
+                }
+                Models.MemberStatus status = new Models.MemberStatus();
+                status.memberATEStatus = 3;
+                var json = JsonConvert.SerializeObject(status);
+                request.AddHeader("Token", Login.tokenAccount.token);
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                try
+                {
+                    IRestResponse response = client.Execute(request);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        status = JsonConvert.DeserializeObject<Models.MemberStatus>(response.Content);
+                        MessageBox.Show("La cuenta se bloqueo exitosamente", "Bloqueo Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        AccountConsultation accountConsultation = new AccountConsultation();
+                        accountConsultation.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                        {
+                            Login login = new Login();
+                            login.Show();
+                            Close();
+                        }
+                    }
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    TelegramBot.SendToTelegram(exception);
+                    LogException.Log(this, exception);
+                    AccountConsultation accountConsultation = new AccountConsultation();
+                    accountConsultation.Show();
+                    Close();
+                }
+            }
+        }
+
+        private Models.Resource GetResource()
+        {
+            Models.Resource resourceMain = new Models.Resource();
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlResource = "resources/memberATEMain/" + MemberATE.idAccount;
+            var request = new RestRequest(urlResource, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    resourceMain = JsonConvert.DeserializeObject<Models.Resource>(response.Content);
+                }
+                else
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
+                }
+                return resourceMain;
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                return resourceMain;
+            }
+        }
+
+        private void GetImage(string routeResource)
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlImage = "/images/" + routeResource;
+            var request = new RestRequest(urlImage, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    byte[] fileResource = response.RawBytes;
+                    using (var memoryStream = new MemoryStream(fileResource))
+                    {
+                        image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = memoryStream;
+                        image.EndInit();
+                    }
+                }
+                else
+                {
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+            }
         }
     }
 }

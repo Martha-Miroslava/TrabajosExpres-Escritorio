@@ -72,7 +72,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         if (!isFirstEntry)
                         {
-                            MessageBox.Show("No se encontro solicitudes enviadas " + option + ". Intente con otro filtro", "No hay registros", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            MessageBox.Show("No se encontro solicitudes enviadas " + option + ". Intente con otro filtro.", "No hay registros", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
                         }
                     }

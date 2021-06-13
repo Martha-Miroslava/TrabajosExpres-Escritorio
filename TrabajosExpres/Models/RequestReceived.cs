@@ -1,7 +1,7 @@
 ﻿
 namespace TrabajosExpres.Models
 {
-    public class RequestSent
+    public class RequestReceived
     {
         public int idRequest { get; set; }
         public string address { get; set; }
@@ -9,7 +9,7 @@ namespace TrabajosExpres.Models
         public string date { get; set; }
         public string time { get; set; }
         public string trouble { get; set; }
-        public int idMemberATE { get; set; }
-        public string idService { get; set; }
+        public string idMemberATE { get; set; }
+        public int idService { get; set; }
     }
 }

@@ -208,14 +208,14 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
+        private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             Login login = new Login();
             login.Show();
             Close();
         }
 
-        private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
 
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
@@ -245,7 +245,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                     Close();
                     break;
                 case "ListViewItemServiceRegistration":
-                    /*Ventana para activar la ventana*/
+                    AccountActivate accountActivate = new AccountActivate();
+                    accountActivate.InitializeMenu();
+                    accountActivate.Show();
+                    Close();
                     break;
                 default:
                     break;

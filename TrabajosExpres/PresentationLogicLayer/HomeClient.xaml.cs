@@ -153,7 +153,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void SearchButtonClicked (object sender, RoutedEventArgs e)
+        private void SearchButtonClicked (object sender, RoutedEventArgs routedEventArgs)
         {
             if (!String.IsNullOrWhiteSpace(TextBoxSearch.Text))
             {
@@ -306,20 +306,20 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
+        private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             Login login = new Login();
             login.Show();
             Close();
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;

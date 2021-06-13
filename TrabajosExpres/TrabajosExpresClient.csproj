@@ -108,6 +108,12 @@
     <Compile Include="PresentationLogicLayer\AccountActivate.xaml.cs">
       <DependentUpon>AccountActivate.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\AccountBlock.xaml.cs">
+      <DependentUpon>AccountBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\AccountConsultation.xaml.cs">
+      <DependentUpon>AccountConsultation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\AccountCreation.xaml.cs">
       <DependentUpon>AccountCreation.xaml</DependentUpon>
     </Compile>
@@ -137,6 +143,9 @@
     </Compile>
     <Compile Include="PresentationLogicLayer\HomeClient.xaml.cs">
       <DependentUpon>HomeClient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\HomeManager.xaml.cs">
+      <DependentUpon>HomeManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -207,6 +216,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLogicLayer\AccountBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\AccountConsultation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLogicLayer\AccountCreation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -244,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\HomeClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\HomeManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

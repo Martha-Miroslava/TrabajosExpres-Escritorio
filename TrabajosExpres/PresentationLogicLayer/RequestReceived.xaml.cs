@@ -30,7 +30,9 @@ namespace TrabajosExpres.PresentationLogicLayer
             TextBoxName.Text = Request.idMemberATE;
             TextBoxAddress.Text = Request.address;
             TextBoxTime.Text = Request.time;
-            TextBoxDate.Text = Request.date;
+            DateTime date = DateTime.ParseExact(Request.date, "yyyy/MM/dd", null);
+            string dateConverted = date.ToString("dd/MM/yyyy");
+            TextBoxDate.Text = dateConverted;
             TextBoxTrouble.Text = Request.trouble;
             Models.Resource resource = GetResource();
             if (resource.routeSave != null)

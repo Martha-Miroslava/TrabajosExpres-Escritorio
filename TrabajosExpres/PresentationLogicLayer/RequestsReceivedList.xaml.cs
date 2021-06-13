@@ -280,12 +280,14 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     image = null;
                 }
+                DateTime date = DateTime.ParseExact(requestReceived.date, "yyyy/MM/dd", null);
+                string dateConverted = date.ToString("dd/MM/yyyy");
                 ListViewRequestsReceived.Items.Add(
                      new
                      {
                          ImageService = image,
                          Name = requestReceived.idMemberATE,
-                         Date = "Fecha: " + requestReceived.date,
+                         Date = "Fecha: " + dateConverted,
                          Time = "Hora: " + requestReceived.time
                      }
                  );

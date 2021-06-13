@@ -21,11 +21,10 @@ namespace TrabajosExpres.PresentationLogicLayer
         private BitmapImage image = null;
         private bool handleFilter = true;
         private bool handleService = true;
-        private bool isFirstEntry = true;
         private string optionFilter;
         private string optionNameFilter;
-        private int optionIdService;
         private bool isImageFound;
+        private int optionIdService;
 
         public RequestsReceivedList()
         {
@@ -111,7 +110,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlRequest = "requests/" + optionFilter + "/" + optionIdService + "/service";
+            string urlRequest = "requests/" + optionFilter + "/" + optionIdService.ToString() + "/service";
             var request = new RestRequest(urlRequest, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {

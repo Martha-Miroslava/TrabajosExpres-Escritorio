@@ -99,6 +99,7 @@
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\RequestReceived.cs" />
     <Compile Include="Models\RequestSent.cs" />
+    <Compile Include="Models\RequestStatus.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceStatus.cs" />
@@ -320,9 +321,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataAccess\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="PresentationLogicLayer\Images\eyePassword.png" />
   </ItemGroup>

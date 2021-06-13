@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using TrabajosExpres.Utils;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.IO;
@@ -12,31 +12,128 @@ using System.IO;
 namespace TrabajosExpres.PresentationLogicLayer
 {
     /// <summary>
-    /// Lógica de interacción para ServicesOfferedList.xaml
+    /// Lógica de interacción para AccountConsultation.xaml
     /// </summary>
-    public partial class HomeEmployee : Window
+    public partial class AccountConsultation : Window
     {
-        private List<Models.Service> services;
         private string urlBase = "http://127.0.0.1:5000/";
+        private List<Models.MemberATE> memberATEs;
         private BitmapImage image = null;
+        private bool handle = true;
+        private string optionFilter;
+        private string optionTextSearch;
         private bool isImageFound;
-        public HomeEmployee()
+
+        public AccountConsultation()
         {
             InitializeComponent();
         }
 
-        public void InitializeMenu()
+        private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            TextBlockTitle.Text = "!Bienvenido Usuario " + Login.loginAccount.username + "!";
-            InitializeService();
+            Login login = new Login();
+            login.Show();
+            Close();
         }
 
-        private void InitializeService()
+        private void BehindButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            services = new List<Models.Service>();
+            HomeManager home = new HomeManager();
+            home.Show();
+            Close();
+        }
+
+        private void FilterComboBoxDropDownClosed(object sender, EventArgs eventArgs)
+        {
+            if (handle)
+            {
+                DisableSearch();
+            }
+            handle = true;
+        }
+
+        private void FilterComboBoxSelectionChanged(object sender, SelectionChangedEventArgs selectionChanged)
+        {
+            ComboBox FilterSelectComboBox = sender as ComboBox;
+            handle = !FilterSelectComboBox.IsDropDownOpen;
+            DisableSearch();
+        }
+
+        private void DisableSearch()
+        {
+            if (ComboBoxFilter.SelectedItem != null)
+            {
+                ButtonSearch.IsEnabled = true;
+                string option = ((ComboBoxItem)ComboBoxFilter.SelectedItem).Content.ToString();
+                if (option.Equals("Nombre"))
+                {
+                    optionFilter = "name";
+                    TextBoxSearch.IsEnabled = true;
+                }
+                else
+                {
+                    if (option.Equals("Correo"))
+                    {
+                        optionFilter = "email";
+                        TextBoxSearch.IsEnabled = true;
+                    }
+                    else
+                    {
+                        if (option.Equals("Apellido"))
+                        {
+                            optionFilter = "lastname";
+                            TextBoxSearch.IsEnabled = true;
+                        }
+                        else
+                        {
+                            optionFilter = "status";
+
+                            TextBoxSearch.IsEnabled = false;
+                            if (option.Equals("Activos"))
+                            {
+                                optionTextSearch = "1";
+                            }
+                            else
+                            {
+                                if (option.Equals("Inactivos"))
+                                {
+                                    optionTextSearch = "2";
+                                }
+                                else
+                                {
+                                    optionTextSearch = "3";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SearchButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            if (optionFilter.Equals("status"))
+            {
+                ListViewAccount.Items.Clear();
+                GetAccounts();
+            }
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(TextBoxSearch.Text))
+                {
+                    ListViewAccount.Items.Clear();
+                    optionTextSearch = TextBoxSearch.Text;
+                    GetAccounts();
+                }
+            }
+        }
+
+        private void GetAccounts()
+        {
+            memberATEs = new List<Models.MemberATE>();
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlService = "services/employee/" + Login.tokenAccount.idMemberATE;
+            string urlService = "accounts/" + optionTextSearch + "/" + optionFilter;
             var request = new RestRequest(urlService, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -49,17 +146,17 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    services = JsonConvert.DeserializeObject<List<Models.Service>>(response.Content);
-                    if (services.Count > Number.NumberValue(NumberValues.ZERO))
+                    memberATEs = JsonConvert.DeserializeObject<List<Models.MemberATE>>(response.Content);
+                    if (memberATEs.Count > Number.NumberValue(NumberValues.ZERO))
                     {
-                        AddServiceInListView();
+                        AddAccountsInListView();
                     }
                 }
                 else
                 {
-                    if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se encontro Cuentas. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     else
                     {
@@ -83,34 +180,33 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void AddServiceInListView()
+        private void AddAccountsInListView()
         {
-            foreach (Models.Service service in services)
+            foreach (Models.MemberATE memberATE in memberATEs)
             {
                 Models.Resource resourceMain = new Models.Resource();
-                resourceMain = GetResource(service.idService);
+                resourceMain = GetResource(memberATE.idAccount);
                 GetImage(resourceMain.routeSave);
                 if (!isImageFound)
                 {
                     image = null;
                 }
-                ListViewService.Items.Add(
+                ListViewAccount.Items.Add(
                      new
                      {
-                         ImageService = image,
-                         Service = service.name,
-                         Slogan = service.slogan
+                         ImageAccount = image,
+                         Name = memberATE.lastName + " "+ memberATE.name
                      }
                  );
             }
         }
 
-        private Models.Resource GetResource(int idService)
+        private Models.Resource GetResource(int idAccount)
         {
             Models.Resource resourceMain = new Models.Resource();
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlResource = "resources/serviceMain/" + idService;
+            string urlResource = "resources/memberATEMain/" + idAccount;
             var request = new RestRequest(urlResource, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -123,7 +219,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    isImageFound = true;
                     resourceMain = JsonConvert.DeserializeObject<Models.Resource>(response.Content);
                 }
                 else
@@ -132,10 +227,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                         TelegramBot.SendToTelegram(responseError.error);
-                    }
-                    else
-                    {
-                        isImageFound = false;
                     }
                 }
                 return resourceMain;
@@ -147,7 +238,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 return resourceMain;
             }
         }
-
 
         private void GetImage(string routeResource)
         {
@@ -179,8 +269,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                 }
                 else
                 {
-                   if(response.StatusCode != System.Net.HttpStatusCode.NotFound)
-                   {
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
                         Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                         TelegramBot.SendToTelegram(responseError.error);
                     }
@@ -197,76 +287,24 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Login login = new Login();
-            login.Show();
-            Close();
-        }
-
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
-        {
-            ButtonCloseMenu.Visibility = Visibility.Visible;
-            ButtonOpenMenu.Visibility = Visibility.Collapsed;
-        }
-
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
-        {
-            ButtonCloseMenu.Visibility = Visibility.Collapsed;
-            ButtonOpenMenu.Visibility = Visibility.Visible;
-        }
-
-        private void ServiceItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
+        private void AccountItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            try { 
-                Models.Service serviceSelect = services[itemSelect];
-                if (!object.ReferenceEquals(null, serviceSelect))
+            try
+            {
+                Models.MemberATE memberATESelect = memberATEs[itemSelect];
+                if (!object.ReferenceEquals(null, memberATESelect))
                 {
-                    ServiceOffered serviceOffered = new ServiceOffered();
-                    ServiceOffered.Service = serviceSelect;
-                    serviceOffered.InitializeMenu();
-                    serviceOffered.Show();
+                    AccountBlock accountBlock = new AccountBlock();
+                    accountBlock.MemberATE = memberATESelect;
+                    accountBlock.InitializeMember();
+                    accountBlock.Show();
                     Close();
                 }
             }
-            catch (ArgumentOutOfRangeException exception)
+            catch(ArgumentOutOfRangeException exception)
             {
                 LogException.Log(this, exception);
-            }
-        }
-
-        private void ListViewMenuSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
-            {
-                case "ListViewItemAccountEdit":
-                    AccountEdition accountEdition = new AccountEdition();
-                    accountEdition.InitializeMenu();
-                    accountEdition.Show();
-                    Close();
-                    break;
-                case "ListViewItemChat":
-                    ChatList chatList = new ChatList();
-                    chatList.InitializeMenu();
-                    chatList.Show();
-                    Close();
-                    break;
-                case "ListViewItemRequest":
-                    RequestsReceivedList requestReceivedList = new RequestsReceivedList();
-                    requestReceivedList.InitializeMenu();
-                    requestReceivedList.Show();
-                    Close();
-                    break;
-                case "ListViewItemServiceRegistration":
-                    ServiceRegistry serviceRegistry = new ServiceRegistry();
-                    serviceRegistry.InitializeMenu();
-                    serviceRegistry.Show();
-                    Close();
-                    break;
-                default:
-                    break;
             }
         }
     }

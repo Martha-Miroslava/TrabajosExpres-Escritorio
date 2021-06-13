@@ -96,14 +96,25 @@
     <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\ReportReceived.cs" />
     <Compile Include="Models\Request.cs" />
     <Compile Include="Models\RequestReceived.cs" />
     <Compile Include="Models\RequestSent.cs" />
+    <Compile Include="Models\RequestStatus.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceStatus.cs" />
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\Token.cs" />
+    <Compile Include="PresentationLogicLayer\AccountActivate.xaml.cs">
+      <DependentUpon>AccountActivate.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\AccountBlock.xaml.cs">
+      <DependentUpon>AccountBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\AccountConsultation.xaml.cs">
+      <DependentUpon>AccountConsultation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\AccountCreation.xaml.cs">
       <DependentUpon>AccountCreation.xaml</DependentUpon>
     </Compile>
@@ -134,11 +145,20 @@
     <Compile Include="PresentationLogicLayer\HomeClient.xaml.cs">
       <DependentUpon>HomeClient.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\HomeManager.xaml.cs">
+      <DependentUpon>HomeManager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\PasswordChange.xaml.cs">
       <DependentUpon>PasswordChange.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\Report.xaml.cs">
+      <DependentUpon>Report.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\ReportConsultation.xaml.cs">
+      <DependentUpon>ReportConsultation.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\ReportService.xaml.cs">
       <DependentUpon>ReportService.xaml</DependentUpon>
@@ -164,6 +184,12 @@
     <Compile Include="PresentationLogicLayer\Service.xaml.cs">
       <DependentUpon>Service.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\ServiceBlock.xaml.cs">
+      <DependentUpon>ServiceBlock.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\ServiceConsultation.xaml.cs">
+      <DependentUpon>ServiceConsultation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\ServiceEdition.xaml.cs">
       <DependentUpon>ServiceEdition.xaml</DependentUpon>
     </Compile>
@@ -179,6 +205,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\Qualify.xaml.cs">
+      <DependentUpon>Qualify.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\LogException.cs" />
     <Compile Include="Utils\Number.cs" />
@@ -196,6 +225,18 @@
     <Compile Include="Validators\ServiceValidator.cs" />
     <Compile Include="Validators\StateValidator.cs" />
     <Compile Include="Validators\UserFeedback.cs" />
+    <Page Include="PresentationLogicLayer\AccountActivate.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\AccountBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\AccountConsultation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLogicLayer\AccountCreation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -236,11 +277,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLogicLayer\HomeManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLogicLayer\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\PasswordChange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\Report.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ReportConsultation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -276,6 +329,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLogicLayer\ServiceBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ServiceConsultation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLogicLayer\ServiceEdition.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -289,6 +350,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\HomeEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\Qualify.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -320,9 +385,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataAccess\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="PresentationLogicLayer\Images\eyePassword.png" />
   </ItemGroup>

@@ -103,7 +103,10 @@ namespace TrabajosExpres.PresentationLogicLayer
                 case "ListViewItemServiceRegistration":
                     if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
                     {
-                        /*Ventana para activar un empleado*/
+                        AccountActivate accountActivate = new AccountActivate();
+                        accountActivate.InitializeMenu();
+                        accountActivate.Show();
+                        Close();
                     }
                     else
                     {

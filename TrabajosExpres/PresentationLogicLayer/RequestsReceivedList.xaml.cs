@@ -21,11 +21,10 @@ namespace TrabajosExpres.PresentationLogicLayer
         private BitmapImage image = null;
         private bool handleFilter = true;
         private bool handleService = true;
-        private bool isFirstEntry = true;
         private string optionFilter;
         private string optionNameFilter;
-        private int optionIdService;
         private bool isImageFound;
+        private int optionIdService;
 
         public RequestsReceivedList()
         {
@@ -111,7 +110,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
-            string urlRequest = "requests/" + optionFilter + "/" + optionIdService + "/service";
+            string urlRequest = "requests/" + optionFilter + "/" + optionIdService.ToString() + "/service";
             var request = new RestRequest(urlRequest, Method.GET);
             foreach (RestResponseCookie cookie in Login.cookies)
             {
@@ -249,24 +248,30 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void RequestReceivedItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            Models.RequestReceived requestSelect = requestsReceived[itemSelect];
-            if (!object.ReferenceEquals(null, requestSelect))
+            try {
+                Models.RequestReceived requestSelect = requestsReceived[itemSelect];
+                if (!object.ReferenceEquals(null, requestSelect))
+                {
+                    if(requestSelect.requestStatus == Number.NumberValue(NumberValues.ONE))
+                    {
+                        RequestReceived requestReceived = new RequestReceived();
+                        requestReceived.Request = requestSelect;
+                        requestReceived.InitializeMenu();
+                        requestReceived.Show();
+                    }
+                    else
+                    {
+                        RequestSubmitted requestSubmitted = new RequestSubmitted();
+                        requestSubmitted.Request = requestSelect;
+                        requestSubmitted.InitializeMenu();
+                        requestSubmitted.Show();
+                    }
+                    Close();
+                }
+            }
+            catch (ArgumentOutOfRangeException exception)
             {
-                if(requestSelect.requestStatus == Number.NumberValue(NumberValues.ONE))
-                {
-                    RequestReceived requestReceived = new RequestReceived();
-                    requestReceived.Request = requestSelect;
-                    requestReceived.InitializeMenu();
-                    requestReceived.Show();
-                }
-                else
-                {
-                    RequestSubmitted requestSubmitted = new RequestSubmitted();
-                    requestSubmitted.Request = requestSelect;
-                    requestSubmitted.InitializeMenu();
-                    requestSubmitted.Show();
-                }
-                Close();
+                LogException.Log(this, exception);
             }
         }
 
@@ -281,12 +286,14 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     image = null;
                 }
+                DateTime date = DateTime.ParseExact(requestReceived.date, "yyyy/MM/dd", null);
+                string dateConverted = date.ToString("dd/MM/yyyy");
                 ListViewRequestsReceived.Items.Add(
                      new
                      {
                          ImageService = image,
                          Name = requestReceived.idMemberATE,
-                         Date = "Fecha: " + requestReceived.date,
+                         Date = "Fecha: " + dateConverted,
                          Time = "Hora: " + requestReceived.time
                      }
                  );

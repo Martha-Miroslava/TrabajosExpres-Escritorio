@@ -153,7 +153,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void SearchButtonClicked (object sender, RoutedEventArgs e)
+        private void SearchButtonClicked (object sender, RoutedEventArgs routedEventArgs)
         {
             if (!String.IsNullOrWhiteSpace(TextBoxSearch.Text))
             {
@@ -306,20 +306,20 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void LogOutButtonClicked(object sender, RoutedEventArgs e)
+        private void LogOutButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             Login login = new Login();
             login.Show();
             Close();
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
@@ -328,18 +328,24 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ServiceItemsControlMouseDoubleClicked(object listViewService, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((System.Windows.Controls.ListView)listViewService).SelectedIndex;
-            Models.Service serviceSelect = services[itemSelect];
-            if (!object.ReferenceEquals(null, serviceSelect))
-            {
-                if (serviceSelect.idCity == Number.NumberValue(NumberValues.ZERO))
+            try { 
+                Models.Service serviceSelect = services[itemSelect];
+                if (!object.ReferenceEquals(null, serviceSelect))
                 {
-                    serviceSelect.idCity = Login.tokenAccount.idCity;
+                    if (serviceSelect.idCity == Number.NumberValue(NumberValues.ZERO))
+                    {
+                        serviceSelect.idCity = Login.tokenAccount.idCity;
+                    }
+                    Service service = new Service();
+                    Service.ServiceChoose = serviceSelect;
+                    service.InitializeMenu();
+                    service.Show();
+                    Close();
                 }
-                Service service = new Service();
-                Service.ServiceChoose = serviceSelect;
-                service.InitializeMenu();
-                service.Show();
-                Close();
+            }
+            catch (ArgumentOutOfRangeException exception)
+            {
+                LogException.Log(this, exception);
             }
         }
 
@@ -361,33 +367,16 @@ namespace TrabajosExpres.PresentationLogicLayer
                     Close();
                     break;
                 case "ListViewItemRequest":
-                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
-                    {
-                        RequestsMadeList requestsMadeList = new RequestsMadeList();
-                        requestsMadeList.InitializeMenu();
-                        requestsMadeList.Show();
-                        Close();
-                    }
-                    else
-                    {
-                        RequestsReceivedList requestReceivedList = new RequestsReceivedList();
-                        requestReceivedList.InitializeMenu();
-                        requestReceivedList.Show();
-                        Close();
-                    }
+                    RequestsMadeList requestsMadeList = new RequestsMadeList();
+                    requestsMadeList.InitializeMenu();
+                    requestsMadeList.Show();
+                    Close();
                     break;
                 case "ListViewItemServiceRegistration":
-                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
-                    {
-                        /*Ventana para activar un empleado*/
-                }
-                else
-                    {
-                        ServiceRegistry serviceRegistry = new ServiceRegistry();
-                        serviceRegistry.InitializeMenu();
-                        serviceRegistry.Show();
-                        Close();
-                    }
+                    AccountActivate accountActivate = new AccountActivate();
+                    accountActivate.InitializeMenu();
+                    accountActivate.Show();
+                    Close();
                     break;
                 case "ListViewItemService":
                     HomeEmployee servicesOfferedList = new HomeEmployee();

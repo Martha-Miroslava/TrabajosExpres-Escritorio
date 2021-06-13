@@ -97,6 +97,7 @@
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\Request.cs" />
+    <Compile Include="Models\RequestSent.cs" />
     <Compile Include="Models\Resource.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\ServiceStatus.cs" />

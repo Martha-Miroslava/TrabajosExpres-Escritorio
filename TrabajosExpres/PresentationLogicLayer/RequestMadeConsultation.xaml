@@ -39,7 +39,7 @@
 						VerticalAlignment="Center" HorizontalAlignment="Right" Content="Cerrar Sesión" Margin="0,0,30,0" Click="LogOutButtonClicked"></Button>
         </Grid>
         <Rectangle Grid.Row="1" Fill="DarkMagenta"/>
-        <TextBlock Grid.Row="1" Text="Solicitud" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
+        <TextBlock Name="TextBlockTitle" Grid.Row="1" Text="Solicitud" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
                    VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
         <Grid Grid.Row="2" HorizontalAlignment="Center">
             <Grid.ColumnDefinitions>

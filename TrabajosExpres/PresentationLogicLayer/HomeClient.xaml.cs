@@ -54,21 +54,24 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         AddServiceInListView();
                     }
-                    else
-                    {
-                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        Login login = new Login();
-                        login.Show();
-                        Close();
+                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                        {
+                            Login login = new Login();
+                            login.Show();
+                            Close();
+                        }
                     }
                 }
             }
@@ -182,21 +185,24 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         AddServiceInListView();
                     }
-                    else
-                    {
-                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        Login login = new Login();
-                        login.Show();
-                        Close();
+                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                        {
+                            Login login = new Login();
+                            login.Show();
+                            Close();
+                        }
                     }
                 }
             }

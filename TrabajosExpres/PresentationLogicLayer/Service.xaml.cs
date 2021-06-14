@@ -303,6 +303,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                 case "ListViewItemServiceRegistration":
                     /*Ventana para activar la ventana*/
                     break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
+                    Close();
+                    break;
                 default:
                     break;
             }

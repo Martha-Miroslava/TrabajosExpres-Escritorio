@@ -35,6 +35,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TextBlockMenuAccount.Text = "Registrase como Empleado";
                 TextBlockMenuAccount.FontSize = 11;
                 PackIconActiveAccount.Kind = MaterialDesignThemes.Wpf.PackIconKind.AccountHardHat;
+                TextBlockCommentTracing.Text = "Comentarios";
+                PackIconCommentTracing.Kind = MaterialDesignThemes.Wpf.PackIconKind.CommentCheck;
             }
         }
 
@@ -111,10 +113,17 @@ namespace TrabajosExpres.PresentationLogicLayer
                     else
                     {
                         ServiceRegistry serviceRegistry = new ServiceRegistry();
-                        /*ServiceRegistry.tokenAccount = tokenAccount;
-                        ServiceRegistry.loginAccount = loginAccount;*/
                         serviceRegistry.InitializeMenu();
                         serviceRegistry.Show();
+                        Close();
+                    }
+                    break;
+                case "ListViewItemCommentTracing":
+                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
+                    {
+                        CommentClient commentClient = new CommentClient();
+                        commentClient.InitializeMenu();
+                        commentClient.Show();
                         Close();
                     }
                     break;

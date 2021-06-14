@@ -335,6 +335,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     accountActivate.Show();
                     Close();
                     break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
+                    Close();
+                    break;
                 default:
                     break;
             }

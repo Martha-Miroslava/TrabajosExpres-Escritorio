@@ -95,6 +95,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\Rating.cs" />
+    <Compile Include="Models\RatingReceived.cs" />
     <Compile Include="Models\Reason.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportReceived.cs" />
@@ -139,6 +140,9 @@
     </Compile>
     <Compile Include="PresentationLogicLayer\ChooseAccount.xaml.cs">
       <DependentUpon>ChooseAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\CommentService.xaml.cs">
+      <DependentUpon>CommentService.xaml</DependentUpon>
     </Compile>
     <Compile Include="PresentationLogicLayer\Gallery.xaml.cs">
       <DependentUpon>Gallery.xaml</DependentUpon>
@@ -276,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\ChooseAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\CommentService.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

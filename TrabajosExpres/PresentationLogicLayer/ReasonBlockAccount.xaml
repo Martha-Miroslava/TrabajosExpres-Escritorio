@@ -1,0 +1,53 @@
+﻿<Window x:Class="TrabajosExpres.PresentationLogicLayer.ReasonBlockAccount"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrabajosExpres.PresentationLogicLayer"
+        mc:Ignorable="d"
+        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
+        Icon="/PresentationLogicLayer/Images/IconSystem.png" 
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="15"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Motivo" Height="450" Width="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Row="0" Fill="DarkMagenta"/>
+        <TextBlock Grid.Row="0" Text="Motivo" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
+				       VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
+
+        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Content="Motivo: " VerticalAlignment="Top" Grid.Row="0" HorizontalContentAlignment="Center" Height="35" FontFamily="Arial"/>
+            <TextBox Name="TextBoxReason" Grid.Row="1" materialDesign:TransitionAssist.DisableTransitions="True" TextWrapping="Wrap" Height="85" FontSize="15" VerticalAlignment="Top" Width="300" HorizontalAlignment="Center"/>
+
+            <Grid Grid.Row="2" Margin="0 50 0 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button  Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+					    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Enviar" Width="105" Click="SendButtonClicked" Margin="0 0 60 0"/>
+
+                <Button  Grid.Column="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}" Background="DarkBlue" BorderBrush="DarkBlue"
+					    VerticalAlignment="Center" HorizontalAlignment="Center" Content="Salir" Width="105" Click="CloseButtonClicked"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

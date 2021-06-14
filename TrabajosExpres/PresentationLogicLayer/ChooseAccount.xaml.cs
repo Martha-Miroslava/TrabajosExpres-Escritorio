@@ -21,7 +21,6 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ChooseClientButtonClicked(object sender, RoutedEventArgs e)
         {
             Login.tokenAccount.memberATEType = 1;
-            AccountActivate.IsEmployee = true;
             HomeClient home = new HomeClient();
             home.InitializeMenu();
             home.Show();

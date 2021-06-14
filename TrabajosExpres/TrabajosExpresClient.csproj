@@ -155,6 +155,9 @@
     <Compile Include="PresentationLogicLayer\PasswordChange.xaml.cs">
       <DependentUpon>PasswordChange.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\QualifyEmployee.xaml.cs">
+      <DependentUpon>QualifyEmployee.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\ReasonBlockAccount.xaml.cs">
       <DependentUpon>ReasonBlockAccount.xaml</DependentUpon>
     </Compile>
@@ -293,6 +296,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PresentationLogicLayer\PasswordChange.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\QualifyEmployee.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

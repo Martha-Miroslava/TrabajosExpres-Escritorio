@@ -216,7 +216,7 @@
                     </ListViewItem>
                     <ListViewItem Name="ListViewItemChat" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Message" Height="30" Width="30" Margin="10"/>
+                            <materialDesign:PackIcon Kind="ChatProcessing" Height="30" Width="30" Margin="10"/>
                             <TextBlock Text="Chat" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
@@ -230,6 +230,13 @@
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Name="PackIconActiveAccount" Kind="HomePlus" Height="30" Width="30" Margin="10"/>
                             <TextBlock x:Name="TextBlockMenuAccount" Text="Registrar Servicio" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Name="ListViewItemCommentTracing" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Name="PackIconCommentTracing"  Kind="Poll" Height="30" Width="30" Margin="10"/>
+                            <TextBlock x:Name="TextBlockCommentTracing"  Text="Seguimiento" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>

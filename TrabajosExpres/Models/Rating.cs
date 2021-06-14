@@ -7,5 +7,6 @@ namespace TrabajosExpres.Models
         public string comment { get; set; }
         public int rating { get; set; }
         public int idRequest { get; set; }
+        public int isClient { get; set; }
     }
 }

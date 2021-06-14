@@ -213,8 +213,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PresentationLogicLayer\Qualify.xaml.cs">
-      <DependentUpon>Qualify.xaml</DependentUpon>
+    <Compile Include="PresentationLogicLayer\QualifyClient.xaml.cs">
+      <DependentUpon>QualifyClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\LogException.cs" />
     <Compile Include="Utils\Number.cs" />
@@ -368,7 +368,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PresentationLogicLayer\Qualify.xaml">
+    <Page Include="PresentationLogicLayer\QualifyClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

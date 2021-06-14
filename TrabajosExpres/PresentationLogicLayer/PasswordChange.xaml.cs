@@ -150,9 +150,10 @@ namespace TrabajosExpres.PresentationLogicLayer
             {
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                MessageBox.Show("No se pudo registrar la cuenta. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Login login = new Login();
-                login.Show();
+                MessageBox.Show("No se pudo cambiar la contraseña de la cuenta. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                AccountEdition accountEdition = new AccountEdition();
+                accountEdition.InitializeMenu();
+                accountEdition.Show();
                 Close();
             }
         }

@@ -20,6 +20,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private Models.Resource resource;
         private Models.City city;
         private Models.State state;
+        public static bool IsError { get; set; }
 
         public Service()
         {
@@ -52,13 +53,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
@@ -237,6 +238,23 @@ namespace TrabajosExpres.PresentationLogicLayer
             Login login = new Login();
             login.Show();
             Close();
+        }
+
+        private void CommentButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            CommentService comment = new CommentService();
+            comment.ServiceReceived = ServiceChoose;
+            comment.InitializeComment();
+            if (IsError)
+            {
+                Login login = new Login();
+                login.Show();
+                Close();
+            }
+            else
+            {
+                comment.ShowDialog();
+            }
         }
 
         private void RequestButtonClicked(object sender, RoutedEventArgs routedEventArgs)

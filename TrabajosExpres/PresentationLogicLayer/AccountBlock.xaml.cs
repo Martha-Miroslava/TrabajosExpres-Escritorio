@@ -142,6 +142,11 @@ namespace TrabajosExpres.PresentationLogicLayer
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
             var request = new RestRequest("emails/account", Method.POST);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
             var json = JsonConvert.SerializeObject(reason);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
             System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };

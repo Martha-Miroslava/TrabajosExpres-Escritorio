@@ -198,9 +198,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                                     if (isRegisterImage)
                                     {
                                         MessageBox.Show("La cuenta se modificó exitosamente", "Modificación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
-                                        HomeClient homeClient = new HomeClient();
-                                        homeClient.InitializeMenu();
-                                        homeClient.Show();
+                                        if(Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                                        {
+                                            HomeEmployee homeEmployee = new HomeEmployee();
+                                            homeEmployee.InitializeMenu();
+                                            homeEmployee.Show();
+                                        }
+                                        else
+                                        {
+                                            HomeClient homeClient = new HomeClient();
+                                            homeClient.InitializeMenu();
+                                            homeClient.Show();
+                                        }
                                         Close();
                                     }
                                 }
@@ -212,9 +221,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                                 if (isRegisterImage)
                                 {
                                     MessageBox.Show("La cuenta se modificó exitosamente", "Modificación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
-                                    HomeClient homeClient = new HomeClient();
-                                    homeClient.InitializeMenu();
-                                    homeClient.Show();
+                                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                                    {
+                                        HomeEmployee homeEmployee = new HomeEmployee();
+                                        homeEmployee.InitializeMenu();
+                                        homeEmployee.Show();
+                                    }
+                                    else
+                                    {
+                                        HomeClient homeClient = new HomeClient();
+                                        homeClient.InitializeMenu();
+                                        homeClient.Show();
+                                    }
                                     Close();
                                 }
                             }
@@ -222,9 +240,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                         else
                         {
                             MessageBox.Show("La cuenta se modificó exitosamente", "Modificación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
-                            HomeClient homeClient = new HomeClient();
-                            homeClient.InitializeMenu();
-                            homeClient.Show();
+                            if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                            {
+                                HomeEmployee homeEmployee = new HomeEmployee();
+                                homeEmployee.InitializeMenu();
+                                homeEmployee.Show();
+                            }
+                            else
+                            {
+                                HomeClient homeClient = new HomeClient();
+                                homeClient.InitializeMenu();
+                                homeClient.Show();
+                            }
                             Close();
                         }
                     }
@@ -327,9 +354,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                         MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
                         {
-                            HomeClient homeClient = new HomeClient();
-                            homeClient.InitializeMenu();
-                            homeClient.Show();
+                            if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                            {
+                                HomeEmployee homeEmployee = new HomeEmployee();
+                                homeEmployee.InitializeMenu();
+                                homeEmployee.Show();
+                            }
+                            else
+                            {
+                                HomeClient homeClient = new HomeClient();
+                                homeClient.InitializeMenu();
+                                homeClient.Show();
+                            }
                             Close();
                         }
                     }
@@ -340,9 +376,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("No se pudo modificar la cuenta. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                HomeClient homeClient = new HomeClient();
-                homeClient.InitializeMenu();
-                homeClient.Show();
+                if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                {
+                    HomeEmployee homeEmployee = new HomeEmployee();
+                    homeEmployee.InitializeMenu();
+                    homeEmployee.Show();
+                }
+                else
+                {
+                    HomeClient homeClient = new HomeClient();
+                    homeClient.InitializeMenu();
+                    homeClient.Show();
+                }
                 Close();
             }
         }
@@ -380,9 +425,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                         MessageBox.Show("La cuenta se modificó. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
                         {
-                            HomeClient homeClient = new HomeClient();
-                            homeClient.InitializeMenu();
-                            homeClient.Show();
+                            if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                            {
+                                HomeEmployee homeEmployee = new HomeEmployee();
+                                homeEmployee.InitializeMenu();
+                                homeEmployee.Show();
+                            }
+                            else
+                            {
+                                HomeClient homeClient = new HomeClient();
+                                homeClient.InitializeMenu();
+                                homeClient.Show();
+                            }
                             Close();
                         }
                     }
@@ -393,9 +447,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("La cuenta se modificó. Pero  no se pudo registrar el recurso.Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                HomeClient homeClient = new HomeClient();
-                homeClient.InitializeMenu();
-                homeClient.Show();
+                if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                {
+                    HomeEmployee homeEmployee = new HomeEmployee();
+                    homeEmployee.InitializeMenu();
+                    homeEmployee.Show();
+                }
+                else
+                {
+                    HomeClient homeClient = new HomeClient();
+                    homeClient.InitializeMenu();
+                    homeClient.Show();
+                }
                 Close();
             }
         }
@@ -625,9 +688,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                         MessageBox.Show("La cuenta se modificó. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
                         {
-                            HomeClient homeClient = new HomeClient();
-                            homeClient.InitializeMenu();
-                            homeClient.Show();
+                            if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                            {
+                                HomeEmployee homeEmployee = new HomeEmployee();
+                                homeEmployee.InitializeMenu();
+                                homeEmployee.Show();
+                            }
+                            else
+                            {
+                                HomeClient homeClient = new HomeClient();
+                                homeClient.InitializeMenu();
+                                homeClient.Show();
+                            }
                             Close();
                         }
                     }
@@ -638,9 +710,18 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("La cuenta se modificó. Pero  no se pudo registrar el recurso.Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                HomeClient homeClient = new HomeClient();
-                homeClient.InitializeMenu();
-                homeClient.Show();
+                if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+                {
+                    HomeEmployee homeEmployee = new HomeEmployee();
+                    homeEmployee.InitializeMenu();
+                    homeEmployee.Show();
+                }
+                else
+                {
+                    HomeClient homeClient = new HomeClient();
+                    homeClient.InitializeMenu();
+                    homeClient.Show();
+                }
                 Close();
             }
         }
@@ -655,9 +736,18 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void CancelButtonClicked(object sender, RoutedEventArgs e)
         {
-            HomeClient client = new HomeClient();
-            client.InitializeMenu();
-            client.Show();
+            if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.TWO))
+            {
+                HomeEmployee homeEmployee = new HomeEmployee();
+                homeEmployee.InitializeMenu();
+                homeEmployee.Show();
+            }
+            else
+            {
+                HomeClient homeClient = new HomeClient();
+                homeClient.InitializeMenu();
+                homeClient.Show();
+            }
             Close();
         }
 

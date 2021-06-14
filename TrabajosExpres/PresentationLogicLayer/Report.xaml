@@ -49,7 +49,7 @@
             <TextBox Name="TextBoxDate" Height="30" IsReadOnly="True" Grid.Row="2" Grid.Column="1" TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" MinWidth="200" HorizontalAlignment="Left" materialDesign:TransitionAssist.DisableTransitions="True"/>
 
             <Label Content="Motivo: " VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Height="35" FontFamily="Arial" Width="70"/>
-            <TextBox Name="TextBoxReason" Height="67" Grid.Row="3" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="207" HorizontalAlignment="Left"
+            <TextBox Name="TextBoxReason" Height="67" Grid.Row="3" Grid.Column="1"  TextWrapping="Wrap" FontSize="15" VerticalAlignment="Top" Width="207" HorizontalAlignment="Left"
 					   materialDesign:TransitionAssist.DisableTransitions="True" IsReadOnly="true"/>
 
             <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"

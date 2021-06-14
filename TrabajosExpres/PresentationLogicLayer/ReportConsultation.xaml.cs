@@ -118,7 +118,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        MessageBox.Show("No se encontro Reportes. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se encontro Reportes. Intente con otro filtro.", "No hay registros", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {

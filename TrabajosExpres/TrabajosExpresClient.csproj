@@ -95,6 +95,7 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\PasswordChange.cs" />
     <Compile Include="Models\Rating.cs" />
+    <Compile Include="Models\Reason.cs" />
     <Compile Include="Models\Report.cs" />
     <Compile Include="Models\ReportReceived.cs" />
     <Compile Include="Models\Request.cs" />
@@ -154,6 +155,15 @@
     <Compile Include="PresentationLogicLayer\PasswordChange.xaml.cs">
       <DependentUpon>PasswordChange.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PresentationLogicLayer\QualifyEmployee.xaml.cs">
+      <DependentUpon>QualifyEmployee.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\ReasonBlockAccount.xaml.cs">
+      <DependentUpon>ReasonBlockAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PresentationLogicLayer\ReasonBlockService.xaml.cs">
+      <DependentUpon>ReasonBlockService.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PresentationLogicLayer\Report.xaml.cs">
       <DependentUpon>Report.xaml</DependentUpon>
     </Compile>
@@ -206,8 +216,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PresentationLogicLayer\Qualify.xaml.cs">
-      <DependentUpon>Qualify.xaml</DependentUpon>
+    <Compile Include="PresentationLogicLayer\QualifyClient.xaml.cs">
+      <DependentUpon>QualifyClient.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils\LogException.cs" />
     <Compile Include="Utils\Number.cs" />
@@ -289,6 +299,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PresentationLogicLayer\QualifyEmployee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ReasonBlockAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PresentationLogicLayer\ReasonBlockService.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PresentationLogicLayer\Report.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -353,7 +375,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PresentationLogicLayer\Qualify.xaml">
+    <Page Include="PresentationLogicLayer\QualifyClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

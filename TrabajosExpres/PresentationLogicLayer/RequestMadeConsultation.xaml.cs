@@ -6,6 +6,7 @@ using RestSharp;
 using TrabajosExpres.Utils;
 using System.Windows.Media.Imaging;
 using System.IO;
+using System.Collections.Generic;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -65,6 +66,69 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+        private void QualifyClientButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            GetRating();
+        }
+
+
+        private void GetRating()
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            List<Models.Rating> ratings = new List<Models.Rating>();
+            string urlRating = "ratings/request/" + RequestSent.idRequest + "/" + 2;
+            var request = new RestRequest(urlRating, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    MessageBox.Show("El trabajador ya fue calificado", "Registro de calificación existente", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Login login = new Login();
+                        login.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        {
+                            QualifyEmployee qualifyEmployee = new QualifyEmployee();
+                            qualifyEmployee.Request = RequestSent;
+                            qualifyEmployee.ShowDialog();
+                        }
+                        else
+                        {
+                            Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                            MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                            TelegramBot.SendToTelegram(responseError.error);
+                        }
+
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                MessageBox.Show("No se puede calificar. Intente más tarde.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void CancelButtonClicked(object sender, RoutedEventArgs routedEventArgs)

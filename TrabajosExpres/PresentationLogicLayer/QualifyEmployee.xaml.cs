@@ -10,15 +10,15 @@ using TrabajosExpres.Validators;
 namespace TrabajosExpres.PresentationLogicLayer
 {
     /// <summary>
-    /// Lógica de interacción para Window1.xaml
+    /// Lógica de interacción para QualifyEmployee.xaml
     /// </summary>
-    public partial class QualifyClient : Window
+    public partial class QualifyEmployee : Window
     {
         private string urlBase = "http://127.0.0.1:5000/";
-        public Models.RequestReceived Request { get; set; }
+        public Models.RequestSent Request { get; set; }
         private Models.Rating rating;
 
-        public QualifyClient()
+        public QualifyEmployee()
         {
             InitializeComponent();
         }
@@ -30,8 +30,8 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         private void QualifyButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
-            CreateQualifyClientFromInputData();
-            if (ValidateQualifyClient())
+            CreateQualifyEmployeeFromInputData();
+            if (ValidateQualifyEmployee())
             {
                 RegisterQualify();
             }
@@ -41,16 +41,16 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void CreateQualifyClientFromInputData()
+        private void CreateQualifyEmployeeFromInputData()
         {
             rating = new Models.Rating();
             rating.comment = TextBoxComment.Text;
-            rating.isClient = 1;
+            rating.isClient = 2;
             rating.idRequest = Request.idRequest;
             rating.rating = RatingBarQualify.Value;
         }
 
-        private bool ValidateQualifyClient()
+        private bool ValidateQualifyEmployee()
         {
             RatingValidator ratingValidator = new RatingValidator();
             ValidationResult dataValidationResult = ratingValidator.Validate(rating);

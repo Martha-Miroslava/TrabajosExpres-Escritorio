@@ -104,7 +104,7 @@
                                 <Label Content="Cancelar" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
                             </Grid>
                         </Button>
-                        <Button x:Name="ButtonQualifyEmployee" Height="35" Margin="0,40,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet">
+                        <Button x:Name="ButtonQualifyEmployee" Height="35" Margin="0,40,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="QualifyClientButtonClicked">
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>

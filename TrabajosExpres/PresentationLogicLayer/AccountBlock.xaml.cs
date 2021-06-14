@@ -14,6 +14,8 @@ namespace TrabajosExpres.PresentationLogicLayer
     public partial class AccountBlock : Window
     {
         public Models.MemberATE MemberATE { get; set; }
+        public static bool IsErrorBlockAccount { get; set; }
+        public static bool IsBlockAccount { get; set; }
         private string urlBase = "http://127.0.0.1:5000/";
         private BitmapImage image = null;
 
@@ -101,6 +103,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                     if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         status = JsonConvert.DeserializeObject<Models.MemberStatus>(response.Content);
+                        SendEmail();
                         MessageBox.Show("La cuenta se desbloqueo exitosamente", "Desbloqueo Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
                         AccountConsultation accountConsultation = new AccountConsultation();
                         accountConsultation.Show();
@@ -131,59 +134,69 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
+        private void SendEmail()
+        {
+            Models.Reason reason = new Models.Reason();
+            reason.email = MemberATE.email;
+            reason.messageSend = "Estimado usuario " + MemberATE.lastName + " " + MemberATE.name + ". Le informamos que su cuenta de Trabajos Expres ha sido desbloqueda";
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            var request = new RestRequest("emails/account", Method.POST);
+            var json = JsonConvert.SerializeObject(reason);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode != System.Net.HttpStatusCode.Created && response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest
+                        && response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        Close();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                AccountConsultation accountConsultation = new AccountConsultation();
+                accountConsultation.Show();
+                Close();
+            }
+        }
+
         private void BlockButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show("¿Seguro que desea bloquear la cuenta?",
                  "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                RestClient client = new RestClient(urlBase);
-                client.Timeout = -1;
-                string urlAccount = "accounts/" + MemberATE.idAccount;
-                var request = new RestRequest(urlAccount, Method.PATCH);
-                request.AddHeader("Content-type", "application/json");
-                foreach (RestResponseCookie cookie in Login.cookies)
+                ReasonBlockAccount reasonBlockAccount = new ReasonBlockAccount();
+                reasonBlockAccount.MemberATE = MemberATE;
+                reasonBlockAccount.InitializeReason();
+                reasonBlockAccount.ShowDialog();
+                if (IsBlockAccount)
                 {
-                    request.AddCookie(cookie.Name, cookie.Value);
-                }
-                Models.MemberStatus status = new Models.MemberStatus();
-                status.memberATEStatus = 3;
-                var json = JsonConvert.SerializeObject(status);
-                request.AddHeader("Token", Login.tokenAccount.token);
-                request.AddParameter("application/json", json, ParameterType.RequestBody);
-                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                try
-                {
-                    IRestResponse response = client.Execute(request);
-                    if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        status = JsonConvert.DeserializeObject<Models.MemberStatus>(response.Content);
-                        MessageBox.Show("La cuenta se bloqueo exitosamente", "Bloqueo Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
-                        AccountConsultation accountConsultation = new AccountConsultation();
-                        accountConsultation.Show();
-                        Close();
-                    }
-                    else
-                    {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
-                        {
-                            Login login = new Login();
-                            login.Show();
-                            Close();
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    TelegramBot.SendToTelegram(exception);
-                    LogException.Log(this, exception);
                     AccountConsultation accountConsultation = new AccountConsultation();
                     accountConsultation.Show();
+                    IsBlockAccount = false;
                     Close();
+                }
+                else
+                {
+                    if (IsErrorBlockAccount)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        IsErrorBlockAccount = false;
+                        Close();
+                    }
                 }
             }
         }

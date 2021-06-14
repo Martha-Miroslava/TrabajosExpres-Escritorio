@@ -14,11 +14,15 @@ namespace TrabajosExpres.PresentationLogicLayer
     public partial class ServiceBlock : Window
     {
         public Models.Service Service { get; set; }
+        public static bool IsBlockService { get; set; }
+        public static bool IsErrorBlockService { get; set; }
+        public Models.MemberATE memberATE;
         private string urlBase = "http://127.0.0.1:5000/";
         private BitmapImage image = null;
         private Models.Resource resource;
         private Models.City city;
         private Models.State state;
+
 
         public ServiceBlock()
         {
@@ -85,6 +89,43 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
+        private void SendEmail()
+        {
+            Models.Reason reason = new Models.Reason();
+            reason.email = memberATE.email;
+            reason.messageSend = "Estimado usuario " + memberATE.lastName + " " + memberATE.name + ". Le informamos que su servicio "+Service.name+" de Trabajos Expres ha sido desbloqueda";
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            var request = new RestRequest("emails/account", Method.POST);
+            var json = JsonConvert.SerializeObject(reason);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode != System.Net.HttpStatusCode.Created && response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest
+                        && response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        Close();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                ServiceConsultation serviceConsultation = new ServiceConsultation();
+                serviceConsultation.Show();
+                Close();
+            }
+        }
+
         private void UnlockButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             MessageBoxResult messageBoxResult = MessageBox.Show("¿Seguro que desea desbloquear el servicio?",
@@ -94,7 +135,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 RestClient client = new RestClient(urlBase);
                 client.Timeout = -1;
                 string urlService = "services/" + Service.idService;
-                Service = new Models.Service();
                 var request = new RestRequest(urlService, Method.PATCH);
                 request.AddHeader("Content-type", "application/json");
                 foreach (RestResponseCookie cookie in Login.cookies)
@@ -114,6 +154,9 @@ namespace TrabajosExpres.PresentationLogicLayer
                     {
                         status = JsonConvert.DeserializeObject<Models.ServiceStatus>(response.Content);
                         MessageBox.Show("El servicio se desbloqueo exitosamente", "Desbloqueo Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
+                        GetAccount();
+                        SendEmail();
+                        Service = new Models.Service();
                         ServiceConsultation serviceConsultation = new ServiceConsultation();
                         serviceConsultation.Show();
                         Close();
@@ -149,55 +192,72 @@ namespace TrabajosExpres.PresentationLogicLayer
                  "Confirmación", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                RestClient client = new RestClient(urlBase);
-                client.Timeout = -1;
-                string urlService = "services/" + Service.idService;
-                Service = new Models.Service();
-                var request = new RestRequest(urlService, Method.PATCH);
-                request.AddHeader("Content-type", "application/json");
-                foreach (RestResponseCookie cookie in Login.cookies)
+                GetAccount();
+                ReasonBlockService reasonBlockService = new ReasonBlockService();
+                reasonBlockService.MemberATE = memberATE;
+                reasonBlockService.Service = Service;
+                reasonBlockService.InitializeReason();
+                reasonBlockService.ShowDialog();
+                if (IsBlockService)
                 {
-                    request.AddCookie(cookie.Name, cookie.Value);
-                }
-                Models.ServiceStatus status = new Models.ServiceStatus();
-                status.serviceStatus = "3";
-                var json = JsonConvert.SerializeObject(status);
-                request.AddHeader("Token", Login.tokenAccount.token);
-                request.AddParameter("application/json", json, ParameterType.RequestBody);
-                System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
-                try
-                {
-                    IRestResponse response = client.Execute(request);
-                    if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        status = JsonConvert.DeserializeObject<Models.ServiceStatus>(response.Content);
-                        MessageBox.Show("El servicio se bloqueo exitosamente", "Bloqueo Exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
-                        ServiceConsultation serviceConsultation = new ServiceConsultation();
-                        serviceConsultation.Show();
-                        Close();
-                    }
-                    else
-                    {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
-                        {
-                            Login login = new Login();
-                            login.Show();
-                            Close();
-                        }
-                    }
-                }
-                catch (Exception exception)
-                {
-                    MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    TelegramBot.SendToTelegram(exception);
-                    LogException.Log(this, exception);
                     ServiceConsultation serviceConsultation = new ServiceConsultation();
                     serviceConsultation.Show();
+                    IsBlockService = false;
                     Close();
                 }
+                else
+                {
+                    if (IsErrorBlockService)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        IsErrorBlockService = false;
+                        Close();
+                    }
+                }
+            }
+        }
+
+        private void GetAccount()
+        {
+            RestClient client = new RestClient(urlBase);
+            client.Timeout = -1;
+            string urlAccount = "accounts/" + Service.idMemberATE;
+            memberATE = new Models.MemberATE();
+            var request = new RestRequest(urlAccount, Method.GET);
+            foreach (RestResponseCookie cookie in Login.cookies)
+            {
+                request.AddCookie(cookie.Name, cookie.Value);
+            }
+            request.AddHeader("Token", Login.tokenAccount.token);
+            System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+            try
+            {
+                IRestResponse response = client.Execute(request);
+                if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    memberATE = JsonConvert.DeserializeObject<Models.MemberATE>(response.Content);
+                }
+                else
+                {
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        Close();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                TelegramBot.SendToTelegram(exception);
+                LogException.Log(this, exception);
+                ServiceConsultation serviceConsultation = new ServiceConsultation();
+                serviceConsultation.Show();
+                Close();
             }
         }
 

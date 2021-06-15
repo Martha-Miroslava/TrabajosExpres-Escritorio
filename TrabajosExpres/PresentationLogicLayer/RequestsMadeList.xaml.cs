@@ -289,7 +289,8 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void RequestSentItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            try { 
+            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= requestsSent.Count)
+            {
                 Models.RequestSent requestSelect = requestsSent[itemSelect];
                 if (!object.ReferenceEquals(null, requestSelect))
                 {
@@ -299,10 +300,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     requestMadeConsultation.Show();
                     Close();
                 }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
 

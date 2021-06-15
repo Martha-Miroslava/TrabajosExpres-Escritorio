@@ -316,7 +316,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ServiceItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            try
+            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= services.Count)
             {
                 Models.Service serviceSelect = services[itemSelect];
                 if (!object.ReferenceEquals(null, serviceSelect))
@@ -327,10 +327,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     serviceBlock.Show();
                     Close();
                 }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
     }

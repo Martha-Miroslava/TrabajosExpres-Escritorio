@@ -162,7 +162,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ReportItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            try
+            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= reports.Count)
             {
                 Models.ReportReceived reportSelect = reports[itemSelect];
                 if (!object.ReferenceEquals(null, reportSelect))
@@ -172,10 +172,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     report.InitializeReport();
                     report.ShowDialog();
                 }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
     }

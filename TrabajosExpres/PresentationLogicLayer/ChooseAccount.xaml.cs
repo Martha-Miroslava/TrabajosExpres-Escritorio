@@ -48,6 +48,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    AccountActivate.IsRegister = true;
                     Models.Token token = JsonConvert.DeserializeObject<Models.Token>(response.Content);
                     Login.cookies = response.Cookies;
                     Login.tokenAccount.token = token.token;

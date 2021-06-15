@@ -79,11 +79,11 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                    Content="Datos"></Button>
+                    Content="Datos" Click="DataButtonClicked"></Button>
                 <Button Grid.Column="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                    Content="Galería"></Button>
+                    Content="Galería" Click="GalleryButtonClicked"></Button>
             </Grid>
-            <Grid Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid x:Name="GridData"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
@@ -179,6 +179,7 @@
                     </Grid>
                 </Grid>
             </Grid>
+            <Grid x:Name="GridGallery" Grid.Row="3" Grid.Column="1"/>
         </Grid>
 
         <Grid Width="68" x:Name="GridMenu" HorizontalAlignment="Left" Background="DarkBlue">

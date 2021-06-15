@@ -162,7 +162,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ReportItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= reports.Count)
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < reports.Count)
             {
                 Models.ReportReceived reportSelect = reports[itemSelect];
                 if (!object.ReferenceEquals(null, reportSelect))

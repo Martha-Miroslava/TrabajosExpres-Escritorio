@@ -309,8 +309,24 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     if (isEditImage)
                     {
-                        DeleteResource();
-                        if (isDeleteImage)
+                        if (Resource.routeSave != null)
+                        {
+                            DeleteResource();
+                            if (isDeleteImage)
+                            {
+                                CreateResourceFromInputData();
+                                RegisterResource();
+                                if (isRegisterImage)
+                                {
+                                    MessageBox.Show("El servicio se modificó exitosamente", "Modificación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    ServiceOffered serviceOffered = new ServiceOffered();
+                                    serviceOffered.InitializeMenu();
+                                    serviceOffered.Show();
+                                    Close();
+                                }
+                            }
+                        }
+                        else
                         {
                             CreateResourceFromInputData();
                             RegisterResource();

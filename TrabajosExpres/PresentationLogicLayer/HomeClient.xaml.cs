@@ -324,7 +324,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ServiceItemsControlMouseDoubleClicked(object listViewService, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((System.Windows.Controls.ListView)listViewService).SelectedIndex;
-            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= services.Count)
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < services.Count)
             {
                 Models.Service serviceSelect = services[itemSelect];
                 if (!object.ReferenceEquals(null, serviceSelect))

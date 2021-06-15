@@ -65,6 +65,25 @@ namespace TrabajosExpres.PresentationLogicLayer
             ButtonOpenMenu.Visibility = Visibility.Visible;
         }
 
+
+        private void GalleryButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UserControl userControl = null;
+            GalleryService gallery = new GalleryService();
+            GalleryService.Service = ServiceChoose;
+            gallery.GetResources();
+            userControl = gallery;
+            GridData.IsEnabled = false;
+            GridGallery.Children.Add(userControl);
+
+        }
+
+        private void DataButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            GridGallery.Children.Clear();
+            GridData.IsEnabled = true;
+        }
+
         private Models.Resource GetResource(int idService)
         {
             Models.Resource resourceMain = new Models.Resource();

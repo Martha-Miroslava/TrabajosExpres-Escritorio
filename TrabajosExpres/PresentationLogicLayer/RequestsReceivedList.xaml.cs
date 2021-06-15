@@ -248,7 +248,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void RequestReceivedItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= requestsReceived.Count)
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < requestsReceived.Count)
             {
                 Models.RequestReceived requestSelect = requestsReceived[itemSelect];
                 if (!object.ReferenceEquals(null, requestSelect))

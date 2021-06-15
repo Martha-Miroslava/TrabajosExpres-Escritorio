@@ -290,7 +290,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void AccountItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            if (itemSelect > Number.NumberValue(NumberValues.ONE) && itemSelect <= memberATEs.Count)
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < memberATEs.Count)
             {
                 Models.MemberATE memberATESelect = memberATEs[itemSelect];
                 if (!object.ReferenceEquals(null, memberATESelect))

@@ -115,6 +115,24 @@ namespace TrabajosExpres.PresentationLogicLayer
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
+        private void GalleryButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UserControl userControl = null;
+            Gallery gallery = new Gallery();
+            Gallery.Service = Service;
+            gallery.GetResources();
+            userControl = gallery;
+            GridData.IsEnabled = false;
+            GridGallery.Children.Add(userControl);
+            
+        }
+
+        private void DataButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            GridGallery.Children.Clear();
+            GridData.IsEnabled = true;
+        }
+
         private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
@@ -246,8 +264,11 @@ namespace TrabajosExpres.PresentationLogicLayer
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
                 }
                 return resourceMain;
             }

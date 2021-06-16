@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using System.Windows.Media.Imaging;
 using System.IO;

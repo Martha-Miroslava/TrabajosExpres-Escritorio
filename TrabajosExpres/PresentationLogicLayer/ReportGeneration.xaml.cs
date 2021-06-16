@@ -5,7 +5,7 @@ using System.Windows;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Windows.Controls;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.IO;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -187,7 +187,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             try
             {
-                string filename = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\Utils\\report.xlsx"));
+                string filename = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\PresentationLogicLayer\\Utils\\report.xlsx"));
                 DateTime date = DateTime.Now;
                 var excelApp = new Excel.Application();
                 excelApp.Visible = false;

@@ -5,7 +5,7 @@ namespace TrabajosExpres.Models
     {
         public int idChat { get; set; }
         public int idService { get; set; }
-        public int idMemberATEClient { get; set; }
+        public int idMemberATE { get; set; }
         public int idRequest { get; set; }
     }
 }

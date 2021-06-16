@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Windows.Media.Imaging;
@@ -263,6 +263,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
                         image.StreamSource = memoryStream;
+                        image.DecodePixelWidth = 100;
+                        image.DecodePixelHeight = 100;
                         image.EndInit();
                     }
                 }

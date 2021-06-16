@@ -252,11 +252,11 @@
     <Compile Include="PresentationLogicLayer\QualifyClient.xaml.cs">
       <DependentUpon>QualifyClient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\LogException.cs" />
-    <Compile Include="Utils\Number.cs" />
-    <Compile Include="Utils\Segurity.cs" />
-    <Compile Include="Utils\ServiceTemplate.cs" />
-    <Compile Include="Utils\TelegramBot.cs" />
+    <Compile Include="PresentationLogicLayer\Utils\LogException.cs" />
+    <Compile Include="PresentationLogicLayer\Utils\Number.cs" />
+    <Compile Include="PresentationLogicLayer\Utils\Segurity.cs" />
+    <Compile Include="PresentationLogicLayer\Utils\ServiceTemplate.cs" />
+    <Compile Include="PresentationLogicLayer\Utils\TelegramBot.cs" />
     <Compile Include="Validators\MemberATEValidator.cs" />
     <Compile Include="Validators\ChatValidator.cs" />
     <Compile Include="Validators\CityValidator.cs" />

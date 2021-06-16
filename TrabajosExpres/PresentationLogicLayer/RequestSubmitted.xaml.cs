@@ -311,6 +311,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     serviceRegistry.Show();
                     Close();
                     break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
+                    Close();
+                    break;
                 default:
                     break;
             }

@@ -240,6 +240,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     requestReceivedList.Show();
                     Close();
                     break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
+                    Close();
+                    break;
                 default:
                     break;
             }

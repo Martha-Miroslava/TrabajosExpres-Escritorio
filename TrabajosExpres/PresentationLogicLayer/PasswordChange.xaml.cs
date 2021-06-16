@@ -259,6 +259,13 @@ namespace TrabajosExpres.PresentationLogicLayer
                         commentClient.Show();
                         Close();
                     }
+                    else
+                    {
+                        ReportGeneration reportGeneration = new ReportGeneration();
+                        reportGeneration.InitializeMenu();
+                        reportGeneration.Show();
+                        Close();
+                    }
                     break;
                 default:
                     break;

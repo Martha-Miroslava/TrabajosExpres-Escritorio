@@ -5,7 +5,7 @@ using System.Windows;
 using TrabajosExpres.Validators;
 using FluentValidation.Results;
 using Newtonsoft.Json;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {

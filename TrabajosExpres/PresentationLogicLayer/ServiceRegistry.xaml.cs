@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using RestSharp;
 using System.Windows;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.Windows.Controls;

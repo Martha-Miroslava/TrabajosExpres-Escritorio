@@ -1,5 +1,5 @@
 ﻿
-namespace TrabajosExpres.Utils
+namespace TrabajosExpres.PresentationLogicLayer.Utils
 {
     public class ServiceTemplate
     {

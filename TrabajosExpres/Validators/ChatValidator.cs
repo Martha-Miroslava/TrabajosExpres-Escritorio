@@ -9,7 +9,7 @@ namespace TrabajosExpres.Validators
         {
             RuleFor(chat => chat.idService).NotEmpty().GreaterThan(0);
 
-            RuleFor(chat => chat.idMemberATEClient).NotEmpty().GreaterThan(0);
+            RuleFor(chat => chat.idMemberATE).NotEmpty().GreaterThan(0);
 
             RuleFor(chat => chat.idRequest).NotEmpty().GreaterThan(0);
         }

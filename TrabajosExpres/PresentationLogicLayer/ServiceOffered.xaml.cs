@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;

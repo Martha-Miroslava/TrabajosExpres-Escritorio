@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrabajosExpres.Utils
+namespace TrabajosExpres.PresentationLogicLayer.Utils
 {
     /// <summary>
     /// This class is for passwords

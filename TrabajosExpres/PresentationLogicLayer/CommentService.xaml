@@ -1,0 +1,58 @@
+﻿<Window x:Class="TrabajosExpres.PresentationLogicLayer.CommentService"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TrabajosExpres.PresentationLogicLayer"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+		Icon="/PresentationLogicLayer/Images/IconSystem.png"
+        WindowStyle="None"
+		TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+		TextElement.FontWeight="Regular"
+		TextElement.FontSize="15"
+		TextOptions.TextFormattingMode="Ideal"
+		TextOptions.TextRenderingMode="Auto"
+		Background="{DynamicResource MaterialDesignPaper}"
+		FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Comentarios" Height="500" Width="550">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Rectangle Grid.Row="0" Fill="DarkMagenta"/>
+        <TextBlock Grid.Row="0" Text="Comentarios" Style="{StaticResource MaterialDesignHeadline5TextBlock}" Foreground="White"
+				       VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Center"  FontWeight="Bold"/>
+
+        <ListView  Grid.Row="1" x:Name="ListViewComment" Margin="40" ItemsSource="{Binding Items2}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border x:Name="Border" Padding="5" BorderThickness="0 0 0 5" Width="Auto" BorderBrush="{DynamicResource MaterialDesignDivider}">
+                        <Grid HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Name}" Width="Auto" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="15" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                            <Label Content="Comentario: " VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" FontSize="15" HorizontalAlignment="Right" FontFamily="Arial"/>
+                            <TextBlock Text="{Binding Comment}" Width="Auto" Grid.Column="1" Grid.Row="1" FontSize="15" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Label Content="Calificación: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" FontSize="15" Height="35" FontFamily="Arial"/>
+                            <materialDesign:RatingBar IsReadOnly="True" Value="{Binding Rating}" Grid.Column="1" Grid.Row="2" Height="50"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Button Grid.Row="2"  FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+	        VerticalAlignment="Top" Margin="0 20 0 0" HorizontalAlignment="Center" Content="Salir" Width="105" Click="CloseButtonClicked"/>
+    </Grid>
+</Window>

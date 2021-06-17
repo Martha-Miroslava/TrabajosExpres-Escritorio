@@ -47,30 +47,30 @@
 
 			<Label Content="Código de recuperación: " VerticalAlignment="Top" Grid.Row="1" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
 			<TextBox Name="TextBoxCodeConfirmation" Height="30" Grid.ColumnSpan="2" Grid.Row="1" Grid.Column="1"  TextWrapping="NoWrap" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Caracteres de 0-9."
-					 MaxLength="6" materialDesign:TransitionAssist.DisableTransitions="True"/>
+					 MaxLength="7" materialDesign:TransitionAssist.DisableTransitions="True"/>
 
 			<Label Content="Contraseña: " VerticalAlignment="Top" Grid.Row="2" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-			<PasswordBox Name="PasswordBoxPassword" Height="30" Grid.Row="2" Grid.Column="1" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Máximo 15 caracteres"
-						 MaxLength="15" materialDesign:TransitionAssist.DisableTransitions="True"/>
-			<Image Grid.Column="2" Grid.Row="2"
-				 Name="imgEyePassword"
-				 Stretch="Fill"
-				 Width="23" Height="23"
+            <TextBox Height="35" Grid.Row="2" Grid.Column="1" x:Name="TextBoxNewPassword"  MinWidth="90"  VerticalAlignment="Top"  IsReadOnly="True" FontFamily="Arial" Visibility="Hidden"/>
+            <PasswordBox Grid.Row="2" Grid.Column="1" x:Name="PasswordBoxNewPassword" VerticalAlignment="Top" FontFamily="Arial" Visibility="Visible" Height="35"
+                             materialDesign:HintAssist.HelperText="Máximo 15 caracteres" MinWidth="90" Margin="0,0,10,0"/>
+            <Image Grid.Column="2" Grid.Row="2"
+				 Stretch="Fill" 
+				 Width="23" Height="23" MouseEnter="PasswordImageMouseEnter" MouseLeave="PasswordImageMouseLeave"
 				 VerticalAlignment="Center" HorizontalAlignment="Left" Source="/PresentationLogicLayer/Images/eyePassword.png"/>
 
 			<Label Content="Confirmación de contraseña: " VerticalAlignment="Top" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Right" Height="35" FontFamily="Arial"/>
-			<PasswordBox Name="PasswordBoxPasswordConfirmation" Height="30" Grid.Row="3" Grid.Column="1" FontSize="15" VerticalAlignment="Top" Width="200" HorizontalAlignment="Left" materialDesign:HintAssist.HelperText="Máximo 15 caracteres"
-						MaxLength="15" materialDesign:TransitionAssist.DisableTransitions="True" />
-			<Image Grid.Column="2" Grid.Row="3"
-				 Name="imgEyePasswordConfirmation"
+            <TextBox Height="35" Grid.Row="3" Grid.Column="1" x:Name="TextBoxComfirmationPassword"  MinWidth="90"  VerticalAlignment="Top"  IsReadOnly="True" FontFamily="Arial" Visibility="Hidden"/>
+            <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="PasswordBoxComfirmationPassword" VerticalAlignment="Top" FontFamily="Arial" Visibility="Visible" Height="35"
+                             materialDesign:HintAssist.HelperText="Máximo 15 caracteres" MinWidth="90" Margin="0,0,10,0"/>
+            <Image Grid.Column="2" Grid.Row="3"
 				 Stretch="Fill"
-				 Width="23" Height="23"
+				 Width="23" Height="23" MouseLeave="ConfirmationPasswordImageMouseLeave" MouseEnter="ConfirmationPasswordImageMouseEnter"
 				 VerticalAlignment="Center" HorizontalAlignment="Left" Source="/PresentationLogicLayer/Images/eyePassword.png"/>
 
 			<Button Grid.Row="4" Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Enviar Código"></Button>
-			<Button Grid.Row="4" Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
-			Content="Aceptar"/>
+				VerticalAlignment="Center" HorizontalAlignment="Center" Content="Enviar Código" Click="SendEmailButtonClicked"></Button>
+			<Button x:Name="ButtonAccept" Grid.Row="4" IsEnabled="false" Grid.Column="1" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}"
+			Content="Aceptar" Click="AcceptButtonClicked"/>
 		</Grid>
 	</Grid>
 </Window>

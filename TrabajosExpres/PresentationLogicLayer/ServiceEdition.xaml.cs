@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -309,8 +309,24 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     if (isEditImage)
                     {
-                        DeleteResource();
-                        if (isDeleteImage)
+                        if (Resource.routeSave != null)
+                        {
+                            DeleteResource();
+                            if (isDeleteImage)
+                            {
+                                CreateResourceFromInputData();
+                                RegisterResource();
+                                if (isRegisterImage)
+                                {
+                                    MessageBox.Show("El servicio se modificó exitosamente", "Modificación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
+                                    ServiceOffered serviceOffered = new ServiceOffered();
+                                    serviceOffered.InitializeMenu();
+                                    serviceOffered.Show();
+                                    Close();
+                                }
+                            }
+                        }
+                        else
                         {
                             CreateResourceFromInputData();
                             RegisterResource();
@@ -615,6 +631,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
                     Close();
                     break;
                 default:

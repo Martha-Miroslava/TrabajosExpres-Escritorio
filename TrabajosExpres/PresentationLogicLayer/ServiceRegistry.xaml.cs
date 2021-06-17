@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using RestSharp;
 using System.Windows;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.Windows.Controls;
@@ -238,6 +238,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     RequestsReceivedList requestReceivedList = new RequestsReceivedList();
                     requestReceivedList.InitializeMenu();
                     requestReceivedList.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
                     Close();
                     break;
                 default:

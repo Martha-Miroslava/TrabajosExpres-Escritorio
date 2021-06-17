@@ -2,7 +2,7 @@
 using System.Windows;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {

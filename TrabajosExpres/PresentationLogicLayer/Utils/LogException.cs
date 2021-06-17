@@ -3,7 +3,7 @@ using System.IO;
 using System.Diagnostics;
 
 
-namespace TrabajosExpres.Utils
+namespace TrabajosExpres.PresentationLogicLayer.Utils
 {
     class LogException
     {

@@ -15,7 +15,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Consultar solicitud hecha" Height="500" Width="600">
+        Title="Consultar solicitud hecha" Height="600" Width="600">
     <Window.Resources>
         <Storyboard x:Key="OpenMenu">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="GridMenu">
@@ -38,7 +38,17 @@
             </ThicknessAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
-    
+
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenMenu">
+            <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonCloseMenu">
+            <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
+        </EventTrigger>
+    </Window.Triggers>
+
+
     <Grid>
         <Grid Name="GridMain" Margin="68 0 0 0">
             <Grid.RowDefinitions>
@@ -66,7 +76,7 @@
             </Grid>
             <Image Grid.Column="0" Margin="30 0 0 0" Height="300" Grid.Row="1" Source="/PresentationLogicLayer/Images/Login.png" HorizontalAlignment="Center" VerticalAlignment="Center"></Image>
 
-            <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkMagenta"
+            <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkMagenta" BorderBrush="DarkMagenta"
 				VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,20,0" Height="40" Click="ActiveAccountButtonClicked">
                 <TextBlock Text="Activar Cuenta Empleado" FontSize="14" TextWrapping="Wrap" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"></TextBlock>
             </Button>
@@ -110,7 +120,7 @@
                     </ListViewItem>
                     <ListViewItem Name="ListViewItemChat" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Message" Height="30" Width="30" Margin="10"/>
+                            <materialDesign:PackIcon Kind="ChatProcessing" Height="30" Width="30" Margin="10"/>
                             <TextBlock Text="Chat" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
@@ -124,6 +134,13 @@
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="AccountHardHat" Height="30" Width="30" Margin="10"/>
                             <TextBlock Text="Registrase como Empleado" FontSize="11" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+
+                    <ListViewItem Name="ListViewItemCommentTracing" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon  Kind="CommentCheck" Height="30" Width="30" Margin="10"/>
+                            <TextBlock  Text="Comentarios" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>

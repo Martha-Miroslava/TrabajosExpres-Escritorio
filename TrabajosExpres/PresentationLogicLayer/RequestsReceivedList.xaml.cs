@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows.Media.Imaging;
 using System.IO;
 
@@ -248,7 +248,8 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void RequestReceivedItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            try {
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < requestsReceived.Count)
+            {
                 Models.RequestReceived requestSelect = requestsReceived[itemSelect];
                 if (!object.ReferenceEquals(null, requestSelect))
                 {
@@ -268,10 +269,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     }
                     Close();
                 }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
 
@@ -364,6 +361,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
                         image.StreamSource = memoryStream;
+                        image.DecodePixelWidth = 100;
+                        image.DecodePixelHeight = 100;
                         image.EndInit();
                     }
                 }
@@ -434,6 +433,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
                     Close();
                     break;
                 default:

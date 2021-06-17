@@ -1,5 +1,5 @@
 ﻿
-namespace TrabajosExpres.Utils
+namespace TrabajosExpres.PresentationLogicLayer.Utils
 {
     /// <summary>
     /// This is an enumeration of numbers

@@ -79,11 +79,11 @@
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                    Content="Datos"></Button>
+                    Content="Datos" Click="DataButtonClicked"></Button>
                 <Button Grid.Column="1" FontSize="16" Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                    Content="Galería"></Button>
+                    Content="Galería" Click="GalleryButtonClicked"></Button>
             </Grid>
-            <Grid Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Grid x:Name="GridData"  Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
@@ -133,10 +133,11 @@
                         <RowDefinition></RowDefinition>
                         <RowDefinition></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Image Name="ImageService" Grid.Row="0" Height="150" Width="150" Margin="0,0,0,50"/>
+                    <Image Name="ImageService" Grid.Row="0" Height="150" Width="150" Margin="0,0,0,40"/>
 
                     <Grid Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                             <RowDefinition></RowDefinition>
                         </Grid.RowDefinitions>
@@ -154,7 +155,7 @@
                                 <Label Content="Solicitar" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="3,0,3,1" Grid.RowSpan="2"></Label>
                             </Grid>
                         </Button>
-                        <Button x:Name="ButtonReport" IsEnabled="false" Height="35" Margin="0,40,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="ReportButtonClicked">
+                        <Button x:Name="ButtonReport" IsEnabled="false" Height="35" Margin="0,30,0,0" Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="ReportButtonClicked">
                             <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>
@@ -164,9 +165,21 @@
                                 <Label Content="Reportar" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
                             </Grid>
                         </Button>
+
+                        <Button x:Name="ButtonComment" Height="35" Grid.Row="3" Margin="0,35,0,0" VerticalAlignment="Bottom" HorizontalAlignment="Center" Style="{StaticResource MaterialDesignRaisedDarkButton}" Background="DarkViolet" BorderBrush="DarkViolet" Click="CommentButtonClicked">
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="100"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="Comment" Height="25" Width="25" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <Label Content="Comentarios" VerticalContentAlignment="Top" Grid.Column="1" FontSize="16" Foreground="White" FontFamily="Arial" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.RowSpan="2"></Label>
+                            </Grid>
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>
+            <Grid x:Name="GridGallery" Grid.Row="3" Grid.Column="1"/>
         </Grid>
 
         <Grid Width="68" x:Name="GridMenu" HorizontalAlignment="Left" Background="DarkBlue">
@@ -207,7 +220,7 @@
                     </ListViewItem>
                     <ListViewItem Name="ListViewItemChat" Height="60">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Message" Height="30" Width="30" Margin="10"/>
+                            <materialDesign:PackIcon Kind="ChatProcessing" Height="30" Width="30" Margin="10"/>
                             <TextBlock Text="Chat" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
@@ -221,6 +234,12 @@
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="AccountHardHat" Height="30" Width="30" Margin="10"/>
                             <TextBlock Text="Registrase como Empleado" FontSize="11" VerticalAlignment="Center"  Margin="2 10"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Name="ListViewItemCommentTracing" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon  Kind="CommentCheck" Height="30" Width="30" Margin="10"/>
+                            <TextBlock  Text="Comentarios" VerticalAlignment="Center"  Margin="2 10"/>
                         </StackPanel>
                     </ListViewItem>
                 </ListView>

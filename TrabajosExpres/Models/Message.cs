@@ -7,7 +7,6 @@ namespace TrabajosExpres.Models
         public int idMessage { get; set; }
         public string message { get; set; }
         public int idChat { get; set; }
-        public DateTime dateTime { get; set; }
-        public int memberATEType { get; set; }
+        public int memberType { get; set; }
     }
 }

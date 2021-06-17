@@ -2,7 +2,7 @@
 using System.IO;
 using Telegram.Bot;
 
-namespace TrabajosExpres.Utils
+namespace TrabajosExpres.PresentationLogicLayer.Utils
 {
     class TelegramBot
     {

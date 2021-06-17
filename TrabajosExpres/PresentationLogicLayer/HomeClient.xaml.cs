@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Windows.Media.Imaging;
@@ -57,29 +57,25 @@ namespace TrabajosExpres.PresentationLogicLayer
                 }
                 else
                 {
-                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                    if(response.StatusCode != System.Net.HttpStatusCode.NotFound)
                     {
-                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
-                    {
-                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                         MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                            || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
-                        {
-                            Login login = new Login();
-                            login.Show();
-                            Close();
-                        }
+                    }
+                    if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                        || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
+                    {
+                        Login login = new Login();
+                        login.Show();
+                        Close();
                     }
                 }
             }
             catch (Exception exception)
             {
-                MessageBox.Show("No se pudo obtener información de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
+                MessageBox.Show("No pudo obtener servicios de la base de datos. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -190,7 +186,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 {
                     if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
-                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                     else
                     {
@@ -283,6 +279,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
                         image.StreamSource = memoryStream;
+                        image.DecodePixelWidth = 100;
+                        image.DecodePixelHeight = 100;
                         image.EndInit();
                     }
                 }
@@ -328,7 +326,8 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void ServiceItemsControlMouseDoubleClicked(object listViewService, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((System.Windows.Controls.ListView)listViewService).SelectedIndex;
-            try { 
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < services.Count)
+            {
                 Models.Service serviceSelect = services[itemSelect];
                 if (!object.ReferenceEquals(null, serviceSelect))
                 {
@@ -342,10 +341,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     service.Show();
                     Close();
                 }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
 
@@ -382,6 +377,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     HomeEmployee servicesOfferedList = new HomeEmployee();
                     servicesOfferedList.InitializeMenu();
                     servicesOfferedList.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
                     Close();
                     break;
                 default:

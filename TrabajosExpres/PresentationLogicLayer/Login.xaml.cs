@@ -5,7 +5,7 @@ using System.Windows;
 using TrabajosExpres.Validators;
 using FluentValidation.Results;
 using Newtonsoft.Json;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 
 namespace TrabajosExpres.PresentationLogicLayer
 {
@@ -24,8 +24,9 @@ namespace TrabajosExpres.PresentationLogicLayer
             InitializeComponent();
         }
 
-        private void LoginButtonClicked(object sender, RoutedEventArgs e)
+        private void LoginButtonClicked(object sender, RoutedEventArgs routedEvent)
         {
+            AccountActivate.IsRegister = false;
             CreateLoginFromInputData();
             if (ValidateDataLogin())
             {
@@ -114,7 +115,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             return dataValidationResult.IsValid;
         }
 
-        private void CreateAccountButtonClicked(object sender, RoutedEventArgs e)
+        private void CreateAccountButtonClicked(object sender, RoutedEventArgs routedEvent)
         {
             AccountCreation accountCreation = new AccountCreation();
             accountCreation.InitializeState();
@@ -122,7 +123,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void RecoverAccountButtonClicked(object sender, RoutedEventArgs e)
+        private void RecoverAccountButtonClicked(object sender, RoutedEventArgs routedEvent)
         {
             AccountRecover accountRecover = new AccountRecover();
             accountRecover.Show();

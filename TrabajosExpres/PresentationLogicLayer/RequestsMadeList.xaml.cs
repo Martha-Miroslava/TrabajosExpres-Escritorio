@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Windows.Media.Imaging;
@@ -263,6 +263,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
                         image.StreamSource = memoryStream;
+                        image.DecodePixelWidth = 100;
+                        image.DecodePixelHeight = 100;
                         image.EndInit();
                     }
                 }
@@ -289,7 +291,8 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void RequestSentItemsControlMouseDoubleClicked(object listViewRequests, System.Windows.Input.MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewRequests).SelectedIndex;
-            try { 
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < requestsSent.Count)
+            {
                 Models.RequestSent requestSelect = requestsSent[itemSelect];
                 if (!object.ReferenceEquals(null, requestSelect))
                 {
@@ -299,10 +302,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     requestMadeConsultation.Show();
                     Close();
                 }
-            }
-            catch (ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
 
@@ -333,6 +332,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     AccountActivate accountActivate = new AccountActivate();
                     accountActivate.InitializeMenu();
                     accountActivate.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
                     Close();
                     break;
                 default:

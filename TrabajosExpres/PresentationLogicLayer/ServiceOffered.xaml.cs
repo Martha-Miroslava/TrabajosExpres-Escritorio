@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -113,6 +113,24 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
+        }
+
+        private void GalleryButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UserControl userControl = null;
+            Gallery gallery = new Gallery();
+            Gallery.Service = Service;
+            gallery.GetResources();
+            userControl = gallery;
+            GridData.IsEnabled = false;
+            GridGallery.Children.Add(userControl);
+            
+        }
+
+        private void DataButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            GridGallery.Children.Clear();
+            GridData.IsEnabled = true;
         }
 
         private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
@@ -246,8 +264,11 @@ namespace TrabajosExpres.PresentationLogicLayer
                 }
                 else
                 {
-                    Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    TelegramBot.SendToTelegram(responseError.error);
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
+                    {
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        TelegramBot.SendToTelegram(responseError.error);
+                    }
                 }
                 return resourceMain;
             }
@@ -396,6 +417,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
                     Close();
                     break;
                 default:

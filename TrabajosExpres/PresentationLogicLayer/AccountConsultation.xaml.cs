@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using Newtonsoft.Json;
 using RestSharp;
 using System.Windows.Input;
@@ -264,6 +264,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                         image.BeginInit();
                         image.CacheOption = BitmapCacheOption.OnLoad;
                         image.StreamSource = memoryStream;
+                        image.DecodePixelWidth = 100;
+                        image.DecodePixelHeight = 100;
                         image.EndInit();
                     }
                 }
@@ -290,7 +292,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void AccountItemsControlMouseDoubleClicked(object listViewService, MouseButtonEventArgs mouseButtonEventArgs)
         {
             int itemSelect = ((ListView)listViewService).SelectedIndex;
-            try
+            if (itemSelect >= Number.NumberValue(NumberValues.ZERO) && itemSelect < memberATEs.Count)
             {
                 Models.MemberATE memberATESelect = memberATEs[itemSelect];
                 if (!object.ReferenceEquals(null, memberATESelect))
@@ -301,10 +303,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     accountBlock.Show();
                     Close();
                 }
-            }
-            catch(ArgumentOutOfRangeException exception)
-            {
-                LogException.Log(this, exception);
             }
         }
     }

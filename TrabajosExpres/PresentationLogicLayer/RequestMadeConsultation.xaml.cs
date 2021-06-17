@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Collections.Generic;
@@ -312,6 +312,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     AccountActivate accountActivate = new AccountActivate();
                     accountActivate.InitializeMenu();
                     accountActivate.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
                     Close();
                     break;
                 default:

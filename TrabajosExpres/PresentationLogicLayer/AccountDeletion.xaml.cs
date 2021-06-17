@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using RestSharp;
@@ -30,6 +30,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TextBlockMenuRequest.Text = "Solicitudes Enviadas";
                 TextBlockMenuAccount.Text = "Registrase como Empleado";
                 PackIconActiveAccount.Kind = MaterialDesignThemes.Wpf.PackIconKind.AccountHardHat;
+                TextBlockCommentTracing.Text = "Comentarios";
+                PackIconCommentTracing.Kind = MaterialDesignThemes.Wpf.PackIconKind.CommentCheck;
             }
             if (memberATE != null)
             {
@@ -203,6 +205,22 @@ namespace TrabajosExpres.PresentationLogicLayer
                         ServiceRegistry serviceRegistry = new ServiceRegistry();
                         serviceRegistry.InitializeMenu();
                         serviceRegistry.Show();
+                        Close();
+                    }
+                    break;
+                case "ListViewItemCommentTracing":
+                    if (Login.tokenAccount.memberATEType == Number.NumberValue(NumberValues.ONE))
+                    {
+                        CommentClient commentClient = new CommentClient();
+                        commentClient.InitializeMenu();
+                        commentClient.Show();
+                        Close();
+                    }
+                    else
+                    {
+                        ReportGeneration reportGeneration = new ReportGeneration();
+                        reportGeneration.InitializeMenu();
+                        reportGeneration.Show();
                         Close();
                     }
                     break;

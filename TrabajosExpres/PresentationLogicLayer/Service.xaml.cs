@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows.Media.Imaging;
 using System.IO;
 
@@ -20,6 +20,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private Models.Resource resource;
         private Models.City city;
         private Models.State state;
+        public static bool IsError { get; set; }
 
         public Service()
         {
@@ -52,16 +53,35 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
+
+
+        private void GalleryButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            UserControl userControl = null;
+            GalleryService gallery = new GalleryService();
+            GalleryService.Service = ServiceChoose;
+            gallery.GetResources();
+            userControl = gallery;
+            GridData.IsEnabled = false;
+            GridGallery.Children.Add(userControl);
+
+        }
+
+        private void DataButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            GridGallery.Children.Clear();
+            GridData.IsEnabled = true;
         }
 
         private Models.Resource GetResource(int idService)
@@ -239,6 +259,23 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
+        private void CommentButtonClicked(object sender, RoutedEventArgs routedEventArgs)
+        {
+            CommentService comment = new CommentService();
+            comment.ServiceReceived = ServiceChoose;
+            comment.InitializeComment();
+            if (IsError)
+            {
+                Login login = new Login();
+                login.Show();
+                Close();
+            }
+            else
+            {
+                comment.ShowDialog();
+            }
+        }
+
         private void RequestButtonClicked(object sender, RoutedEventArgs routedEventArgs)
         {
             Request request = new Request();
@@ -284,6 +321,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     break;
                 case "ListViewItemServiceRegistration":
                     /*Ventana para activar la ventana*/
+                    break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
+                    Close();
                     break;
                 default:
                     break;

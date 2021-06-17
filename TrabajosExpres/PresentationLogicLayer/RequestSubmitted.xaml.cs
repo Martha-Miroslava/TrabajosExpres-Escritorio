@@ -2,7 +2,7 @@
 using System.Windows;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using System.Windows.Media.Imaging;
 using System.IO;
 using System.Windows.Controls;
@@ -309,6 +309,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     ServiceRegistry serviceRegistry = new ServiceRegistry();
                     serviceRegistry.InitializeMenu();
                     serviceRegistry.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    ReportGeneration reportGeneration = new ReportGeneration();
+                    reportGeneration.InitializeMenu();
+                    reportGeneration.Show();
                     Close();
                     break;
                 default:

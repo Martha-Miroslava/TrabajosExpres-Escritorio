@@ -5,7 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Newtonsoft.Json;
 using RestSharp;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using TrabajosExpres.Validators;
 using FluentValidation.Results;
 
@@ -184,6 +184,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     AccountActivate accountActivate = new AccountActivate();
                     accountActivate.InitializeMenu();
                     accountActivate.Show();
+                    Close();
+                    break;
+                case "ListViewItemCommentTracing":
+                    CommentClient commentClient = new CommentClient();
+                    commentClient.InitializeMenu();
+                    commentClient.Show();
                     Close();
                     break;
                 default:

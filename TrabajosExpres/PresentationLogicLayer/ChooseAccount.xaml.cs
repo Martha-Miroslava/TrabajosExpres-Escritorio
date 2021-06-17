@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using RestSharp;
 using System.Windows;
 using System;
@@ -48,6 +48,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    AccountActivate.IsRegister = true;
                     Models.Token token = JsonConvert.DeserializeObject<Models.Token>(response.Content);
                     Login.cookies = response.Cookies;
                     Login.tokenAccount.token = token.token;

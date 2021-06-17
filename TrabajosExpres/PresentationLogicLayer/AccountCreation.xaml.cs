@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Microsoft.Win32;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using TrabajosExpres.Utils;
+using TrabajosExpres.PresentationLogicLayer.Utils;
 using TrabajosExpres.Validators;
 using FluentValidation.Results;
 

@@ -63,11 +63,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 }
                 else
                 {
-                    if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    {
-                        MessageBox.Show("No se encontro servicios. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
+                    if (response.StatusCode != System.Net.HttpStatusCode.NotFound)
                     {
                         Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                         MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);

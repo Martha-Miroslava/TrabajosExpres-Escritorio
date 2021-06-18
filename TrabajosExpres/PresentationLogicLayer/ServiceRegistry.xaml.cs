@@ -266,7 +266,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                         if (isRegisterImage)
                         {
                             MessageBox.Show("El servicio se registró exitosamente", "Registro exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
-                            HomeClient home = new HomeClient();
+                            HomeEmployee home = new HomeEmployee();
                             home.InitializeMenu();
                             home.Show();
                             Close();
@@ -395,7 +395,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                         MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
                         {
-                            HomeClient home = new HomeClient();
+                            HomeEmployee home = new HomeEmployee();
                             home.InitializeMenu();
                             home.Show();
                             Close();
@@ -408,7 +408,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("No se pudo registrar el servicio. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                HomeClient home = new HomeClient();
+                HomeEmployee home = new HomeEmployee();
                 home.InitializeMenu();
                 home.Show();
                 Close();
@@ -449,7 +449,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                         MessageBox.Show("El servicio se registro. Pero " + responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
                         {
-                            HomeClient home = new HomeClient();
+                            HomeEmployee home = new HomeEmployee();
                             home.InitializeMenu();
                             home.Show();
                             Close();
@@ -462,7 +462,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
                 MessageBox.Show("El servicio se registro. Pero  no se pudo registrar el recurso.Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                HomeClient home = new HomeClient();
+                HomeEmployee home = new HomeEmployee();
                 home.InitializeMenu();
                 home.Show();
                 Close();

@@ -24,7 +24,7 @@ namespace TrabajosExpres.Validators
                     .MinimumLength(2).WithState(account => "TextBoxName")
                     .Matches("^[a-zA-ZÁÉÍÓÚáéíóú ]+$").WithState(account => "TextBoxName");
 
-            RuleFor(account => account.lastName).NotEmpty().WithState(account => "TextBoxLastName")
+            RuleFor(account => account.lastname).NotEmpty().WithState(account => "TextBoxLastName")
                     .MaximumLength(150).WithState(account => "TextBoxLastName")
                     .MinimumLength(2).WithState(account => "TextBoxLastName")
                     .Matches("^[a-zA-ZÁÉÍÓÚáéíóú ]+$").WithState(account => "TextBoxLastName");
@@ -56,7 +56,7 @@ namespace TrabajosExpres.Validators
                     .MinimumLength(2).WithState(account => "TextBoxName")
                     .Matches("^[a-zA-ZÁÉÍÓÚáéíóú ]+$").WithState(account => "TextBoxName");
 
-            RuleFor(account => account.lastName).NotEmpty().WithState(account => "TextBoxLastName")
+            RuleFor(account => account.lastname).NotEmpty().WithState(account => "TextBoxLastName")
                     .MaximumLength(150).WithState(account => "TextBoxLastName")
                     .MinimumLength(2).WithState(account => "TextBoxLastName")
                     .Matches("^[a-zA-ZÁÉÍÓÚáéíóú ]+$").WithState(account => "TextBoxLastName");

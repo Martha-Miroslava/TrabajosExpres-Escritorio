@@ -115,7 +115,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                 if (response.StatusCode == System.Net.HttpStatusCode.Created || response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var responseOk = JsonConvert.DeserializeObject<dynamic>(response.Content);
-                    MessageBox.Show("El recurso se eleimino exitosamente", "Eliminación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("El recurso se elimino exitosamente", "Eliminación exitosa", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {

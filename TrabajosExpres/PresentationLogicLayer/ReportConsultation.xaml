@@ -61,7 +61,7 @@
                 <ComboBoxItem Content="Fecha"/>
             </ComboBox>
             <TextBox x:Name="TextBoxSearch" Grid.Column="1" BorderThickness="2" VerticalAlignment="Center" Width="350" Height="33" TextWrapping="NoWrap" materialDesign:HintAssist.Hint="Buscar"
-				    IsEnabled="False" FontFamily="Arial" FontSize="15"  materialDesign:HintAssist.HelperText="La fecha debe ir en el siguiente formato yyyy/MM/dd"/>
+				    IsEnabled="False" FontFamily="Arial" FontSize="15"  materialDesign:HintAssist.HelperText="La fecha debe ir en el siguiente formato yyyy-MM-dd"/>
             <Button x:Name="ButtonSearch" IsEnabled="False" Grid.Column="2" Foreground="White" Content="{materialDesign:PackIcon Magnify}" ToolTip="Buscar un filtro" Style="{StaticResource MaterialDesignRaisedLightButton}" Click="SearchButtonClicked"/>
         </Grid>
 

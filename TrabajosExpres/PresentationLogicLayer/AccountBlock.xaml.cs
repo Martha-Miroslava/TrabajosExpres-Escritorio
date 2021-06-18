@@ -46,7 +46,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             }
 
             TextBoxName.Text = MemberATE.name;
-            TextBoxLastName.Text = MemberATE.lastName;
+            TextBoxLastName.Text = MemberATE.lastname;
             DateTime date = DateTime.ParseExact(MemberATE.dateBirth, "yyyy/MM/dd", null);
             string dateConverted = date.ToString("dd/MM/yyyy");
             TextBoxDateBirth.Text = dateConverted;
@@ -138,7 +138,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             Models.Reason reason = new Models.Reason();
             reason.email = MemberATE.email;
-            reason.messageSend = "Estimado usuario " + MemberATE.lastName + " " + MemberATE.name + ". Le informamos que su cuenta de Trabajos Expres ha sido desbloqueda";
+            reason.messageSend = "Estimado usuario " + MemberATE.lastname + " " + MemberATE.name + ". Le informamos que su cuenta de Trabajos Expres ha sido desbloqueda";
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
             var request = new RestRequest("emails/account", Method.POST);

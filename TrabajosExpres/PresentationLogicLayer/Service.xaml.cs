@@ -319,8 +319,17 @@ namespace TrabajosExpres.PresentationLogicLayer
                     chatList.Show();
                     Close();
                     break;
+                case "ListViewItemRequest":
+                    RequestsMadeList requestsMadeList = new RequestsMadeList();
+                    requestsMadeList.InitializeMenu();
+                    requestsMadeList.Show();
+                    Close();
+                    break;
                 case "ListViewItemServiceRegistration":
-                    /*Ventana para activar la ventana*/
+                    AccountActivate accountActivate = new AccountActivate();
+                    accountActivate.InitializeMenu();
+                    accountActivate.Show();
+                    Close();
                     break;
                 case "ListViewItemCommentTracing":
                     CommentClient commentClient = new CommentClient();

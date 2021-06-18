@@ -235,7 +235,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             memberATE = new Models.MemberATE();
             memberATE.username = TextBoxUserName.Text;
             memberATE.password = PasswordBoxPassword.Password;
-            memberATE.lastName = TextBoxLastName.Text;
+            memberATE.lastname = TextBoxLastName.Text;
             memberATE.name = TextBoxName.Text;
             memberATE.memberATEStatus = 1;
             memberATE.memberATEType = 1;

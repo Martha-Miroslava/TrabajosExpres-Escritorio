@@ -75,15 +75,8 @@ namespace TrabajosExpres.PresentationLogicLayer
                     }
                     else
                     {
-                        if (response.Content.Length == Number.NumberValue(NumberValues.ZERO))
-                        {
-                            MessageBox.Show("Los datos son inválidos", "Datos invalidos", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        }
-                        else
-                        {
-                            Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
+                        Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
                             MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
                     }
                 }
                 catch (Exception exception)

@@ -146,12 +146,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     accountActivate.Show();
                     Close();
                     break;
-                case "ListViewItemService":
-                    HomeEmployee servicesOfferedList = new HomeEmployee();
-                    servicesOfferedList.InitializeMenu();
-                    servicesOfferedList.Show();
-                    Close();
-                    break;
                 default:
                     break;
             }

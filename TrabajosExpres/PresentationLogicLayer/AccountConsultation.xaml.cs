@@ -195,7 +195,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                      new
                      {
                          ImageAccount = image,
-                         Name = memberATE.lastName + " "+ memberATE.name
+                         Name = memberATE.lastname + " "+ memberATE.name
                      }
                  );
             }

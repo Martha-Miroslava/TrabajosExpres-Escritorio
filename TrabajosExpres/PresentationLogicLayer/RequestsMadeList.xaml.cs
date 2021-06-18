@@ -180,7 +180,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                      {
                          ImageService = image,
                          Name = requestSent.idService,
-                         Date = "Fecha: " + requestSent.time,
+                         Date = "Fecha: " + requestSent.date,
                          Time = "Hora: "+ requestSent.time
                      }
                  );

@@ -124,7 +124,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                     new
                     {
                         ImageChat = image,
-                        Name = memberATE.lastName + " " + memberATE.name
+                        Name = memberATE.lastname + " " + memberATE.name
                     });
             }
         }

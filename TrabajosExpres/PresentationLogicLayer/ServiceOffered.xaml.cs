@@ -339,7 +339,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                 RestClient client = new RestClient(urlBase);
                 client.Timeout = -1;
                 string urlService = "services/" + Service.idService;
-                Service = new Models.Service();
                 var request = new RestRequest(urlService, Method.PATCH);
                 request.AddHeader("Content-type", "application/json");
                 foreach (RestResponseCookie cookie in Login.cookies)

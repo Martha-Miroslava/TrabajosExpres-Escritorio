@@ -48,7 +48,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             else
             {
                 GetAccount();
-                LabelNameChat.Content = memberATE.name+" "+memberATE.lastName;
+                LabelNameChat.Content = memberATE.name+" "+memberATE.lastname;
             }
             ImageChat.Source = image;
             GetMessage();

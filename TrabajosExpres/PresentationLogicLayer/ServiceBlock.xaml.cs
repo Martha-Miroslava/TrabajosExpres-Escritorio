@@ -93,7 +93,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         {
             Models.Reason reason = new Models.Reason();
             reason.email = memberATE.email;
-            reason.messageSend = "Estimado usuario " + memberATE.lastName + " " + memberATE.name + ". Le informamos que su servicio "+Service.name+" de Trabajos Expres ha sido desbloqueda";
+            reason.messageSend = "Estimado usuario " + memberATE.lastname + " " + memberATE.name + ". Le informamos que su servicio "+Service.name+" de Trabajos Expres ha sido desbloqueda";
             RestClient client = new RestClient(urlBase);
             client.Timeout = -1;
             var request = new RestRequest("emails/account", Method.POST);

@@ -373,12 +373,6 @@ namespace TrabajosExpres.PresentationLogicLayer
                     accountActivate.Show();
                     Close();
                     break;
-                case "ListViewItemService":
-                    HomeEmployee servicesOfferedList = new HomeEmployee();
-                    servicesOfferedList.InitializeMenu();
-                    servicesOfferedList.Show();
-                    Close();
-                    break;
                 case "ListViewItemCommentTracing":
                     CommentClient commentClient = new CommentClient();
                     commentClient.InitializeMenu();

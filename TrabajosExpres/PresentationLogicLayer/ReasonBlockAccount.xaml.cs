@@ -21,7 +21,7 @@ namespace TrabajosExpres.PresentationLogicLayer
 
         public void InitializeReason()
         {
-            TextBoxReason.Text = "Estimado usuario " + MemberATE.lastName + " "+MemberATE.name+ ", por el gran número de reportes recibidos a su cuenta, esta será suspendida hasta nuevo aviso.";
+            TextBoxReason.Text = "Estimado usuario " + MemberATE.lastname + " "+MemberATE.name+ ", por el gran número de reportes recibidos a su cuenta, esta será suspendida hasta nuevo aviso.";
         }
 
 

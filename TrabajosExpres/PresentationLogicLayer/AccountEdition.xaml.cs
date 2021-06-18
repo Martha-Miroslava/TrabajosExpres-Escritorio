@@ -71,7 +71,7 @@ namespace TrabajosExpres.PresentationLogicLayer
                         PackIconImage.Visibility = Visibility.Hidden;
                     }
                     TextBoxName.Text = memberATE.name;
-                    TextBoxLastName.Text = memberATE.lastName;
+                    TextBoxLastName.Text = memberATE.lastname;
                     TextBoxEmail.Text = memberATE.email;
                     TextBoxUserName.Text = memberATE.username;
                     DateTime dateBirth = DateTime.ParseExact(memberATE.dateBirth, "yyyy/MM/dd", null);
@@ -827,7 +827,7 @@ namespace TrabajosExpres.PresentationLogicLayer
         private void CreateMemberATEFromInputData()
         {
             memberATE.username = TextBoxUserName.Text;
-            memberATE.lastName = TextBoxLastName.Text;
+            memberATE.lastname = TextBoxLastName.Text;
             memberATE.name = TextBoxName.Text;
             memberATE.email = TextBoxEmail.Text;
             if (DatePickerDateBirth.SelectedDate != null)

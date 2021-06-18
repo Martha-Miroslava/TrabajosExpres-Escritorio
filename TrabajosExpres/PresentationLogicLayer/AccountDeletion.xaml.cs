@@ -36,7 +36,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             if (memberATE != null)
             {
                 TextBoxName.Text = memberATE.name;
-                TextBoxLastName.Text = memberATE.lastName;
+                TextBoxLastName.Text = memberATE.lastname;
                 TextBoxEmail.Text = memberATE.email;
                 TextBoxUserName.Text = memberATE.username;
                 TextBoxDateBirth.Text = memberATE.dateBirth;

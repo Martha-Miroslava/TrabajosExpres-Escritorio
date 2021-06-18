@@ -10,7 +10,7 @@ namespace TrabajosExpres.Validators
         {
             RuleFor(login => login.username).NotEmpty().WithState(login => "TextBoxUsername")
                     .MaximumLength(20).WithState(login => "TextBoxUsername")
-                    .MaximumLength(8).WithState(login => "TextBoxUsername")
+                    .MinimumLength(3).WithState(login => "TextBoxUsername")
                     .Matches("^[A-Za-z0-9]+$").WithState(user => "TextBoxUsername");
 
             RuleFor(login => login.password).NotEmpty().WithState(login => "PasswordBoxPassword")
@@ -26,7 +26,7 @@ namespace TrabajosExpres.Validators
             var hasUpperChar = new Regex(@"[A-Z]+");
             var hasMiniMaxChars = new Regex(@".{8,15}");
             var hasLowerChar = new Regex(@"[a-z]+");
-            var hasSymbols = new Regex(@"[@#_]");
+            var hasSymbols = new Regex(@"[$@\$!%*?&#]");
             if (hasNumber.IsMatch(password) && hasUpperChar.IsMatch(password) &&
                 hasMiniMaxChars.IsMatch(password) && hasLowerChar.IsMatch(password) && hasSymbols.IsMatch(password))
             {

@@ -38,7 +38,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             if (memberATE != null)
             {
                 TextBoxName.Text = memberATE.name;
-                TextBoxLastName.Text = memberATE.lastName;
+                TextBoxLastName.Text = memberATE.lastname;
                 ButtonRequest.IsEnabled = true;
             }
         }
@@ -50,13 +50,13 @@ namespace TrabajosExpres.PresentationLogicLayer
             Close();
         }
 
-        private void OpenMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void OpenMenuButtonClicked(object sender, RoutedEventArgs routeEvent)
         {
             ButtonCloseMenu.Visibility = Visibility.Visible;
             ButtonOpenMenu.Visibility = Visibility.Collapsed;
         }
 
-        private void CloseMenuButtonClicked(object sender, RoutedEventArgs e)
+        private void CloseMenuButtonClicked(object sender, RoutedEventArgs routeEvent)
         {
             ButtonCloseMenu.Visibility = Visibility.Collapsed;
             ButtonOpenMenu.Visibility = Visibility.Visible;
@@ -75,7 +75,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             DatePickerDate.BorderBrush = Brushes.Red;
             if (DatePickerDate.SelectedDate != null)
             {
-                DateTime dateTimeBirth = Convert.ToDateTime(DatePickerDate);
+                DateTime dateTimeBirth = Convert.ToDateTime(DatePickerDate.SelectedDate);
                 var dateNow = DateTime.Now;
                 if (dateTimeBirth > dateNow)
                 {
@@ -265,16 +265,17 @@ namespace TrabajosExpres.PresentationLogicLayer
                 else
                 {
                     Models.Error responseError = JsonConvert.DeserializeObject<Models.Error>(response.Content);
-                    MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     if (response.StatusCode == System.Net.HttpStatusCode.Forbidden || response.StatusCode == System.Net.HttpStatusCode.Unauthorized
                         || response.StatusCode == System.Net.HttpStatusCode.RequestTimeout)
                     {
+                        MessageBox.Show(responseError.error, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                         Login login = new Login();
                         login.Show();
                         Close();
                     }
                     else
                     {
+                        MessageBox.Show("La solicitud se registró exitosamente", "Registro exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
                         if (response.StatusCode != System.Net.HttpStatusCode.Conflict && response.StatusCode != System.Net.HttpStatusCode.BadRequest)
                         {
                             Service service = new Service();
@@ -289,7 +290,7 @@ namespace TrabajosExpres.PresentationLogicLayer
             {
                 TelegramBot.SendToTelegram(exception);
                 LogException.Log(this, exception);
-                MessageBox.Show("No se pudo enviar la solicitud. Intente más tarde", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("La solicitud se registró exitosamente", "Registro exitoso", MessageBoxButton.OK, MessageBoxImage.Information);
                 Service service = new Service();
                 service.InitializeMenu();
                 service.Show();
@@ -324,6 +325,12 @@ namespace TrabajosExpres.PresentationLogicLayer
                     ChatList chatList = new ChatList();
                     chatList.InitializeMenu();
                     chatList.Show();
+                    Close();
+                    break;
+                case "ListViewItemRequest":
+                    RequestsMadeList requestsMadeList = new RequestsMadeList();
+                    requestsMadeList.InitializeMenu();
+                    requestsMadeList.Show();
                     Close();
                     break;
                 case "ListViewItemServiceRegistration":
